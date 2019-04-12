@@ -13,27 +13,20 @@
           "package_name": "com.example.lostfound"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "2940690672-0gkpt5bamhfmhma2d2pou0rq9eap153f.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyCoQXxjSC_am0Ju8URm7OghnZLlh8vKe6s"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2940690672-0gkpt5bamhfmhma2d2pou0rq9eap153f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

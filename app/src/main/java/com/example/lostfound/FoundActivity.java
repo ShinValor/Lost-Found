@@ -30,12 +30,6 @@ import java.util.List;
 
 public class FoundActivity extends AppCompatActivity implements View.OnClickListener{
 
-    //we will use these constants later to pass information to another activity
-    public static final String FOUNDPOSTINFORMATION_USER = "com.example.lostfound.foundpostinformationuser";
-    public static final String FOUNDPOSTINFORMATION_TITLE = "com.example.lostfound.foundpostinformationtitle";
-    public static final String FOUNDPOSTINFORMATION_DESCRIPTION = "com.example.lostfound.foundpostinformationdescription";
-    public static final String FOUNDPOSTINFORMATION_PHONENUM = "com.example.lostfound.foundpostinformationphonenum";
-
     private ListView listViewFound;
     private Button buttonProfile, buttonLost, buttonCreate, buttonLogout;
 
@@ -45,7 +39,15 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
     // Firebase database reference
     private DatabaseReference databaseReference;
 
-    List<FoundPostInformation> foundList;
+    private List<PostInformation> foundList;
+
+    //we will use these constants later to pass information to another activity
+    public static final String FOUNDPOSTINFORMATION_USER = "com.example.lostfound.foundpostinformationuser",
+                               FOUNDPOSTINFORMATION_TITLE = "com.example.lostfound.foundpostinformationtitle",
+                               FOUNDPOSTINFORMATION_DESCRIPTION = "com.example.lostfound.foundpostinformationdescription",
+                               FOUNDPOSTINFORMATION_PHONENUM = "com.example.lostfound.foundpostinformationphonenum",
+                               FOUNDPOSTINFORMATION_POSTID = "com.example.lostfound.foundpostinformationpostid",
+                               FOUNDPOSTINFORMATION_USERID = "com.example.lostfound.foundpostinformationuserid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,6 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         listViewFound = (ListView) findViewById(R.id.listViewFound);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("/FOUND");
         foundList = new ArrayList<>();
 
         buttonProfile.setOnClickListener(this);
@@ -82,16 +83,18 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //getting the selected artist
-                FoundPostInformation foundPostInformation = foundList.get(i);
+                PostInformation postInformation = foundList.get(i);
 
                 //creating an intent
                 Intent intent = new Intent(getApplicationContext(), FoundPostViewActivity.class);
 
                 //putting info to intent
-                intent.putExtra(FOUNDPOSTINFORMATION_USER, foundPostInformation.getUser());
-                intent.putExtra(FOUNDPOSTINFORMATION_TITLE, foundPostInformation.getTitle());
-                intent.putExtra(FOUNDPOSTINFORMATION_DESCRIPTION, foundPostInformation.getDescription());
-                intent.putExtra(FOUNDPOSTINFORMATION_PHONENUM, foundPostInformation.getPhoneNum());
+                intent.putExtra(FOUNDPOSTINFORMATION_USER, postInformation.getUser());
+                intent.putExtra(FOUNDPOSTINFORMATION_TITLE, postInformation.getTitle());
+                intent.putExtra(FOUNDPOSTINFORMATION_DESCRIPTION, postInformation.getDescription());
+                intent.putExtra(FOUNDPOSTINFORMATION_PHONENUM, postInformation.getPhoneNum());
+                intent.putExtra(FOUNDPOSTINFORMATION_POSTID, postInformation.getPostId());
+                intent.putExtra(FOUNDPOSTINFORMATION_USERID, postInformation.getUserId());
 
                 //starting the activity with intent
                 startActivity(intent);
@@ -103,8 +106,8 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
         //attaching value event listener
+        databaseReference = FirebaseDatabase.getInstance().getReference("/FOUND");
         databaseReference.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //wipe entire foundList
@@ -113,16 +116,15 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
                 //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     //getting post
-                    FoundPostInformation foundPostInformation = postSnapshot.getValue(FoundPostInformation.class);
+                    PostInformation postInformation = postSnapshot.getValue(PostInformation.class);
                     //add to list
-                    foundList.add(foundPostInformation);
+                    foundList.add(postInformation);
                 }
 
-                FoundList foundAdapter = new FoundList(FoundActivity.this,foundList);
+                PostList foundAdapter = new PostList(FoundActivity.this,foundList);
                 listViewFound.setAdapter(foundAdapter);
 
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -142,11 +144,6 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
             //starting Lost activity
             startActivity(new Intent(this, LostActivity.class));
         }
-        else if (view == buttonCreate){
-            finish();
-            //starting Found activity
-            startActivity(new Intent(this, FoundPostActivity.class));
-        }
         else if (view == buttonLogout){
             //logging out the user
             firebaseAuth.signOut();
@@ -154,6 +151,11 @@ public class FoundActivity extends AppCompatActivity implements View.OnClickList
             finish();
             //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
+        }
+        else if (view == buttonCreate){
+            finish();
+            //starting Found activity
+            startActivity(new Intent(this, FoundPostActivity.class));
         }
     }
 }

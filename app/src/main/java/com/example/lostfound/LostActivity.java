@@ -30,12 +30,6 @@ import java.util.List;
 
 public class LostActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //we will use these constants later to pass information to another activity
-    public static final String LOSTPOSTINFORMATION_USER = "com.example.lostfound.lostpostinformationuser",
-                               LOSTPOSTINFORMATION_TITLE = "com.example.lostfound.lostpostinformationtitle",
-                               LOSTPOSTINFORMATION_DESCRIPTION = "com.example.lostfound.lostpostinformationdescription",
-                               LOSTPOSTINFORMATION_PHONENUM = "com.example.lostfound.lostpostinformationphonenum";
-
     private ListView listViewLost;
     private Button buttonProfile, buttonFound, buttonCreate, buttonLogout;
 
@@ -45,7 +39,15 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     // Firebase database reference
     private DatabaseReference databaseReference;
 
-    List<LostPostInformation> lostList;
+    private List<PostInformation> lostList;
+
+    //we will use these constants later to pass information to another activity
+    public static final String LOSTPOSTINFORMATION_USER = "com.example.lostfound.lostpostinformationuser",
+                               LOSTPOSTINFORMATION_TITLE = "com.example.lostfound.lostpostinformationtitle",
+                               LOSTPOSTINFORMATION_DESCRIPTION = "com.example.lostfound.lostpostinformationdescription",
+                               LOSTPOSTINFORMATION_PHONENUM = "com.example.lostfound.lostpostinformationphonenum",
+                               LOSTPOSTINFORMATION_POSTID = "com.example.lostfound.lostpostinformationpostid",
+                               LOSTPOSTINFORMATION_USERID = "com.example.lostfound.lostpostinformationuserid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,6 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         listViewLost = (ListView) findViewById(R.id.listViewLost);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("/LOST");
         lostList = new ArrayList<>();
 
         buttonProfile.setOnClickListener(this);
@@ -82,16 +83,18 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //getting the selected artist
-                LostPostInformation lostPostInformation = lostList.get(i);
+                PostInformation postInformation = lostList.get(i);
 
                 //creating an intent
                 Intent intent = new Intent(getApplicationContext(), LostPostViewActivity.class);
 
                 //putting info to intent
-                intent.putExtra(LOSTPOSTINFORMATION_USER, lostPostInformation.getUser());
-                intent.putExtra(LOSTPOSTINFORMATION_TITLE, lostPostInformation.getTitle());
-                intent.putExtra(LOSTPOSTINFORMATION_DESCRIPTION, lostPostInformation.getDescription());
-                intent.putExtra(LOSTPOSTINFORMATION_PHONENUM, lostPostInformation.getPhoneNum());
+                intent.putExtra(LOSTPOSTINFORMATION_USER, postInformation.getUser());
+                intent.putExtra(LOSTPOSTINFORMATION_TITLE, postInformation.getTitle());
+                intent.putExtra(LOSTPOSTINFORMATION_DESCRIPTION, postInformation.getDescription());
+                intent.putExtra(LOSTPOSTINFORMATION_PHONENUM, postInformation.getPhoneNum());
+                intent.putExtra(LOSTPOSTINFORMATION_POSTID, postInformation.getPostId());
+                intent.putExtra(LOSTPOSTINFORMATION_USERID, postInformation.getUserId());
 
                 //starting the activity with intent
                 startActivity(intent);
@@ -103,6 +106,7 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
         //attaching value event listener
+        databaseReference = FirebaseDatabase.getInstance().getReference("/LOST");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,16 +116,15 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
                 //iterating through all the nodes
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     //getting post
-                    LostPostInformation lostPostInformation = postSnapshot.getValue(LostPostInformation.class);
+                    PostInformation postInformation = postSnapshot.getValue(PostInformation.class);
                     //add to list
-                    lostList.add(lostPostInformation);
+                    lostList.add(postInformation);
                 }
 
-                LostList lostAdapter = new LostList(LostActivity.this, lostList);
+                PostList lostAdapter = new PostList(LostActivity.this, lostList);
                 listViewLost.setAdapter(lostAdapter);
 
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -141,11 +144,6 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             //starting Found activity
             startActivity(new Intent(this, FoundActivity.class));
         }
-        else if (view == buttonCreate){
-            finish();
-            //starting Lost activity
-            startActivity(new Intent(this, LostPostActivity.class));
-        }
         else if (view == buttonLogout){
             //logging out the user
             firebaseAuth.signOut();
@@ -153,6 +151,11 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             finish();
             //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
+        }
+        else if (view == buttonCreate){
+            finish();
+            //starting Lost activity
+            startActivity(new Intent(this, LostPostActivity.class));
         }
     }
 }
