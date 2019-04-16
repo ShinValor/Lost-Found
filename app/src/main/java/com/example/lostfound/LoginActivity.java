@@ -22,10 +22,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextEmail, editTextPassword;
     private Button buttonSignin;
 
-    // Firebase auth object
+
     private FirebaseAuth firebaseAuth;
 
-    // Progress dialog
     private ProgressDialog progressDialog;
 
     @Override
@@ -33,13 +32,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Getting firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null){
-            //close this activity
             finish();
-            //opening lost activity
             startActivity(new Intent(getApplicationContext(), LostActivity.class));
         }
 
@@ -50,7 +46,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         progressDialog = new ProgressDialog(this);
 
-        // Attaching click listener
         buttonSignin.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
     }

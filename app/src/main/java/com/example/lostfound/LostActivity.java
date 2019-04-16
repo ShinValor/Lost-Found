@@ -33,15 +33,12 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     private ListView listViewLost;
     private Button buttonProfile, buttonFound, buttonCreate, buttonLogout;
 
-    // Firebase auth object
     private FirebaseAuth firebaseAuth;
 
-    // Firebase database reference
     private DatabaseReference databaseReference;
 
     private List<PostInformation> lostList;
 
-    //we will use these constants later to pass information to another activity
     public static final String LOSTPOSTINFORMATION_USER = "com.example.lostfound.lostpostinformationuser",
                                LOSTPOSTINFORMATION_TITLE = "com.example.lostfound.lostpostinformationtitle",
                                LOSTPOSTINFORMATION_DESCRIPTION = "com.example.lostfound.lostpostinformationdescription",
@@ -54,14 +51,10 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost);
 
-        //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if the user is not logged in that means current user will return null
         if (firebaseAuth.getCurrentUser() == null){
-            //closing this activity
             finish();
-            //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
 
@@ -78,17 +71,14 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         buttonCreate.setOnClickListener(this);
         buttonLogout.setOnClickListener(this);
 
-        //attaching listener to listview
         listViewLost.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //getting the selected artist
+
                 PostInformation postInformation = lostList.get(i);
 
-                //creating an intent
                 Intent intent = new Intent(getApplicationContext(), LostPostViewActivity.class);
 
-                //putting info to intent
                 intent.putExtra(LOSTPOSTINFORMATION_USER, postInformation.getUser());
                 intent.putExtra(LOSTPOSTINFORMATION_TITLE, postInformation.getTitle());
                 intent.putExtra(LOSTPOSTINFORMATION_DESCRIPTION, postInformation.getDescription());
@@ -96,7 +86,6 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra(LOSTPOSTINFORMATION_POSTID, postInformation.getPostId());
                 intent.putExtra(LOSTPOSTINFORMATION_USERID, postInformation.getUserId());
 
-                //starting the activity with intent
                 startActivity(intent);
             }
         });
@@ -105,19 +94,19 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        //attaching value event listener
+
         databaseReference = FirebaseDatabase.getInstance().getReference("/LOST");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //wipe entire lostList
+
                 lostList.clear();
 
-                //iterating through all the nodes
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    //getting post
-                    PostInformation postInformation = postSnapshot.getValue(PostInformation.class);
-                    //add to list
+
+                    PostInformation postInformation = postSnapshot.child("INFO").getValue(PostInformation.class);
+
                     lostList.add(postInformation);
                 }
 
@@ -136,25 +125,19 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == buttonProfile){
             finish();
-            //starting Profile activity
             startActivity(new Intent(this, ProfileActivity.class));
         }
         else if (view == buttonFound){
             finish();
-            //starting Found activity
             startActivity(new Intent(this, FoundActivity.class));
         }
         else if (view == buttonLogout){
-            //logging out the user
             firebaseAuth.signOut();
-            //closing activity
             finish();
-            //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
         else if (view == buttonCreate){
             finish();
-            //starting Lost activity
             startActivity(new Intent(this, LostPostActivity.class));
         }
     }

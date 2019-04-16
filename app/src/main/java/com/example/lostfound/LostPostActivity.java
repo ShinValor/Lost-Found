@@ -47,15 +47,16 @@ import android.graphics.drawable.BitmapDrawable;
 
 public class LostPostActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private FirebaseAuth firebaseAuth;
+
+    private DatabaseReference databaseReference;
+
     private ImageView mImageView;
     private EditText editTextTitle, editTextDescription, mEditTextFileName;
     private Button buttonPost, buttonCancel, mButtonChooseImage, buttonCamera;
 
     private ProgressBar mProgressBar;
     private Uri mImageUri;
-
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
 
     private StorageTask mUploadTask;
     private StorageReference mStorageRef;
@@ -70,14 +71,10 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_post);
 
-        //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if the user is not logged in that means current user will return null
         if (firebaseAuth.getCurrentUser() == null){
-            //closing this activity
             finish();
-            //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
 
@@ -120,7 +117,7 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("LostPost");
+        mStorageRef = FirebaseStorage.getInstance().getReference("/LostPost");
     }
 
     private void openFileChooser() {
@@ -190,12 +187,14 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+
                 Toast.makeText(LostPostActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
+
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                 Toast.makeText(LostPostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful());
@@ -203,6 +202,7 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
                 Upload upload = new Upload(mEditTextFileName.getText().toString().trim(), downloadUrl.toString());
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference("/LOST/" + path);
                 mDatabaseRef.child("IMAGE").setValue(upload);
+
             }
         });
     }
@@ -212,7 +212,6 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
         FirebaseUser user = firebaseAuth.getCurrentUser();
         final String userId = user.getUid();
 
-        // Get Information
         final String title = editTextTitle.getText().toString().trim();
         final String desc = editTextDescription.getText().toString().trim();
 
@@ -220,17 +219,20 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //iterating through all the nodes
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
                     if (postSnapshot.getKey().equals(userId)) {
                         String postUID = databaseReference.push().getKey();
-                        UserInformation userInformation = postSnapshot.getValue(UserInformation.class);
+                        UserInformation userInformation = postSnapshot.child("INFO").getValue(UserInformation.class);
                         PostInformation postInformation = new PostInformation(userInformation.getName(),title,desc,userInformation.getPhoneNum(),userId,postUID);
                         databaseReference = FirebaseDatabase.getInstance().getReference("/LOST");
-                        databaseReference.child(postUID).setValue(postInformation);
+                        databaseReference.child(postUID).child("INFO").setValue(postInformation);
                         uploadFile(postUID);
                     }
+
                 }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -258,7 +260,6 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
             Picasso.get().load(mImageUri).fit().into(mImageView);

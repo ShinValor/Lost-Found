@@ -33,9 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null){
-            //close this activity
             finish();
-            //opening lost activity
             startActivity(new Intent(getApplicationContext(), LostActivity.class));
         }
 
@@ -99,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             registerUser();
         }
         else if (view == textViewSignin){
-            // Will open login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
     }

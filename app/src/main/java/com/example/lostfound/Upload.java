@@ -6,7 +6,7 @@ public class Upload {
     private String mImageUrl;
 
     public Upload() {
-        //empty constructor needed
+
     }
 
     public Upload(String name, String imageUrl) {

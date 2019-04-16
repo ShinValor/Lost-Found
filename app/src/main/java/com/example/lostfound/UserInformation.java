@@ -6,12 +6,10 @@ public class UserInformation {
 
     public String name, school, id, email, phoneNum;
 
-    // Default Constructor
     public UserInformation(){
 
     }
 
-    // Overloaded Constructor
     public UserInformation(String name, String school, String id, String email, String phoneNum) {
         this.name = name;
         this.school = school;
@@ -38,14 +36,5 @@ public class UserInformation {
 
     public String getPhoneNum(){
         return this.phoneNum;
-    }
-
-
-    public void print(){
-        Log.d("Name: ",name);
-        Log.d("School: ",school);
-        Log.d("id: ",id);
-        Log.d("Email: ",email);
-        Log.d("Phone Number: ",phoneNum);
     }
 }

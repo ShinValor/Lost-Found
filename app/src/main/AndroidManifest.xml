@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera"></uses-feature>
+
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileViewActivity"></activity>
+        <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".Chat" />
+        <activity android:name=".ProfileViewActivity" />
         <activity android:name=".FoundPostViewActivity" />
         <activity android:name=".LostPostViewActivity" />
         <activity android:name=".FoundPostActivity" />

@@ -1,6 +1,7 @@
 package com.example.lostfound;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,32 +20,30 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileViewActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView imageView;
-    private TextView textViewUser, textViewPhone, textViewEmail, textViewSchool;
-    private Button buttonBack;
-
-    // Firebase auth object
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
 
+    private ImageView imageView;
+    private TextView textViewUser, textViewEmail, textViewSchool;
+    private Button buttonBack, buttonCall, buttonMessage;
+
     private String imageUrl;
     private String imageName;
     private String userId;
+    private String phoneNum;
+
+    public static final String LOSTPOSTINFORMATION_USERID = "com.example.lostfound.lostpostinformationuserid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_view);
 
-        //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if the user is not logged in that means current user will return null
         if (firebaseAuth.getCurrentUser() == null){
-            //closing this activity
             finish();
-            //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
 
@@ -52,10 +51,11 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
 
         imageView = (ImageView) findViewById(R.id.imageView);
         textViewUser = (TextView) findViewById(R.id.textViewUser);
-        textViewPhone = (TextView) findViewById(R.id.textViewPhone);
         textViewEmail = (TextView) findViewById(R.id.textViewEmail);
         textViewSchool = (TextView) findViewById(R.id.textViewSchool);
         buttonBack = (Button) findViewById(R.id.buttonBack);
+        buttonCall = (Button) findViewById(R.id.buttonCall);
+        buttonMessage = (Button) findViewById(R.id.buttonMessage);
 
         userId = intent.getStringExtra(LostPostViewActivity.LOSTPOSTINFORMATION_PROFILE);
         if (userId == null){
@@ -63,24 +63,44 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
         }
 
         buttonBack.setOnClickListener(this);
+
+        buttonCall.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNum, null));
+                startActivity(intent);
+            }
+        });
+
+        buttonMessage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                intent.putExtra(LOSTPOSTINFORMATION_USERID,userId);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //attaching value event listener
+
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
-                textViewUser.setText(userInformation.getName());
-                textViewPhone.setText(userInformation.getPhoneNum());
-                textViewEmail.setText(userInformation.getEmail());
-                textViewSchool.setText(userInformation.getSchool());
-                imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
-                imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
-                Picasso.get().load(imageUrl).fit().into(imageView);
+                UserInformation userInformation = dataSnapshot.child("INFO").getValue(UserInformation.class);
+                if (userInformation != null){
+                    textViewUser.setText(userInformation.getName());
+                    phoneNum = userInformation.getPhoneNum();
+                    buttonCall.setText(phoneNum);
+                    textViewEmail.setText(userInformation.getEmail());
+                    textViewSchool.setText(userInformation.getSchool());
+                    imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
+                    imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
+                    Picasso.get().load(imageUrl).fit().into(imageView);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -93,9 +113,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view == buttonBack){
-            // stop current activity
             finish();
-            //starting Lost activity
             startActivity(new Intent(this, LostActivity.class));
         }
     }

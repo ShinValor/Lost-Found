@@ -39,15 +39,6 @@
             android:textSize="30dp" />
 
         <TextView
-            android:id="@+id/textViewPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:ems="10"
-            android:gravity="center"
-            android:textSize="30dp" />
-
-        <TextView
             android:id="@+id/textViewEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +55,21 @@
             android:ems="10"
             android:gravity="center"
             android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/buttonCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Phone Number"/>
+
+        <Button
+            android:id="@+id/buttonMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Message">
+        </Button>
 
     </LinearLayout>
 

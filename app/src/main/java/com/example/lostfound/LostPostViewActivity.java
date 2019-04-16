@@ -27,7 +27,6 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
     private TextView textViewUser, textViewTitle, textViewDescription;
     private Button buttonBack, buttonCall;
 
-    // Firebase auth object
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
@@ -44,14 +43,10 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_lost_post_view);
         Intent intent = getIntent();
 
-        //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if the user is not logged in that means current user will return null
         if (firebaseAuth.getCurrentUser() == null){
-            //closing this activity
             finish();
-            //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
 
@@ -77,7 +72,7 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
                 intent.putExtra(LOSTPOSTINFORMATION_PROFILE,userPostId);
-                //starting the activity with intent
+
                 startActivity(intent);
             }
         });
@@ -96,14 +91,13 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
-        //attaching value event listener
+
         databaseReference = FirebaseDatabase.getInstance().getReference("/LOST/" + postId + "/IMAGE");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
                 imageName = dataSnapshot.child("name").getValue(String.class);
-                Log.d("LOST ", imageUrl);
                 Picasso.get().load(imageUrl).fit().into(imageView);
             }
             @Override
@@ -116,9 +110,7 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if (view == buttonBack){
-            // stop current activity
             finish();
-            //starting Lost activity
             startActivity(new Intent(this, LostActivity.class));
         }
     }

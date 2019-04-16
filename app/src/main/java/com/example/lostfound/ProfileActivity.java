@@ -2,6 +2,7 @@ package com.example.lostfound;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -37,20 +38,22 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import android.util.Log;
+import android.app.Activity;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import java.io.ByteArrayOutputStream;
+import android.graphics.drawable.BitmapDrawable;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // Firebase auth object
     private FirebaseAuth firebaseAuth;
 
-    // Firebase database reference
     private DatabaseReference databaseReference;
 
-    //view objects
-    private ImageView imageView;
+    private ImageView mImageView;
     private TextView textViewUserEmail;
     private EditText editTextName, editTextSchool, editTextId, editTextPhoneNum;
-    private Button buttonSave, buttonBack, mButtonChooseImage;
+    private Button buttonSave, buttonBack, mButtonChooseImage, buttonCamera;
 
     private ProgressBar mProgressBar;
     private Uri mImageUri;
@@ -64,25 +67,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private String imageName;
 
     private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if the user is not logged in that means current user will return null
         if (firebaseAuth.getCurrentUser() == null){
-            //closing this activity
             finish();
-            //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        // Initializing views
-        imageView = (ImageView) findViewById(R.id.imageView);
+        mImageView = (ImageView) findViewById(R.id.imageView);
 
         textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
 
@@ -93,19 +93,35 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         buttonSave = (Button) findViewById(R.id.buttonSave);
         buttonBack = (Button) findViewById(R.id.buttonBack);
+        buttonCamera = (Button) this.findViewById(R.id.buttonCamera);
         mButtonChooseImage = (Button) findViewById(R.id.button_choose_image);
 
         mProgressBar = findViewById(R.id.progress_bar);
 
-        // Getting current user and display logged in user name
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
 
         textViewUserEmail.setText(user.getEmail());
 
-        // Adding listener to button
         buttonBack.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
+
+        buttonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                }
+                else
+                {
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                }
+            }
+        });
+
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +129,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("Profile");
+        mStorageRef = FirebaseStorage.getInstance().getReference("/Profile");
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Do whatever you need with your data (retrieved only once)
+                UserInformation userInformation = dataSnapshot.child("INFO").getValue(UserInformation.class);
+                if (userInformation != null){
+                    editTextName.setText(userInformation.getName());
+                    editTextPhoneNum.setText(userInformation.getPhoneNum());
+                    editTextId.setText(userInformation.getId());
+                    editTextSchool.setText(userInformation.getSchool());
+                    imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
+                    imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
+                    Picasso.get().load(imageUrl).fit().into(mImageView);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void openFileChooser() {
@@ -170,8 +208,38 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     });
         }
         else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+            cameraUpload(path);
         }
+    }
+
+    private void cameraUpload(final String path) {
+        // Get the data from an ImageView as bytes
+        mImageView.setDrawingCacheEnabled(true);
+        mImageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mStorageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(ProfileActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(ProfileActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!urlTask.isSuccessful());
+                Uri downloadUrl = urlTask.getResult();
+                Upload upload = new Upload("EMPTY", downloadUrl.toString());
+                mDatabaseRef = FirebaseDatabase.getInstance().getReference("/USERS/" + path);
+                mDatabaseRef.child("IMAGE").setValue(upload);
+            }
+        });
     }
 
     private void saveProfilePic(){
@@ -183,7 +251,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void saveUserInformation(){
 
-        // Get current user
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         String name = editTextName.getText().toString().trim();
@@ -193,19 +260,38 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         UserInformation userInformation = new UserInformation(name,school,id,user.getEmail(),phoneNum);
 
-        // Create a node using unique id and set the value of that node to userInformation
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/");
-        databaseReference.child(user.getUid().toString()).setValue(userInformation);
+        databaseReference.child(user.getUid().toString()).child("INFO").setValue(userInformation);
+        databaseReference.child(user.getUid()).child("CHAT").setValue(false);
         Toast.makeText(this, "Information Saved...", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_PERMISSION_CODE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+            else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
-            Picasso.get().load(mImageUri).fit().into(imageView);
+            Picasso.get().load(mImageUri).fit().into(mImageView);
+        }
+        else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            mImageView.setImageBitmap(photo);
         }
     }
 
@@ -213,6 +299,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onStart() {
         super.onStart();
         //attaching value event listener
+        /*
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -224,21 +311,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 editTextSchool.setText(userInformation.getSchool());
                 imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
                 imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
-                Picasso.get().load(imageUrl).fit().into(imageView);
+                Picasso.get().load(imageUrl).fit().into(mImageView);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+        */
     }
 
     @Override
     public void onClick(View view) {
         if (view == buttonBack){
-            //closing activity
             finish();
-            //starting lost activity
             startActivity(new Intent(this, LostActivity.class));
         }
         else if (view == buttonSave){

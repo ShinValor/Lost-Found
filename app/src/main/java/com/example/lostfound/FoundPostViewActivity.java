@@ -25,7 +25,6 @@ public class FoundPostViewActivity extends AppCompatActivity implements View.OnC
     private TextView textViewUser, textViewTitle, textViewDescription;
     private Button buttonBack, buttonCall;
 
-    // Firebase auth object
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
@@ -42,14 +41,10 @@ public class FoundPostViewActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_found_post_view);
         Intent intent = getIntent();
 
-        //initializing firebase authentication object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if the user is not logged in that means current user will return null
         if (firebaseAuth.getCurrentUser() == null){
-            //closing this activity
             finish();
-            //starting login activity
             startActivity(new Intent(this, LoginActivity.class));
         }
 
@@ -75,7 +70,6 @@ public class FoundPostViewActivity extends AppCompatActivity implements View.OnC
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
                 intent.putExtra(FOUNDPOSTINFORMATION_PROFILE,userPostId);
-                //starting the activity with intent
                 startActivity(intent);
             }
         });
@@ -93,14 +87,12 @@ public class FoundPostViewActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onStart() {
         super.onStart();
-        //attaching value event listener
         databaseReference = FirebaseDatabase.getInstance().getReference("/FOUND/" + postId + "/IMAGE");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
                 imageName = dataSnapshot.child("name").getValue(String.class);
-                Log.d("FOUND ", imageUrl);
                 Picasso.get().load(imageUrl).fit().into(imageView);
             }
             @Override
@@ -113,9 +105,7 @@ public class FoundPostViewActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         if (view == buttonBack) {
-            // stop current activity
             finish();
-            //starting Lost activity
             startActivity(new Intent(this, FoundActivity.class));
         }
     }
