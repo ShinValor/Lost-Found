@@ -2,15 +2,15 @@ package com.example.lostfound;
 
 import android.util.Log;
 
-public class PostInformation {
+public class Post {
 
     public String title, user, description, phoneNum, userId, postId;
 
-    public PostInformation(){
+    public Post(){
 
     }
 
-    public PostInformation(String user, String title, String description, String phoneNum, String userId, String postId) {
+    public Post(String user, String title, String description, String phoneNum, String userId, String postId) {
         this.user = user;
         this.title = title;
         this.description = description;

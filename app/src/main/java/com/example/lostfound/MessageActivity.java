@@ -53,7 +53,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
-        messageUserId = intent.getStringExtra(ProfileViewActivity.LOSTPOSTINFORMATION_USERID);
+        messageUserId = intent.getStringExtra(ProfileViewActivity.LOSTPost_USERID);
 
         messageList = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String content = edittext_chatbox.getText().toString();
                     edittext_chatbox.setText("");
-                    UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                    User user = dataSnapshot.getValue(User.class);
                     Message message = new Message(content,user.getName());
                     databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/");
                     String postUID = databaseReference.push().getKey();

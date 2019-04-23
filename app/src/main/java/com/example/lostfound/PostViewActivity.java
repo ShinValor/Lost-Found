@@ -17,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import android.util.Log;
 
-public class LostPostViewActivity extends AppCompatActivity implements View.OnClickListener {
+public class PostViewActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imageView;
     private TextView textViewUser, textViewTitle, textViewDescription;
@@ -33,12 +33,12 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
 
     private String route;
 
-    public static final String POSTINFORMATION_PROFILE = "com.example.lostfound.lostpostinformationprofile";
+    public static final String Post_PROFILE = "com.example.lostfound.lostPostprofile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lost_post_view);
+        setContentView(R.layout.activity_post_view);
         Intent intent = getIntent();
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -55,27 +55,27 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
         textViewUser = (TextView) findViewById(R.id.textViewUser);
         buttonCall = (Button) findViewById(R.id.buttonCall);
 
-        textViewUser.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_USER));
-        textViewTitle.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_TITLE));
-        textViewDescription.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_DESCRIPTION));
-        buttonCall.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_PHONENUM));
-        postId = intent.getStringExtra(LostActivity.POSTINFORMATION_POSTID);
-        route = intent.getStringExtra(LostActivity.POSTINFORMATION_PAGE);
+        textViewUser.setText(intent.getStringExtra(LostActivity.Post_USER));
+        textViewTitle.setText(intent.getStringExtra(LostActivity.Post_TITLE));
+        textViewDescription.setText(intent.getStringExtra(LostActivity.Post_DESCRIPTION));
+        buttonCall.setText(intent.getStringExtra(LostActivity.Post_PHONENUM));
+        postId = intent.getStringExtra(LostActivity.Post_POSTID);
+        route = intent.getStringExtra(LostActivity.Post_PAGE);
 
         buttonBack.setOnClickListener(this);
 
-        final String userPostId = intent.getStringExtra(LostActivity.POSTINFORMATION_USERID);
+        final String userPostId = intent.getStringExtra(LostActivity.Post_USERID);
         textViewUser.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
-                intent.putExtra(POSTINFORMATION_PROFILE,userPostId);
+                intent.putExtra(Post_PROFILE,userPostId);
                 startActivity(intent);
             }
         });
 
 
-        final String phoneNum = "+" + intent.getStringExtra(LostActivity.POSTINFORMATION_PHONENUM);
+        final String phoneNum = "+" + intent.getStringExtra(LostActivity.Post_PHONENUM);
         buttonCall.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

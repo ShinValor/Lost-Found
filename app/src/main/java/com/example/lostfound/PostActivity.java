@@ -38,7 +38,7 @@ import android.content.pm.PackageManager;
 import java.io.ByteArrayOutputStream;
 import android.graphics.drawable.BitmapDrawable;
 
-public class LostPostActivity extends AppCompatActivity implements View.OnClickListener {
+public class PostActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
 
@@ -64,10 +64,10 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lost_post);
+        setContentView(R.layout.activity_post);
         Intent intent = getIntent();
 
-        route = intent.getStringExtra(LostActivity.POSTINFORMATION_PAGE);
+        route = intent.getStringExtra(LostActivity.Post_PAGE);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -134,28 +134,28 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
         if (mImageUri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
             mUploadTask = fileReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            }, 500);
-                            Toast.makeText(LostPostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while (!urlTask.isSuccessful());
-                            Uri downloadUrl = urlTask.getResult();
-                            Upload upload = new Upload(downloadUrl.toString());
-                            mDatabaseRef = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
-                            mDatabaseRef.child("IMAGE").setValue(upload);
+                        public void run() {
+                            mProgressBar.setProgress(0);
                         }
-                    })
+                    }, 500);
+                    Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                    Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!urlTask.isSuccessful());
+                    Uri downloadUrl = urlTask.getResult();
+                    Upload upload = new Upload(downloadUrl.toString());
+                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
+                    mDatabaseRef.child("IMAGE").setValue(upload);
+                }
+            })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(LostPostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -185,14 +185,14 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onFailure(@NonNull Exception exception) {
 
-                Toast.makeText(LostPostActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(PostActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
 
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                Toast.makeText(LostPostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful());
                 Uri downloadUrl = urlTask.getResult();
@@ -219,10 +219,10 @@ public class LostPostActivity extends AppCompatActivity implements View.OnClickL
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     if (postSnapshot.getKey().equals(userId)) {
                         String postUID = databaseReference.push().getKey();
-                        UserInformation userInformation = postSnapshot.child("INFO").getValue(UserInformation.class);
-                        PostInformation postInformation = new PostInformation(userInformation.getName(),title,desc,userInformation.getPhoneNum(),userId,postUID);
+                        User User = postSnapshot.child("INFO").getValue(User.class);
+                        Post Post = new Post(User.getName(),title,desc,User.getPhoneNum(),userId,postUID);
                         databaseReference = FirebaseDatabase.getInstance().getReference("/" + route);
-                        databaseReference.child(postUID).child("INFO").setValue(postInformation);
+                        databaseReference.child(postUID).child("INFO").setValue(Post);
                         uploadFile(postUID);
                     }
                 }

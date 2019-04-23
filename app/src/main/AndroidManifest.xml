@@ -14,11 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shrine">
-        <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".PostActivity" />
+        <activity android:name=".PostViewActivity" />
+        <activity android:name=".MessageActivity" />
         <activity android:name=".Chat" />
         <activity android:name=".ProfileViewActivity" />
-        <activity android:name=".LostPostViewActivity" />
-        <activity android:name=".LostPostActivity" />
         <activity android:name=".LostActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />

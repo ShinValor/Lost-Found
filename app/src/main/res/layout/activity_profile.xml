@@ -20,25 +20,14 @@
             android:layout_height="wrap_content"
             android:text="Back" />
 
-        <TextView
-            android:id="@+id/textViewUserEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:gravity="center"
-            android:text="User Email"
-            android:textSize="30dp"/>
-
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageView"
-            android:layout_width="315dp"
-            android:layout_height="281dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
+            app:srcCompat="@drawable/lost_found_avatar" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -50,20 +39,18 @@
             android:layout_marginBottom="16dp" />
 
         <Button
-            android:id="@+id/buttonCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="Take a picture">
-        </Button>
-
-        <Button
             android:id="@+id/button_choose_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Choose file" />
 
+        <Button
+            android:id="@+id/buttonCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Take a picture"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

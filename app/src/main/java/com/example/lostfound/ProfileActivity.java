@@ -46,7 +46,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private DatabaseReference databaseReference;
 
     private ImageView mImageView;
-    private TextView textViewUserEmail;
     private TextInputEditText editTextName, editTextSchool, editTextId, editTextPhoneNum;
     private Button buttonSave, buttonBack, mButtonChooseImage, buttonCamera;
 
@@ -79,8 +78,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         mImageView = (ImageView) findViewById(R.id.imageView);
 
-        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-
         editTextName = (TextInputEditText) findViewById(R.id.editTextName);
         editTextSchool = (TextInputEditText) findViewById(R.id.editTextSchool);
         editTextId = (TextInputEditText) findViewById(R.id.editTextId);
@@ -95,8 +92,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
-
-        textViewUserEmail.setText(user.getEmail());
 
         buttonBack.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
@@ -131,12 +126,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Do whatever you need with your data (retrieved only once)
-                UserInformation userInformation = dataSnapshot.child("INFO").getValue(UserInformation.class);
-                if (userInformation != null){
-                    editTextName.setText(userInformation.getName());
-                    editTextPhoneNum.setText(userInformation.getPhoneNum());
-                    editTextId.setText(userInformation.getId());
-                    editTextSchool.setText(userInformation.getSchool());
+                User User = dataSnapshot.child("INFO").getValue(User.class);
+                if (User != null){
+                    editTextName.setText(User.getName());
+                    editTextPhoneNum.setText(User.getPhoneNum());
+                    editTextId.setText(User.getId());
+                    editTextSchool.setText(User.getSchool());
                     imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
                     imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
                     Picasso.get().load(imageUrl).fit().into(mImageView);
@@ -244,7 +239,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         uploadFile(userId);
     }
 
-    private void saveUserInformation(){
+    private void saveUser(){
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -253,10 +248,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String id = editTextId.getText().toString().trim();
         String phoneNum = editTextPhoneNum.getText().toString().trim();
 
-        UserInformation userInformation = new UserInformation(name,school,id,user.getEmail(),phoneNum);
+        User User = new User(name,school,id,user.getEmail(),phoneNum);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/");
-        databaseReference.child(user.getUid().toString()).child("INFO").setValue(userInformation);
+        databaseReference.child(user.getUid().toString()).child("INFO").setValue(User);
         databaseReference.child(user.getUid()).child("CHAT").setValue(false);
         Toast.makeText(this, "Information Saved...", Toast.LENGTH_LONG).show();
     }
@@ -298,7 +293,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         else if (view == buttonSave){
             saveProfilePic();
-            saveUserInformation();
+            saveUser();
         }
     }
 

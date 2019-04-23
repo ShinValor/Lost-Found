@@ -11,15 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="2dp">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="184dp"
             android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="3dp"
             android:gravity="center"
-            android:layout_gravity="center_horizontal"
             android:text="LOST"
             android:textSize="33sp"
             android:textStyle="bold" />
@@ -38,18 +40,18 @@
                 android:text="Profile" />
 
             <Button
-                android:id="@+id/buttonFound"
+                android:id="@+id/buttonScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:text="Found" />
+                android:text="Switch" />
 
             <Button
                 android:id="@+id/buttonLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:text="Logout"/>
+                android:text="Logout" />
 
         </LinearLayout>
 
@@ -58,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -70,7 +72,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:layout_margin="16dp"
-                app:srcCompat="@android:drawable/ic_input_add"/>
+                android:scaleType="center"
+                app:maxImageSize="56dp"
+                app:srcCompat="@drawable/lost_found_plus" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

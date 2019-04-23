@@ -21,25 +21,15 @@
             android:text="Back">
         </Button>
 
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageView"
-            android:layout_width="315dp"
-            android:layout_height="281dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_gravity="center_horizontal"
-            app:srcCompat="@android:drawable/ic_menu_gallery">
-        </ImageView>
+            app:srcCompat="@android:drawable/ic_menu_gallery"/>
 
         <TextView
             android:id="@+id/textViewUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:ems="10"
-            android:gravity="center"
-            android:textSize="30dp" />
-
-        <TextView
-            android:id="@+id/textViewEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

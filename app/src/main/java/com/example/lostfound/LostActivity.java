@@ -23,21 +23,21 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
 
     private ListView listViewLost;
     private FloatingActionButton buttonCreate;
-    private Button buttonProfile, buttonFound, buttonLogout;
+    private Button buttonProfile, buttonScreen, buttonLogout;
 
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
 
-    private List<PostInformation> listOfPosts;
+    private List<Post> listOfPosts;
 
-    public static final String POSTINFORMATION_USER = "com.example.lostfound.postinformationuser",
-                               POSTINFORMATION_TITLE = "com.example.lostfound.postinformationtitle",
-                               POSTINFORMATION_DESCRIPTION = "com.example.lostfound.postinformationdescription",
-                               POSTINFORMATION_PHONENUM = "com.example.lostfound.postinformationphonenum",
-                               POSTINFORMATION_POSTID = "com.example.lostfound.postinformationpostid",
-                               POSTINFORMATION_USERID = "com.example.lostfound.postinformationuserid",
-                               POSTINFORMATION_PAGE = "com.example.lostfound.postinformationpage";
+    public static final String Post_USER = "com.example.lostfound.Postuser",
+                               Post_TITLE = "com.example.lostfound.Posttitle",
+                               Post_DESCRIPTION = "com.example.lostfound.Postdescription",
+                               Post_PHONENUM = "com.example.lostfound.Postphonenum",
+                               Post_POSTID = "com.example.lostfound.Postpostid",
+                               Post_USERID = "com.example.lostfound.Postuserid",
+                               Post_PAGE = "com.example.lostfound.Postpage";
 
     private String route = "LOST";
 
@@ -54,15 +54,17 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         buttonProfile = (Button) findViewById(R.id.buttonProfile);
-        buttonFound = (Button) findViewById(R.id.buttonFound);
+        buttonScreen = (Button) findViewById(R.id.buttonScreen);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         buttonCreate = (FloatingActionButton) findViewById(R.id.buttonCreate);
         listViewLost = (ListView) findViewById(R.id.listViewLost);
 
+        buttonScreen.setText(route);
+
         listOfPosts = new ArrayList<>();
 
         buttonProfile.setOnClickListener(this);
-        buttonFound.setOnClickListener(this);
+        buttonScreen.setOnClickListener(this);
         buttonCreate.setOnClickListener(this);
         buttonLogout.setOnClickListener(this);
 
@@ -70,17 +72,17 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                PostInformation postInformation = listOfPosts.get(i);
+                Post Post = listOfPosts.get(i);
 
-                Intent intent = new Intent(getApplicationContext(), LostPostViewActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PostViewActivity.class);
 
-                intent.putExtra(POSTINFORMATION_USER, postInformation.getUser());
-                intent.putExtra(POSTINFORMATION_TITLE, postInformation.getTitle());
-                intent.putExtra(POSTINFORMATION_DESCRIPTION, postInformation.getDescription());
-                intent.putExtra(POSTINFORMATION_PHONENUM, postInformation.getPhoneNum());
-                intent.putExtra(POSTINFORMATION_POSTID, postInformation.getPostId());
-                intent.putExtra(POSTINFORMATION_USERID, postInformation.getUserId());
-                intent.putExtra(POSTINFORMATION_PAGE, route);
+                intent.putExtra(Post_USER, Post.getUser());
+                intent.putExtra(Post_TITLE, Post.getTitle());
+                intent.putExtra(Post_DESCRIPTION, Post.getDescription());
+                intent.putExtra(Post_PHONENUM, Post.getPhoneNum());
+                intent.putExtra(Post_POSTID, Post.getPostId());
+                intent.putExtra(Post_USERID, Post.getUserId());
+                intent.putExtra(Post_PAGE, route);
 
                 startActivity(intent);
             }
@@ -96,8 +98,8 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listOfPosts.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    PostInformation postInformation = postSnapshot.child("INFO").getValue(PostInformation.class);
-                    listOfPosts.add(postInformation);
+                    Post Post = postSnapshot.child("INFO").getValue(Post.class);
+                    listOfPosts.add(Post);
                 }
 
                 PostList lostAdapter = new PostList(LostActivity.this,listOfPosts);
@@ -116,12 +118,14 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             finish();
             startActivity(new Intent(this, ProfileActivity.class));
         }
-        else if (view == buttonFound){
+        else if (view == buttonScreen){
             if (route == "LOST"){
                 route = "FOUND";
+                buttonScreen.setText(route);
             }
             else if (route == "FOUND"){
                 route = "LOST";
+                buttonScreen.setText(route);
             }
             databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/");
             databaseReference.addValueEventListener(new ValueEventListener() {
@@ -129,8 +133,8 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     listOfPosts.clear();
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        PostInformation postInformation = postSnapshot.child("INFO").getValue(PostInformation.class);
-                        listOfPosts.add(postInformation);
+                        Post Post = postSnapshot.child("INFO").getValue(Post.class);
+                        listOfPosts.add(Post);
                     }
 
                     PostList foundAdapter = new PostList(LostActivity.this,listOfPosts);
@@ -149,8 +153,8 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (view == buttonCreate){
             finish();
-            Intent intent = new Intent(this, LostPostActivity.class);
-            intent.putExtra(POSTINFORMATION_PAGE, route);
+            Intent intent = new Intent(this, PostActivity.class);
+            intent.putExtra(Post_PAGE, route);
             startActivity(intent);
         }
     }

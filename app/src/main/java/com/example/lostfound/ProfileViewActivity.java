@@ -24,7 +24,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference databaseReference;
 
     private ImageView imageView;
-    private TextView textViewUser, textViewEmail, textViewSchool;
+    private TextView textViewUser, textViewSchool;
     private Button buttonBack, buttonCall, buttonMessage;
 
     private String imageUrl;
@@ -32,7 +32,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
     private String userId;
     private String phoneNum;
 
-    public static final String LOSTPOSTINFORMATION_USERID = "com.example.lostfound.lostpostinformationuserid";
+    public static final String LOSTPost_USERID = "com.example.lostfound.lostPostuserid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +50,12 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
 
         imageView = (ImageView) findViewById(R.id.imageView);
         textViewUser = (TextView) findViewById(R.id.textViewUser);
-        textViewEmail = (TextView) findViewById(R.id.textViewEmail);
         textViewSchool = (TextView) findViewById(R.id.textViewSchool);
         buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonCall = (Button) findViewById(R.id.buttonCall);
         buttonMessage = (Button) findViewById(R.id.buttonMessage);
 
-        userId = intent.getStringExtra(LostPostViewActivity.POSTINFORMATION_PROFILE);
+        userId = intent.getStringExtra(PostViewActivity.Post_PROFILE);
 
         buttonBack.setOnClickListener(this);
 
@@ -72,7 +71,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                intent.putExtra(LOSTPOSTINFORMATION_USERID,userId);
+                intent.putExtra(LOSTPost_USERID,userId);
                 startActivity(intent);
             }
         });
@@ -86,13 +85,12 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInformation userInformation = dataSnapshot.child("INFO").getValue(UserInformation.class);
-                if (userInformation != null){
-                    textViewUser.setText(userInformation.getName());
-                    phoneNum = userInformation.getPhoneNum();
+                User User = dataSnapshot.child("INFO").getValue(User.class);
+                if (User != null){
+                    textViewUser.setText(User.getName());
+                    phoneNum = User.getPhoneNum();
                     buttonCall.setText(phoneNum);
-                    textViewEmail.setText(userInformation.getEmail());
-                    textViewSchool.setText(userInformation.getSchool());
+                    textViewSchool.setText(User.getSchool());
                     imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
                     imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
                     Picasso.get().load(imageUrl).fit().into(imageView);

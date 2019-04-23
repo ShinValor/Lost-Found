@@ -8,13 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.List;
 
-public class PostList extends ArrayAdapter<PostInformation> {
+public class PostList extends ArrayAdapter<Post> {
 
     private Activity context;
 
-    private List<PostInformation> postList;
+    private List<Post> postList;
 
-    public PostList(Activity context, List<PostInformation> postList){
+    public PostList(Activity context, List<Post> postList){
         super(context, R.layout.layout_post_list,postList);
         this.context = context;
         this.postList = postList;
@@ -29,7 +29,7 @@ public class PostList extends ArrayAdapter<PostInformation> {
         TextView textViewDescription = (TextView)listViewPost.findViewById(R.id.textViewDescription);
         textViewDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        PostInformation post = postList.get(position);
+        Post post = postList.get(position);
 
         textViewTitle.setText(post.getTitle());
         textViewDescription.setText(post.getDescription());
