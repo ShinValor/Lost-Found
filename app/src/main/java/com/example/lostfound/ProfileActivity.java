@@ -1,34 +1,28 @@
 package com.example.lostfound;
 
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.content.Intent;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,12 +31,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-import android.util.Log;
+
 import android.app.Activity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import java.io.ByteArrayOutputStream;
 import android.graphics.drawable.BitmapDrawable;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -52,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private ImageView mImageView;
     private TextView textViewUserEmail;
-    private EditText editTextName, editTextSchool, editTextId, editTextPhoneNum;
+    private TextInputEditText editTextName, editTextSchool, editTextId, editTextPhoneNum;
     private Button buttonSave, buttonBack, mButtonChooseImage, buttonCamera;
 
     private ProgressBar mProgressBar;
@@ -86,10 +81,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
 
-        editTextName = (EditText) findViewById(R.id.editTextName);
-        editTextSchool = (EditText) findViewById(R.id.editTextSchool);
-        editTextId = (EditText) findViewById(R.id.editTextId);
-        editTextPhoneNum = (EditText) findViewById(R.id.editTextPhoneNum);
+        editTextName = (TextInputEditText) findViewById(R.id.editTextName);
+        editTextSchool = (TextInputEditText) findViewById(R.id.editTextSchool);
+        editTextId = (TextInputEditText) findViewById(R.id.editTextId);
+        editTextPhoneNum = (TextInputEditText) findViewById(R.id.editTextPhoneNum);
 
         buttonSave = (Button) findViewById(R.id.buttonSave);
         buttonBack = (Button) findViewById(R.id.buttonBack);
@@ -186,7 +181,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                             while (!urlTask.isSuccessful());
                             Uri downloadUrl = urlTask.getResult();
-                            Upload upload = new Upload("EMPTY", downloadUrl.toString());
+                            Upload upload = new Upload(downloadUrl.toString());
                             mDatabaseRef = FirebaseDatabase.getInstance().getReference("/USERS/" + path);
                             mDatabaseRef.child("IMAGE").setValue(upload);
 
@@ -235,7 +230,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful());
                 Uri downloadUrl = urlTask.getResult();
-                Upload upload = new Upload("EMPTY", downloadUrl.toString());
+                Upload upload = new Upload(downloadUrl.toString());
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference("/USERS/" + path);
                 mDatabaseRef.child("IMAGE").setValue(upload);
             }
@@ -293,32 +288,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             mImageView.setImageBitmap(photo);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //attaching value event listener
-        /*
-        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
-                editTextName.setText(userInformation.getName());
-                editTextPhoneNum.setText(userInformation.getPhoneNum());
-                editTextId.setText(userInformation.getId());
-                editTextSchool.setText(userInformation.getSchool());
-                imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
-                imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
-                Picasso.get().load(imageUrl).fit().into(mImageView);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        */
     }
 
     @Override

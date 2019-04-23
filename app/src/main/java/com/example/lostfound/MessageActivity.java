@@ -1,13 +1,13 @@
 package com.example.lostfound;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.util.Log;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,7 +16,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,11 +26,16 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
     private DatabaseReference databaseReference;
 
-    private Button buttonBack;
+    private EditText edittext_chatbox;
+    private Button buttonBack, button_chatbox_send;
 
     private String userId;
     private String messageUserId;
     private String messageId;
+
+    private ListView listViewMessage;
+
+    private List<Message> messageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +55,45 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         userId = user.getUid();
         messageUserId = intent.getStringExtra(ProfileViewActivity.LOSTPOSTINFORMATION_USERID);
 
+        messageList = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/CHAT/");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getKey().equals(messageUserId)) {
-                    messageId = dataSnapshot.child(messageUserId).getValue(String.class);
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    if (postSnapshot.getKey().equals(messageUserId)) {
+                        messageId = dataSnapshot.child(messageUserId).getValue(String.class);
+                    }
                 }
+                if (messageId == null){
+                    String key = databaseReference.push().getKey();
+                    databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/CHAT/");
+                    databaseReference.child(messageUserId).setValue(key);
+                    databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUserId + "/CHAT/");
+                    databaseReference.child(userId).setValue(key);
+                    databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES");
+                    databaseReference.setValue(key);
+                }
+                databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/" + messageId);
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        messageList.clear();
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
+                            Message convo = postSnapshot.getValue(Message.class);
+                            messageList.add(convo);
+                        }
+
+                        MessageList messageAdapter = new MessageList(MessageActivity.this, messageList);
+                        listViewMessage.setAdapter(messageAdapter);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -63,44 +101,38 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        if (messageId == null){
-            String key = databaseReference.push().getKey();
-            databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/CHAT/");
-            databaseReference.child(messageUserId).setValue(key);
-            databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUserId + "/CHAT/");
-            databaseReference.child(userId).setValue(key);
-            databaseReference = FirebaseDatabase.getInstance().getReference("/");
-            databaseReference.child("MESSAGES").setValue(key);
-        }
+        edittext_chatbox = (EditText) findViewById(R.id.edittext_chatbox);
+        button_chatbox_send = (Button) findViewById(R.id.button_chatbox_send);
+        listViewMessage = (ListView) findViewById(R.id.listViewMessage);
 
-        buttonBack = (Button) findViewById(R.id.buttonBack);
-        buttonBack.setOnClickListener(this);
-
+        button_chatbox_send.setOnClickListener(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/" + messageId);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Populate to the chat
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
     @Override
     public void onClick(View view) {
-        if (view == buttonBack){
-            finish();
-            startActivity(new Intent(this, LostActivity.class));
+        if (view == button_chatbox_send){
+            databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/INFO/");
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String content = edittext_chatbox.getText().toString();
+                    edittext_chatbox.setText("");
+                    UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                    Message message = new Message(content,user.getName());
+                    databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/");
+                    String postUID = databaseReference.push().getKey();
+                    databaseReference.child(messageId).child(postUID).setValue(message);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }});
         }
     }
 }

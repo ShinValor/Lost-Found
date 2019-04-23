@@ -1,8 +1,8 @@
 package com.example.lostfound;
 
 import android.app.ProgressDialog;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,7 +21,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView textViewSignup;
     private EditText editTextEmail, editTextPassword;
     private Button buttonSignin;
-
 
     private FirebaseAuth firebaseAuth;
 

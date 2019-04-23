@@ -1,18 +1,14 @@
 package com.example.lostfound;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
-import android.widget.Toast;
 import android.net.Uri;
-
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +31,9 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
     private String imageName;
     private String imageUrl;
 
-    public static final String LOSTPOSTINFORMATION_PROFILE = "com.example.lostfound.lostpostinformationprofile";
+    private String route;
+
+    public static final String POSTINFORMATION_PROFILE = "com.example.lostfound.lostpostinformationprofile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,28 +55,27 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
         textViewUser = (TextView) findViewById(R.id.textViewUser);
         buttonCall = (Button) findViewById(R.id.buttonCall);
 
-        textViewUser.setText(intent.getStringExtra(LostActivity.LOSTPOSTINFORMATION_USER));
-        textViewTitle.setText(intent.getStringExtra(LostActivity.LOSTPOSTINFORMATION_TITLE));
-        textViewDescription.setText(intent.getStringExtra(LostActivity.LOSTPOSTINFORMATION_DESCRIPTION));
-        buttonCall.setText(intent.getStringExtra(LostActivity.LOSTPOSTINFORMATION_PHONENUM));
-        postId = intent.getStringExtra(LostActivity.LOSTPOSTINFORMATION_POSTID);
-
-        final String userPostId = intent.getStringExtra(LostActivity.LOSTPOSTINFORMATION_USERID);
+        textViewUser.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_USER));
+        textViewTitle.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_TITLE));
+        textViewDescription.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_DESCRIPTION));
+        buttonCall.setText(intent.getStringExtra(LostActivity.POSTINFORMATION_PHONENUM));
+        postId = intent.getStringExtra(LostActivity.POSTINFORMATION_POSTID);
+        route = intent.getStringExtra(LostActivity.POSTINFORMATION_PAGE);
 
         buttonBack.setOnClickListener(this);
 
+        final String userPostId = intent.getStringExtra(LostActivity.POSTINFORMATION_USERID);
         textViewUser.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
-                intent.putExtra(LOSTPOSTINFORMATION_PROFILE,userPostId);
-
+                intent.putExtra(POSTINFORMATION_PROFILE,userPostId);
                 startActivity(intent);
             }
         });
 
 
-        final String phoneNum = "+" + intent.getStringExtra(LostActivity.LOSTPOSTINFORMATION_PHONENUM);
+        final String phoneNum = "+" + intent.getStringExtra(LostActivity.POSTINFORMATION_PHONENUM);
         buttonCall.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -91,8 +88,7 @@ public class LostPostViewActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onStart() {
         super.onStart();
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("/LOST/" + postId + "/IMAGE");
+        databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + postId + "/IMAGE");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

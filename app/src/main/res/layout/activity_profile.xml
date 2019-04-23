@@ -36,7 +36,6 @@
             android:layout_width="315dp"
             android:layout_height="281dp"
             android:layout_above="@id/progress_bar"
-            android:layout_below="@id/edit_text_file_name"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             app:srcCompat="@android:drawable/sym_def_app_icon" />
@@ -65,37 +64,59 @@
             android:layout_marginStart="16dp"
             android:text="Choose file" />
 
-        <EditText
-            android:id="@+id/editTextName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Enter Full Name"
-            android:inputType="textEmailAddress"/>
 
-        <EditText
-            android:id="@+id/editTextSchool"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Enter School Name"
-            android:inputType="textEmailAddress"/>
+            android:layout_margin="15dp">
 
-        <EditText
-            android:id="@+id/editTextId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Enter School ID"
-            android:inputType="textEmailAddress"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextName"
+                android:hint="@string/hint_enter_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/editTextPhoneNum"
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:hint="Enter Phone Number"
-            android:inputType="textEmailAddress"/>
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextSchool"
+                android:hint="@string/hint_enter_school"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextId"
+                android:hint="@string/hint_enter_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPhoneNum"
+                android:hint="@string/hint_enter_phone_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/buttonSave"

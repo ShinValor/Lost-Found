@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MessageActivity">
 
+    <!--
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="100dp"
@@ -23,7 +24,6 @@
         app:layout_constraintRight_toRightOf="parent">
     </android.support.v7.widget.RecyclerView>
 
-    <!-- A horizontal line between the chatbox and RecyclerView -->
     <View
         android:layout_width="0dp"
         android:layout_height="2dp"
@@ -32,6 +32,12 @@
         app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+    -->
+
+    <ListView
+        android:id="@+id/listViewMessage"
+        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/layout_chatbox"
@@ -58,8 +64,8 @@
 
         <Button
             android:id="@+id/button_chatbox_send"
-            android:text="SEND"
-            android:textSize="14dp"
+            android:text="Send"
+            android:textSize="10dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:layout_width="64dp"
@@ -69,4 +75,4 @@
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

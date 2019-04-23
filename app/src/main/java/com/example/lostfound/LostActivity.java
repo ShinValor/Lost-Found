@@ -1,50 +1,45 @@
 package com.example.lostfound;
 
-import android.app.ProgressDialog;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.widget.TextView;
 import android.widget.ListView;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.content.Intent;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.util.Log;
 
 public class LostActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ListView listViewLost;
-    private Button buttonProfile, buttonFound, buttonCreate, buttonLogout;
+    private FloatingActionButton buttonCreate;
+    private Button buttonProfile, buttonFound, buttonLogout;
 
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
 
-    private List<PostInformation> lostList;
+    private List<PostInformation> listOfPosts;
 
-    public static final String LOSTPOSTINFORMATION_USER = "com.example.lostfound.lostpostinformationuser",
-                               LOSTPOSTINFORMATION_TITLE = "com.example.lostfound.lostpostinformationtitle",
-                               LOSTPOSTINFORMATION_DESCRIPTION = "com.example.lostfound.lostpostinformationdescription",
-                               LOSTPOSTINFORMATION_PHONENUM = "com.example.lostfound.lostpostinformationphonenum",
-                               LOSTPOSTINFORMATION_POSTID = "com.example.lostfound.lostpostinformationpostid",
-                               LOSTPOSTINFORMATION_USERID = "com.example.lostfound.lostpostinformationuserid";
+    public static final String POSTINFORMATION_USER = "com.example.lostfound.postinformationuser",
+                               POSTINFORMATION_TITLE = "com.example.lostfound.postinformationtitle",
+                               POSTINFORMATION_DESCRIPTION = "com.example.lostfound.postinformationdescription",
+                               POSTINFORMATION_PHONENUM = "com.example.lostfound.postinformationphonenum",
+                               POSTINFORMATION_POSTID = "com.example.lostfound.postinformationpostid",
+                               POSTINFORMATION_USERID = "com.example.lostfound.postinformationuserid",
+                               POSTINFORMATION_PAGE = "com.example.lostfound.postinformationpage";
+
+    private String route = "LOST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +55,11 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonProfile = (Button) findViewById(R.id.buttonProfile);
         buttonFound = (Button) findViewById(R.id.buttonFound);
-        buttonCreate = (Button) findViewById(R.id.buttonCreate);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
+        buttonCreate = (FloatingActionButton) findViewById(R.id.buttonCreate);
         listViewLost = (ListView) findViewById(R.id.listViewLost);
 
-        lostList = new ArrayList<>();
+        listOfPosts = new ArrayList<>();
 
         buttonProfile.setOnClickListener(this);
         buttonFound.setOnClickListener(this);
@@ -75,16 +70,17 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                PostInformation postInformation = lostList.get(i);
+                PostInformation postInformation = listOfPosts.get(i);
 
                 Intent intent = new Intent(getApplicationContext(), LostPostViewActivity.class);
 
-                intent.putExtra(LOSTPOSTINFORMATION_USER, postInformation.getUser());
-                intent.putExtra(LOSTPOSTINFORMATION_TITLE, postInformation.getTitle());
-                intent.putExtra(LOSTPOSTINFORMATION_DESCRIPTION, postInformation.getDescription());
-                intent.putExtra(LOSTPOSTINFORMATION_PHONENUM, postInformation.getPhoneNum());
-                intent.putExtra(LOSTPOSTINFORMATION_POSTID, postInformation.getPostId());
-                intent.putExtra(LOSTPOSTINFORMATION_USERID, postInformation.getUserId());
+                intent.putExtra(POSTINFORMATION_USER, postInformation.getUser());
+                intent.putExtra(POSTINFORMATION_TITLE, postInformation.getTitle());
+                intent.putExtra(POSTINFORMATION_DESCRIPTION, postInformation.getDescription());
+                intent.putExtra(POSTINFORMATION_PHONENUM, postInformation.getPhoneNum());
+                intent.putExtra(POSTINFORMATION_POSTID, postInformation.getPostId());
+                intent.putExtra(POSTINFORMATION_USERID, postInformation.getUserId());
+                intent.putExtra(POSTINFORMATION_PAGE, route);
 
                 startActivity(intent);
             }
@@ -94,25 +90,18 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-
         databaseReference = FirebaseDatabase.getInstance().getReference("/LOST");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                lostList.clear();
-
-
+                listOfPosts.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-
                     PostInformation postInformation = postSnapshot.child("INFO").getValue(PostInformation.class);
-
-                    lostList.add(postInformation);
+                    listOfPosts.add(postInformation);
                 }
 
-                PostList lostAdapter = new PostList(LostActivity.this, lostList);
+                PostList lostAdapter = new PostList(LostActivity.this,listOfPosts);
                 listViewLost.setAdapter(lostAdapter);
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -128,8 +117,30 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, ProfileActivity.class));
         }
         else if (view == buttonFound){
-            finish();
-            startActivity(new Intent(this, FoundActivity.class));
+            if (route == "LOST"){
+                route = "FOUND";
+            }
+            else if (route == "FOUND"){
+                route = "LOST";
+            }
+            databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    listOfPosts.clear();
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        PostInformation postInformation = postSnapshot.child("INFO").getValue(PostInformation.class);
+                        listOfPosts.add(postInformation);
+                    }
+
+                    PostList foundAdapter = new PostList(LostActivity.this,listOfPosts);
+                    listViewLost.setAdapter(foundAdapter);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
         else if (view == buttonLogout){
             firebaseAuth.signOut();
@@ -138,7 +149,9 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (view == buttonCreate){
             finish();
-            startActivity(new Intent(this, LostPostActivity.class));
+            Intent intent = new Intent(this, LostPostActivity.class);
+            intent.putExtra(POSTINFORMATION_PAGE, route);
+            startActivity(intent);
         }
     }
 }

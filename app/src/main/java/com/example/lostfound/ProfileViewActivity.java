@@ -2,13 +2,12 @@ package com.example.lostfound;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -57,10 +56,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
         buttonCall = (Button) findViewById(R.id.buttonCall);
         buttonMessage = (Button) findViewById(R.id.buttonMessage);
 
-        userId = intent.getStringExtra(LostPostViewActivity.LOSTPOSTINFORMATION_PROFILE);
-        if (userId == null){
-            userId = intent.getStringExtra(FoundPostViewActivity.FOUNDPOSTINFORMATION_PROFILE);
-        }
+        userId = intent.getStringExtra(LostPostViewActivity.POSTINFORMATION_PROFILE);
 
         buttonBack.setOnClickListener(this);
 

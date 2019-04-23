@@ -1,8 +1,8 @@
 package com.example.lostfound;
 
 import android.app.ProgressDialog;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -53,21 +53,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String password = editPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)){
-             // email is empty
             Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
-            // stop the function from executing further
             return;
         }
 
         if (TextUtils.isEmpty(password)){
-            // password is empty
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-            // stop the function from executing further
             return;
         }
 
-        // validation of email and password
-        // show progress bar
+        // Do validation of email and password
+
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
 
@@ -88,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                    }
                }
             });
-
     }
 
     @Override
