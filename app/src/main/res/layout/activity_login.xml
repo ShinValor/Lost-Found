@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="132dp"
+                android:layout_marginBottom="100dp"
                 android:text="@string/app_name"
                 android:textAppearance="@style/TextAppearance.Shrine.Title" />
 
@@ -90,68 +90,3 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
-
-<!--
-    <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".LoginActivity">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
-    android:orientation="vertical"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="190dp">
-
-    <TextView
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:ems="10"
-        android:text="Login"
-        android:gravity="center"
-        android:textSize="30dp" />
-
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Enter your email"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:hint="Enter your password"
-        android:inputType="textPassword" />
-
-    <Button
-        android:id="@+id/buttonSignin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:text="Sign in" />
-
-    <TextView
-        android:id="@+id/textViewSignup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Don't have an account? Sign up here."
-        android:textAlignment="center" />
-
-</LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
--->

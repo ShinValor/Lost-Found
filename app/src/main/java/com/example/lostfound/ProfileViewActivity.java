@@ -89,7 +89,6 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
                 if (User != null){
                     textViewUser.setText(User.getName());
                     phoneNum = User.getPhoneNum();
-                    buttonCall.setText(phoneNum);
                     textViewSchool.setText(User.getSchool());
                     imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
                     imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);

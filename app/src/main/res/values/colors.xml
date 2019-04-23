@@ -9,4 +9,6 @@
     <color name="registerPageBackgroundColor">#FFFFFF</color>
     <color name="productGridBackgroundColor">#FFFBFA</color>
     <color name="colorControlActivated">#b0bec5</color>
+    <color name="tabTextColor"> #fff </color>
+    <color name="tabIndicatorColor"> #2d2d2d </color>
 </resources>

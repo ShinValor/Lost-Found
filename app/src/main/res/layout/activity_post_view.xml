@@ -16,63 +16,97 @@
 
         <Button
             android:id="@+id/buttonBack"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="50dp"
-            android:text="Back">
-        </Button>
-
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:ems="10"
-            android:gravity="center"
-            android:textSize="30dp" />
+            android:layout_margin="5dp"
+            android:text="Back"/>
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="315dp"
             android:layout_height="281dp"
             android:layout_gravity="center_horizontal"
-            app:srcCompat="@android:drawable/ic_menu_gallery">
-        </ImageView>
+            app:srcCompat="@drawable/lost_found_picture"
+            android:layout_margin="10dp"/>
 
-        <TextView
-            android:id="@+id/textViewDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textViewTitle"
+                android:gravity="center"
+                android:hint="Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textViewDescription"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:gravity="center"
+                android:hint="Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:lines="5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
-            android:ems="10"
-            android:gravity="center"
-            android:textSize="30dp" />
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/lost_found_avatar" />
 
         <TextView
             android:id="@+id/textViewUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:ems="10"
             android:gravity="center"
-            android:textSize="30dp" />
+            android:textSize="20dp"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:text="User"/>
 
-        <Button
-            android:id="@+id/buttonCall"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_gravity="center_horizontal"
-            android:text="PHONE_NUM" />
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="30dp">
 
-        <Button
-            android:id="@+id/buttonMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Message">
-        </Button>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonMessage"
+                style="@style/Widget.Shrine.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="50dp"
+                android:text="Message" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonCall"
+                style="@style/Widget.Shrine.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50dp"
+                android:text="Call" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

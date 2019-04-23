@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.AdapterView;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.util.Log;
 public class LostActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ListView listViewLost;
+    private TextView textView;
     private FloatingActionButton buttonCreate;
     private Button buttonProfile, buttonScreen, buttonLogout;
 
@@ -53,12 +55,14 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        textView = (TextView) findViewById(R.id.textView);
         buttonProfile = (Button) findViewById(R.id.buttonProfile);
         buttonScreen = (Button) findViewById(R.id.buttonScreen);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
         buttonCreate = (FloatingActionButton) findViewById(R.id.buttonCreate);
         listViewLost = (ListView) findViewById(R.id.listViewLost);
 
+        textView.setText(route);
         buttonScreen.setText(route);
 
         listOfPosts = new ArrayList<>();
@@ -121,10 +125,12 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         else if (view == buttonScreen){
             if (route == "LOST"){
                 route = "FOUND";
+                textView.setText(route);
                 buttonScreen.setText(route);
             }
             else if (route == "FOUND"){
                 route = "LOST";
+                textView.setText(route);
                 buttonScreen.setText(route);
             }
             databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/");

@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.net.Uri;
+
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +22,9 @@ import android.util.Log;
 public class PostViewActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imageView;
-    private TextView textViewUser, textViewTitle, textViewDescription;
+
+    private TextInputEditText textViewTitle, textViewDescription;
+    private TextView textViewUser;
     private Button buttonBack, buttonCall;
 
     private FirebaseAuth firebaseAuth;
@@ -49,18 +53,20 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         }
 
         buttonBack = (Button) findViewById(R.id.buttonBack);
-        textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         imageView = (ImageView) findViewById(R.id.imageView);
-        textViewDescription = (TextView) findViewById(R.id.textViewDescription);
+        textViewTitle = (TextInputEditText) findViewById(R.id.textViewTitle);
+        textViewDescription = (TextInputEditText) findViewById(R.id.textViewDescription);
         textViewUser = (TextView) findViewById(R.id.textViewUser);
         buttonCall = (Button) findViewById(R.id.buttonCall);
 
         textViewUser.setText(intent.getStringExtra(LostActivity.Post_USER));
         textViewTitle.setText(intent.getStringExtra(LostActivity.Post_TITLE));
         textViewDescription.setText(intent.getStringExtra(LostActivity.Post_DESCRIPTION));
-        buttonCall.setText(intent.getStringExtra(LostActivity.Post_PHONENUM));
         postId = intent.getStringExtra(LostActivity.Post_POSTID);
         route = intent.getStringExtra(LostActivity.Post_PAGE);
+
+        textViewTitle.setEnabled(false);
+        textViewDescription.setEnabled(false);
 
         buttonBack.setOnClickListener(this);
 

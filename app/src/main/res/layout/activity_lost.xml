@@ -7,13 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".LostActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="2dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView"
@@ -58,9 +56,8 @@
         <ListView
             android:id="@+id/listViewLost"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="2dp" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -74,10 +71,11 @@
                 android:layout_margin="16dp"
                 android:scaleType="center"
                 app:maxImageSize="56dp"
-                app:srcCompat="@drawable/lost_found_plus" />
+                app:srcCompat="@drawable/lost_found_plus"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

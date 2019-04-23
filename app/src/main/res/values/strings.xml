@@ -8,4 +8,6 @@
     <string name="hint_enter_school">Enter School Name</string>
     <string name="hint_enter_id">Enter School ID</string>
     <string name="hint_enter_phone_num">Enter Phone Number</string>
+    <string name="hint_description">Add Description</string>
+    <string name="hint_title">Add Title</string>
 </resources>
