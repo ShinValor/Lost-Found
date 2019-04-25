@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.net.Uri;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,10 +18,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class PostViewActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView imageView;
+    private ImageView imageViewPicture, imageViewProfile;
 
     private TextInputEditText textViewTitle, textViewDescription;
     private TextView textViewUser;
@@ -31,10 +32,9 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
     private DatabaseReference databaseReference;
 
+    private String userId;
     private String postId;
-    private String imageName;
     private String imageUrl;
-
     private String route;
 
     public static final String Post_PROFILE = "com.example.lostfound.lostPostprofile";
@@ -45,6 +45,8 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_post_view);
         Intent intent = getIntent();
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() == null){
@@ -52,16 +54,19 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        buttonBack = (Button) findViewById(R.id.buttonBack);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageViewPicture = (ImageView) findViewById(R.id.imageViewPicture);
+        imageViewProfile = (ImageView) findViewById(R.id.imageViewProfile);
         textViewTitle = (TextInputEditText) findViewById(R.id.textViewTitle);
         textViewDescription = (TextInputEditText) findViewById(R.id.textViewDescription);
         textViewUser = (TextView) findViewById(R.id.textViewUser);
+        buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonCall = (Button) findViewById(R.id.buttonCall);
 
         textViewUser.setText(intent.getStringExtra(LostActivity.Post_USER));
         textViewTitle.setText(intent.getStringExtra(LostActivity.Post_TITLE));
         textViewDescription.setText(intent.getStringExtra(LostActivity.Post_DESCRIPTION));
+
+        userId = intent.getStringExtra(LostActivity.Post_USERID);
         postId = intent.getStringExtra(LostActivity.Post_POSTID);
         route = intent.getStringExtra(LostActivity.Post_PAGE);
 
@@ -99,8 +104,20 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                imageName = dataSnapshot.child("name").getValue(String.class);
-                Picasso.get().load(imageUrl).fit().into(imageView);
+                Picasso.get().load(imageUrl).fit().into(imageViewPicture);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/IMAGE");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
+                Picasso.get().load(imageUrl).fit().into(imageViewProfile);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

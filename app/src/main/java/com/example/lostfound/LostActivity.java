@@ -63,7 +63,7 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
         listViewLost = (ListView) findViewById(R.id.listViewLost);
 
         textView.setText(route);
-        buttonScreen.setText(route);
+        buttonScreen.setText("FOUND");
 
         listOfPosts = new ArrayList<>();
 
@@ -79,7 +79,6 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
                 Post Post = listOfPosts.get(i);
 
                 Intent intent = new Intent(getApplicationContext(), PostViewActivity.class);
-
                 intent.putExtra(Post_USER, Post.getUser());
                 intent.putExtra(Post_TITLE, Post.getTitle());
                 intent.putExtra(Post_DESCRIPTION, Post.getDescription());
@@ -87,7 +86,6 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra(Post_POSTID, Post.getPostId());
                 intent.putExtra(Post_USERID, Post.getUserId());
                 intent.putExtra(Post_PAGE, route);
-
                 startActivity(intent);
             }
         });
@@ -126,12 +124,12 @@ public class LostActivity extends AppCompatActivity implements View.OnClickListe
             if (route == "LOST"){
                 route = "FOUND";
                 textView.setText(route);
-                buttonScreen.setText(route);
+                buttonScreen.setText("LOST");
             }
             else if (route == "FOUND"){
                 route = "LOST";
                 textView.setText(route);
-                buttonScreen.setText(route);
+                buttonScreen.setText("FOUND");
             }
             databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/");
             databaseReference.addValueEventListener(new ValueEventListener() {

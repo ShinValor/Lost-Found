@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/image_view"
-            android:layout_width="315dp"
-            android:layout_height="281dp"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
@@ -32,17 +32,23 @@
 
         <Button
             android:id="@+id/button_choose_image"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Choose file"/>
+            android:text="Choose file"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
         <Button
             android:id="@+id/buttonCamera"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take a picture"/>
+            android:text="Take a picture"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -80,19 +86,25 @@
 
             <Button
                 android:id="@+id/buttonPost"
+                style="@style/Widget.Shrine.Button.TextButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="60dp"
-                android:text="Post" />
+                android:text="Post"
+                app:strokeColor="@color/button"
+                app:strokeWidth="2dp"/>
 
             <Button
                 android:id="@+id/buttonCancel"
+                style="@style/Widget.Shrine.Button.TextButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="60dp"
-                android:text="Cancel" />
+                android:text="Cancel"
+                app:strokeColor="@color/button"
+                app:strokeWidth="2dp"/>
 
         </RelativeLayout>
 

@@ -16,15 +16,18 @@
 
         <Button
             android:id="@+id/buttonBack"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
-            android:text="Back"/>
+            android:text="Back"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageView"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
@@ -41,17 +44,23 @@
 
         <Button
             android:id="@+id/button_choose_image"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Choose file" />
+            android:text="Choose file"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
         <Button
             android:id="@+id/buttonCamera"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take a picture"/>
+            android:text="Take a picture"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -108,10 +117,13 @@
 
         <Button
             android:id="@+id/buttonSave"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Save Information"/>
+            android:text="Save Information"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
     </LinearLayout>
 

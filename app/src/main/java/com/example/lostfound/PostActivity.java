@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.net.Uri;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -65,6 +66,9 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         Intent intent = getIntent();
 
         route = intent.getStringExtra(LostActivity.Post_PAGE);

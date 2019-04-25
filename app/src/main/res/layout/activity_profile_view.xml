@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,15 +16,18 @@
 
         <Button
             android:id="@+id/buttonBack"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
-            android:text="Back"/>
+            android:text="Back"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageView"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/lost_found_avatar"/>
 
@@ -55,24 +58,28 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonMessage"
-                style="@style/Widget.Shrine.Button"
+                style="@style/Widget.Shrine.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="50dp"
-                android:text="Message" />
+                android:layout_marginLeft="60dp"
+                android:text="Message"
+                app:strokeColor="@color/button"
+                app:strokeWidth="2dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonCall"
-                style="@style/Widget.Shrine.Button"
+                style="@style/Widget.Shrine.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="50dp"
-                android:text="Call" />
+                android:layout_marginRight="60dp"
+                android:text="Call"
+                app:strokeColor="@color/button"
+                app:strokeWidth="2dp"/>
 
         </RelativeLayout>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

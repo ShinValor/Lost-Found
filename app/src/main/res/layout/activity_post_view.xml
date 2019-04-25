@@ -16,15 +16,18 @@
 
         <Button
             android:id="@+id/buttonBack"
+            style="@style/Widget.Shrine.Button.TextButton"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
-            android:text="Back"/>
+            android:text="Back"
+            app:strokeColor="@color/button"
+            app:strokeWidth="2dp"/>
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="315dp"
-            android:layout_height="281dp"
+            android:id="@+id/imageViewPicture"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
             android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/lost_found_picture"
             android:layout_margin="10dp"/>
@@ -59,12 +62,10 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:id="@+id/imageViewProfile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
@@ -89,24 +90,27 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonMessage"
-                style="@style/Widget.Shrine.Button"
+                style="@style/Widget.Shrine.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="50dp"
-                android:text="Message" />
+                android:layout_marginLeft="60dp"
+                android:text="Message"
+                app:strokeColor="@color/button"
+                app:strokeWidth="2dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonCall"
-                style="@style/Widget.Shrine.Button"
+                style="@style/Widget.Shrine.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="50dp"
-                android:text="Call" />
+                android:layout_marginRight="60dp"
+                android:text="Call"
+                app:strokeColor="@color/button"
+                app:strokeWidth="2dp"/>
 
         </RelativeLayout>
-
 
     </LinearLayout>
 
