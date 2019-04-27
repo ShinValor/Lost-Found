@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="Theme.Shrine" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="LostFoundTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -11,46 +11,34 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
     </style>
 
-    <style name="Widget.Shrine.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="hintTextAppearance">@style/TextAppearance.Shrine.TextInputLayout.HintText</item>
+    <!-- The launcher theme. It sets the main window background to the lost_found_splash drawable -->
+    <style name="LostFoundTheme.Launcher">
+        <item name="android:windowBackground"> @drawable/lost_found_splash</item>
+        <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
+        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
+
+    <style name="Widget.LostFound.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextAppearance">@style/TextAppearance.LostFound.TextInputLayout.HintText</item>
         <item name="android:paddingBottom">8dp</item>
     </style>
 
-    <style name="TextAppearance.Shrine.TextInputLayout.HintText" parent="TextAppearance.MaterialComponents.Subtitle2">
+    <style name="TextAppearance.LostFound.TextInputLayout.HintText" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="Widget.Shrine.Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="backgroundTint">?attr/colorPrimaryDark</item>
-        <item name="android:stateListAnimator" tools:ignore="NewApi">
-            @animator/shr_next_button_state_list_anim
-        </item>
-    </style>
-
-    <style name="Widget.Shrine.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Widget.LostFound.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="Widget.Shrine.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">?attr/colorAccent</item>
-        <item name="android:theme">@style/Theme.Shrine</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="titleTextAppearance">@style/TextAppearance.Shrine.Toolbar</item>
-    </style>
-
-    <style name="TextAppearance.Shrine.Toolbar" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextAppearance.LostFound.Toolbar" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="TextAppearance.Shrine.Title" parent="TextAppearance.MaterialComponents.Headline4">
+    <style name="TextAppearance.LostFound.Title" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-
-    <style name="Widget.Shrine.Backdrop" parent="">
-        <item name="android:background">?attr/colorAccent</item>
     </style>
 
 </resources>

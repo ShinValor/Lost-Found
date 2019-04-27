@@ -9,26 +9,29 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/lost_found_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/lost_found_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Shrine">
-        <activity android:name=".PostActivity" />
-        <activity android:name=".PostViewActivity" />
-        <activity android:name=".MessageActivity" />
-        <activity android:name=".Chat" />
-        <activity android:name=".ProfileViewActivity" />
-        <activity android:name=".LostActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity">
+        android:theme="@style/LostFoundTheme">
+        <activity android:name=".SplashActivity" android:theme="@style/LostFoundTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".RegisterActivity">
+
+        </activity>
+        <activity android:name=".PostActivity" />
+        <activity android:name=".PostViewActivity" />
+        <activity android:name=".MessageActivity" />
+        <activity android:name=".Chat" />
+        <activity android:name=".ProfileViewActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>

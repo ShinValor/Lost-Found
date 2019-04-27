@@ -1,93 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/registerPageBackgroundColor"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:paddingTop="16dp">
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="16dp"
-            app:srcCompat="@drawable/lost_found_logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="80dp"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Shrine.Title" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_text_input"
-            style="@style/Widget.Shrine.TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/shr_hint_email">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_text_input"
-            style="@style/Widget.Shrine.TextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/shr_hint_password"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+        android:gravity="center"
+        android:elevation="0dp"
+        android:background="@color/appBar">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonRegister"
-                style="@style/Widget.Shrine.Button.TextButton"
+            <Button
+                android:id="@+id/buttonProfile"
+                style="@style/Widget.LostFound.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:text="@string/shr_button_register"
-                app:strokeColor="@color/button"
-                app:strokeWidth="2dp"/>
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="Profile"
+                android:textColor="@color/tabTextColor"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/textViewSignin"
-                style="@style/Widget.Shrine.Button.TextButton"
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp"
+                app:srcCompat="@drawable/lost_found_logo"/>
+
+            <Button
+                android:id="@+id/buttonLogout"
+                style="@style/Widget.LostFound.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_toStartOf="@id/buttonRegister"
-                android:layout_toLeftOf="@id/buttonRegister"
-                android:text="@string/shr_button_login" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="Logout"
+                android:textColor="@color/tabTextColor"/>
 
         </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appBarLayout"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/tabTextColor"
+        app:tabIndicatorColor="@color/tabIndicatorColor"
+        android:background="@color/colorPrimaryDark"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_below="@id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/Widget.MaterialComponents.BottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabCradleRoundedCornerRadius="16dp"
+            app:backgroundTint="@color/appBar"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonCreate"
+            app:srcCompat="@drawable/lost_found_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:maxImageSize="56dp"
+            app:fabSize="normal"
+            app:layout_anchor="@+id/bottomAppBar" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>

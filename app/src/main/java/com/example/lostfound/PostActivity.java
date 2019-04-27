@@ -1,60 +1,61 @@
 package com.example.lostfound;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.Manifest;
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.net.Uri;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.content.Intent;
-import android.graphics.Bitmap;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-import android.webkit.MimeTypeMap;
-import android.content.ContentResolver;
-import android.app.Activity;
-import android.Manifest;
-import android.content.pm.PackageManager;
+
 import java.io.ByteArrayOutputStream;
-import android.graphics.drawable.BitmapDrawable;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PostActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
+    private StorageTask uploadTask;
+    private StorageReference storageRef;
 
-    private ImageView mImageView;
+    private ImageView imageView;
     private EditText editTextTitle, editTextDescription;
-    private Button buttonPost, buttonCancel, mButtonChooseImage, buttonCamera;
+    private Button buttonPost, buttonCancel, buttonChooseImage, buttonCamera;
 
-    private ProgressBar mProgressBar;
-    private Uri mImageUri;
+    private ProgressBar progressBar;
 
-    private StorageTask mUploadTask;
-    private StorageReference mStorageRef;
-    private DatabaseReference mDatabaseRef;
+    private Uri imageUri;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int CAMERA_REQUEST = 1888;
@@ -65,13 +66,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
         setContentView(R.layout.activity_post);
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        Intent intent = getIntent();
-
-        route = intent.getStringExtra(LostActivity.Post_PAGE);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -80,7 +76,13 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        mImageView = findViewById(R.id.image_view);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        Intent intent = getIntent();
+
+        route = intent.getStringExtra(MainActivity.POST_ROUTE);
+
+        imageView = findViewById(R.id.image_view);
 
         editTextTitle = (EditText) findViewById(R.id.editTextTitle);
         editTextDescription = (EditText) findViewById(R.id.editTextDescription);
@@ -88,9 +90,9 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         buttonPost = (Button) findViewById(R.id.buttonPost);
         buttonCancel = (Button) findViewById(R.id.buttonCancel);
         buttonCamera = (Button) this.findViewById(R.id.buttonCamera);
-        mButtonChooseImage = (Button) findViewById(R.id.button_choose_image);
+        buttonChooseImage = (Button) findViewById(R.id.button_choose_image);
 
-        mProgressBar = findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.progress_bar);
 
         buttonPost.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
@@ -111,14 +113,14 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
+        buttonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFileChooser();
             }
         });
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("/Post");
+        storageRef = FirebaseStorage.getInstance().getReference("/Post");
     }
 
     private void openFileChooser() {
@@ -135,16 +137,16 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void uploadFile(final String path) {
-        if (mImageUri != null) {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mImageUri));
-            mUploadTask = fileReference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        if (imageUri != null) {
+            StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            uploadTask = fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mProgressBar.setProgress(0);
+                            progressBar.setProgress(0);
                         }
                     }, 500);
                     Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
@@ -152,8 +154,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                     while (!urlTask.isSuccessful());
                     Uri downloadUrl = urlTask.getResult();
                     Upload upload = new Upload(downloadUrl.toString());
-                    mDatabaseRef = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
-                    mDatabaseRef.child("IMAGE").setValue(upload);
+                    databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
+                    databaseReference.child("IMAGE").setValue(upload);
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
@@ -166,7 +168,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int) progress);
+                            progressBar.setProgress((int) progress);
                         }
                     });
         }
@@ -177,14 +179,14 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
     private void cameraUpload(final String path) {
         // Get the data from an ImageView as bytes
-        mImageView.setDrawingCacheEnabled(true);
-        mImageView.buildDrawingCache();
-        Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = mStorageRef.putBytes(data);
+        UploadTask uploadTask = storageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -201,8 +203,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                 while (!urlTask.isSuccessful());
                 Uri downloadUrl = urlTask.getResult();
                 Upload upload = new Upload(downloadUrl.toString());
-                mDatabaseRef = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
-                mDatabaseRef.child("IMAGE").setValue(upload);
+                databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
+                databaseReference.child("IMAGE").setValue(upload);
 
             }
         });
@@ -259,12 +261,12 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-            Picasso.get().load(mImageUri).fit().into(mImageView);
+            imageUri = data.getData();
+            Picasso.get().load(imageUri).resize(300,300).into(imageView);
         }
         else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
             Bitmap photo = (Bitmap) data.getExtras().get("data");
-            mImageView.setImageBitmap(photo);
+            imageView.setImageBitmap(photo);
         }
     }
 
@@ -273,11 +275,11 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         if (view == buttonPost){
             onPost();
             finish();
-            startActivity(new Intent(this, LostActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonCancel){
             finish();
-            startActivity(new Intent(this, LostActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

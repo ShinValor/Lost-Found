@@ -30,14 +30,13 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="80dp"
                 android:text="@string/app_name"
-                android:textAppearance="@style/TextAppearance.Shrine.Title" />
+                android:textAppearance="@style/TextAppearance.LostFound.Title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email_text_input"
-                style="@style/Widget.Shrine.TextInputLayout"
+                style="@style/Widget.LostFound.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/shr_hint_email">
+                android:hint="@string/hint_email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextEmail"
@@ -48,11 +47,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password_text_input"
-                style="@style/Widget.Shrine.TextInputLayout"
+                style="@style/Widget.LostFound.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/shr_hint_password"
+                android:hint="@string/hint_password"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -68,25 +66,25 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonSignin"
-                    style="@style/Widget.Shrine.Button.TextButton"
+                    style="@style/Widget.LostFound.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:text="@string/shr_button_login"
+                    android:text="@string/button_login"
                     app:strokeColor="@color/button"
                     app:strokeWidth="2dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/textViewSignup"
-                    style="@style/Widget.Shrine.Button.TextButton"
+                    style="@style/Widget.LostFound.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_toStartOf="@id/buttonSignin"
                     android:layout_toLeftOf="@id/buttonSignin"
-                    android:text="@string/shr_button_register"/>
+                    android:text="@string/button_register"/>
 
             </RelativeLayout>
         </LinearLayout>

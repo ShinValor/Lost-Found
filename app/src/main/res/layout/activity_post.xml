@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/image_view"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
@@ -32,7 +32,7 @@
 
         <Button
             android:id="@+id/button_choose_image"
-            style="@style/Widget.Shrine.Button.TextButton"
+            style="@style/Widget.LostFound.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -42,7 +42,7 @@
 
         <Button
             android:id="@+id/buttonCamera"
-            style="@style/Widget.Shrine.Button.TextButton"
+            style="@style/Widget.LostFound.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -86,7 +86,7 @@
 
             <Button
                 android:id="@+id/buttonPost"
-                style="@style/Widget.Shrine.Button.TextButton"
+                style="@style/Widget.LostFound.Button.TextButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
@@ -97,7 +97,7 @@
 
             <Button
                 android:id="@+id/buttonCancel"
-                style="@style/Widget.Shrine.Button.TextButton"
+                style="@style/Widget.LostFound.Button.TextButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"

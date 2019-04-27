@@ -1,33 +1,37 @@
 package com.example.lostfound;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.fragment.app.Fragment;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
-import android.util.Log;
+
+import androidx.fragment.app.FragmentActivity;
+
 
 public class PostList extends ArrayAdapter<Post> {
 
     private DatabaseReference databaseReference;
 
-    private Activity context;
+    private FragmentActivity context;
 
     private List<Post> postList;
 
     private ImageView imageView;
     private TextView textViewTitle, textViewDescription;
 
-    public PostList(Activity context, List<Post> postList){
+    public PostList(FragmentActivity context, List<Post> postList){
         super(context, R.layout.layout_post_list,postList);
         this.context = context;
         this.postList = postList;
@@ -37,11 +41,11 @@ public class PostList extends ArrayAdapter<Post> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
 
-        View listViewPost = inflater.inflate(R.layout.layout_post_list, null, true);
+        View view = inflater.inflate(R.layout.layout_post_list, null, true);
 
-        imageView = (ImageView) listViewPost.findViewById(R.id.imageView);
-        textViewTitle = (TextView) listViewPost.findViewById(R.id.textViewTitle);
-        textViewDescription = (TextView)listViewPost.findViewById(R.id.textViewDescription);
+        imageView = (ImageView) view.findViewById(R.id.imageView);
+        textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);
+        textViewDescription = (TextView)view.findViewById(R.id.textViewDescription);
 
         textViewDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
@@ -54,7 +58,7 @@ public class PostList extends ArrayAdapter<Post> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                Picasso.get().load(imageUrl).fit().into(imageView);
+                Picasso.get().load(imageUrl).resize(100,100).into(imageView);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -65,6 +69,6 @@ public class PostList extends ArrayAdapter<Post> {
         textViewTitle.setText(post.getTitle());
         textViewDescription.setText(post.getDescription());
 
-        return listViewPost;
+        return view;
     }
 }

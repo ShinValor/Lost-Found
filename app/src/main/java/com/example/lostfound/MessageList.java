@@ -1,20 +1,22 @@
 package com.example.lostfound;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MessageList extends ArrayAdapter<Message>  {
 
-    private Activity context;
+    private AppCompatActivity context;
 
     private List<Message> messageList;
 
-    public MessageList(Activity context, List<Message> messageList){
+    public MessageList(AppCompatActivity context, List<Message> messageList){
         super(context, R.layout.layout_message_list,messageList);
         this.context = context;
         this.messageList = messageList;

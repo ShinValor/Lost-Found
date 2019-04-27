@@ -16,7 +16,7 @@
 
         <Button
             android:id="@+id/buttonBack"
-            style="@style/Widget.Shrine.Button.TextButton"
+            style="@style/Widget.LostFound.Button.TextButton"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_margin="5dp"
@@ -26,8 +26,8 @@
 
         <ImageView
             android:id="@+id/imageViewPicture"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/lost_found_picture"
             android:layout_margin="10dp"/>
@@ -90,7 +90,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonMessage"
-                style="@style/Widget.Shrine.Button.TextButton"
+                style="@style/Widget.LostFound.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -101,7 +101,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonCall"
-                style="@style/Widget.Shrine.Button.TextButton"
+                style="@style/Widget.LostFound.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

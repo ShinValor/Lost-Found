@@ -1,55 +1,58 @@
 package com.example.lostfound;
 
 import android.app.ProgressDialog;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.TextView;
-import android.content.Intent;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private FirebaseAuth firebaseAuth;
 
     private TextView textViewSignup;
     private EditText editTextEmail, editTextPassword;
     private Button buttonSignin;
-
-    private FirebaseAuth firebaseAuth;
 
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
         setContentView(R.layout.activity_login);
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null){
             finish();
-            startActivity(new Intent(getApplicationContext(), LostActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        textViewSignup = (TextView) findViewById(R.id.textViewSignup);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         buttonSignin = (Button) findViewById(R.id.buttonSignin);
-        textViewSignup = (TextView) findViewById(R.id.textViewSignup);
 
         progressDialog = new ProgressDialog(this);
 
-        buttonSignin.setOnClickListener(this);
         textViewSignup.setOnClickListener(this);
+        buttonSignin.setOnClickListener(this);
     }
 
     private void userLogin(){
@@ -69,7 +72,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // If the email and password are not empty
         // Displaying a progress dialog
-
         progressDialog.setMessage("Logging Please Wait...");
         progressDialog.show();
 
@@ -79,11 +81,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressDialog.dismiss();
-                    //if the task is successfull
                     if(task.isSuccessful()){
-                        //start the lost activity
                         finish();
-                        startActivity(new Intent(getApplicationContext(), LostActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     }
                     else {
                         Toast.makeText(LoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         else if (view == textViewSignup){
             finish();
-            startActivity(new Intent(this,MainActivity.class ));
+            startActivity(new Intent(this,RegisterActivity.class ));
         }
     }
 }

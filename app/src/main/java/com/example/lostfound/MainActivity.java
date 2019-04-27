@@ -1,101 +1,100 @@
 package com.example.lostfound;
 
-import android.app.ProgressDialog;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.widget.TextView;
 import android.content.Intent;
-import com.google.firebase.auth.AuthResult;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-    private Button buttonRegister;
-    private TextView textViewSignin;
-    private ProgressDialog progressDialog;
-    private EditText editTextEmail, editPassword;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.viewpager.widget.ViewPager;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
+
+    private Button buttonProfile, buttonLogout;
+    private FloatingActionButton buttonCreate;
+
+    private TabLayout tabLayout;
+    private AppBarLayout appBarLayout;
+    private ViewPager viewPager;
+
+    public static final String POST_ROUTE = "com.example.lostfound.postpage";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
         setContentView(R.layout.activity_main);
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null){
+        if (firebaseAuth.getCurrentUser() == null){
             finish();
-            startActivity(new Intent(getApplicationContext(), LostActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
-        buttonRegister = (Button) findViewById(R.id.buttonRegister);
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editPassword = (EditText) findViewById(R.id.editTextPassword);
-        textViewSignin = (TextView) findViewById(R.id.textViewSignin);
+        buttonProfile = (Button) findViewById(R.id.buttonProfile);
+        buttonLogout = (Button) findViewById(R.id.buttonLogout);
+        buttonCreate = (FloatingActionButton) findViewById(R.id.buttonCreate);
 
-        progressDialog = new ProgressDialog(this);
+        buttonProfile.setOnClickListener(this);
+        buttonLogout.setOnClickListener(this);
+        buttonCreate.setOnClickListener(this);
 
-        buttonRegister.setOnClickListener(this);
-        textViewSignin.setOnClickListener(this);
-    }
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
-    private void registerUser(){
-        String email = editTextEmail.getText().toString().trim();
-        String password = editPassword.getText().toString().trim();
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        if (TextUtils.isEmpty(email)){
-            Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        adapter.addFragment(new LostFragment(),"Lost");
+        adapter.addFragment(new FoundFragment(),"Found");
 
-        if (TextUtils.isEmpty(password)){
-            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Do validation of email and password
-
-        progressDialog.setMessage("Registering User...");
-        progressDialog.show();
-
-        firebaseAuth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>(){
-               @Override
-               public void onComplete(@NonNull Task<AuthResult> task){
-                   progressDialog.dismiss();
-                   if (task.isSuccessful()){
-                       // user is successfully registered and logged in
-                       // we will start the lost activity here
-                       finish();
-                       //opening lost activity
-                       startActivity(new Intent(getApplicationContext(), LostActivity.class));
-                   }
-                   else {
-                       Toast.makeText(MainActivity.this,"Could not registered ... Please try again",Toast.LENGTH_SHORT).show();
-                   }
-               }
-            });
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
-    public void onClick(View view){
-        if (view == buttonRegister){
-            registerUser();
+    public void onClick(View view) {
+        if (view == buttonProfile){
+            finish();
+            startActivity(new Intent(this, ProfileActivity.class));
         }
-        else if (view == textViewSignin){
+        else if (view == buttonLogout){
+            firebaseAuth.signOut();
+            finish();
             startActivity(new Intent(this, LoginActivity.class));
+        }
+        else if (view == buttonCreate){
+            finish();
+            Intent intent = new Intent(this, PostActivity.class);
+            if (viewPager.getCurrentItem() == 0){
+                intent.putExtra(POST_ROUTE, "LOST");
+            }
+            else if (viewPager.getCurrentItem() == 1){
+                intent.putExtra(POST_ROUTE, "FOUND");
+            }
+            startActivity(intent);
         }
     }
 }

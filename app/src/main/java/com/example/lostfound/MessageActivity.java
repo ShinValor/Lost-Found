@@ -1,8 +1,6 @@
 package com.example.lostfound;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MessageActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,6 +40,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
         setContentView(R.layout.activity_message);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -53,7 +54,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
-        messageUserId = intent.getStringExtra(ProfileViewActivity.LOSTPost_USERID);
+        messageUserId = intent.getStringExtra(ProfileViewActivity.POST_USER_ID);
 
         messageList = new ArrayList<>();
 

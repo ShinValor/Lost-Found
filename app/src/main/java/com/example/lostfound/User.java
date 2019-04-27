@@ -1,7 +1,5 @@
 package com.example.lostfound;
 
-import android.util.Log;
-
 public class User {
 
     public String name, school, id, email, phoneNum;

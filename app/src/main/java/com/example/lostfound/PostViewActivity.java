@@ -1,24 +1,24 @@
 package com.example.lostfound;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Button;
-import android.net.Uri;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import android.util.Log;
-import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PostViewActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,7 +26,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
     private TextInputEditText textViewTitle, textViewDescription;
     private TextView textViewUser;
-    private Button buttonBack, buttonCall;
+    private Button buttonBack, buttonCall, buttonMessage;
 
     private FirebaseAuth firebaseAuth;
 
@@ -37,15 +37,14 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     private String imageUrl;
     private String route;
 
-    public static final String Post_PROFILE = "com.example.lostfound.lostPostprofile";
+    public static final String POST_PROFILE = "com.example.lostfound.lostpostprofile",
+                               POST_USER_ID = "com.example.lostfound.POST_USER_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
         setContentView(R.layout.activity_post_view);
-        Intent intent = getIntent();
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -54,6 +53,10 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        Intent intent = getIntent();
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         imageViewPicture = (ImageView) findViewById(R.id.imageViewPicture);
         imageViewProfile = (ImageView) findViewById(R.id.imageViewProfile);
         textViewTitle = (TextInputEditText) findViewById(R.id.textViewTitle);
@@ -61,36 +64,45 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         textViewUser = (TextView) findViewById(R.id.textViewUser);
         buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonCall = (Button) findViewById(R.id.buttonCall);
+        buttonMessage = (Button) findViewById(R.id.buttonMessage);
 
-        textViewUser.setText(intent.getStringExtra(LostActivity.Post_USER));
-        textViewTitle.setText(intent.getStringExtra(LostActivity.Post_TITLE));
-        textViewDescription.setText(intent.getStringExtra(LostActivity.Post_DESCRIPTION));
+        textViewUser.setText(intent.getStringExtra(LostFragment.POST_USER));
+        textViewTitle.setText(intent.getStringExtra(LostFragment.POST_TITLE));
+        textViewDescription.setText(intent.getStringExtra(LostFragment.POST_DESCRIPTION));
 
-        userId = intent.getStringExtra(LostActivity.Post_USERID);
-        postId = intent.getStringExtra(LostActivity.Post_POSTID);
-        route = intent.getStringExtra(LostActivity.Post_PAGE);
+        userId = intent.getStringExtra(LostFragment.POST_USER_ID);
+        postId = intent.getStringExtra(LostFragment.POST_ID);
+        route = intent.getStringExtra(LostFragment.POST_ROUTE);
 
         textViewTitle.setEnabled(false);
         textViewDescription.setEnabled(false);
 
         buttonBack.setOnClickListener(this);
 
-        final String userPostId = intent.getStringExtra(LostActivity.Post_USERID);
+        final String userPostId = intent.getStringExtra(LostFragment.POST_USER_ID);
         textViewUser.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
-                intent.putExtra(Post_PROFILE,userPostId);
+                intent.putExtra(POST_PROFILE,userPostId);
                 startActivity(intent);
             }
         });
 
-
-        final String phoneNum = "+" + intent.getStringExtra(LostActivity.Post_PHONENUM);
+        final String phoneNum = "+" + intent.getStringExtra(LostFragment.POST_PHONE_NUMBER);
         buttonCall.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNum, null));
+                startActivity(intent);
+            }
+        });
+
+        buttonMessage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
+                intent.putExtra(POST_USER_ID,userId);
                 startActivity(intent);
             }
         });
@@ -104,7 +116,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                Picasso.get().load(imageUrl).fit().into(imageViewPicture);
+                Picasso.get().load(imageUrl).resize(300,300).into(imageViewPicture);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -117,7 +129,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                Picasso.get().load(imageUrl).fit().into(imageViewProfile);
+                Picasso.get().load(imageUrl).resize(120,120).into(imageViewProfile);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -130,7 +142,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view == buttonBack){
             finish();
-            startActivity(new Intent(this, LostActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

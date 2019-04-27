@@ -2,7 +2,6 @@ package com.example.lostfound;
 
 import android.content.Intent;
 import android.net.Uri;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileViewActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,11 +33,12 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
     private String userId;
     private String phoneNum;
 
-    public static final String LOSTPost_USERID = "com.example.lostfound.lostPostuserid";
+    public static final String POST_USER_ID = "com.example.lostfound.POST_USER_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
         setContentView(R.layout.activity_profile_view);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -55,7 +57,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
         buttonCall = (Button) findViewById(R.id.buttonCall);
         buttonMessage = (Button) findViewById(R.id.buttonMessage);
 
-        userId = intent.getStringExtra(PostViewActivity.Post_PROFILE);
+        userId = intent.getStringExtra(PostViewActivity.POST_PROFILE);
 
         buttonBack.setOnClickListener(this);
 
@@ -71,7 +73,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                intent.putExtra(LOSTPost_USERID,userId);
+                intent.putExtra(POST_USER_ID,userId);
                 startActivity(intent);
             }
         });
@@ -92,7 +94,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
                     textViewSchool.setText(User.getSchool());
                     imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
                     imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
-                    Picasso.get().load(imageUrl).fit().into(imageView);
+                    Picasso.get().load(imageUrl).resize(300,300).into(imageView);
                 }
             }
             @Override
@@ -107,7 +109,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if (view == buttonBack){
             finish();
-            startActivity(new Intent(this, LostActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

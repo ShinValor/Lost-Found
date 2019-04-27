@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"/>
 
     <LinearLayout
-        android:id="@+id/layout_chatbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -37,7 +36,7 @@
 
         <Button
             android:id="@+id/button_chatbox_send"
-            style="@style/Widget.Shrine.Button.TextButton"
+            style="@style/Widget.LostFound.Button.TextButton"
             android:text="Send"
             android:textSize="15dp"
             android:clickable="true"
