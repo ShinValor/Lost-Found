@@ -12,13 +12,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center|bottom"
+                android:hint="@string/hint_title"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
+            android:layout_margin="10dp"
             app:srcCompat="@drawable/lost_found_picture" />
 
         <ProgressBar
@@ -52,29 +67,17 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextTitle"
-                android:hint="@string/hint_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextDescription"
-                android:gravity="top"
-                android:hint="@string/hint_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
                 android:lines="5"
-                android:layout_margin="10dp"/>
+                android:hint="@string/hint_description"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

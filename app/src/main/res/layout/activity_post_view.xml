@@ -24,6 +24,22 @@
             app:strokeColor="@color/button"
             app:strokeWidth="2dp"/>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textViewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center|top"
+                android:background="@null"
+                android:textSize="30dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <ImageView
             android:id="@+id/imageViewPicture"
             android:layout_width="300dp"
@@ -37,28 +53,15 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textViewTitle"
-                android:gravity="center"
-                android:hint="Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textViewDescription"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:gravity="center"
-                android:hint="Description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:lines="5" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center|top"
+                android:background="@null"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +71,7 @@
             android:layout_height="120dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             app:srcCompat="@drawable/lost_found_avatar" />
 
         <TextView
@@ -96,6 +99,16 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="60dp"
                 android:text="Message"
+                app:strokeColor="@color/button"
+                app:strokeWidth="2dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonTrack"
+                style="@style/Widget.LostFound.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Track"
                 app:strokeColor="@color/button"
                 app:strokeWidth="2dp"/>
 

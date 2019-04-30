@@ -7,12 +7,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
-
+/*
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+*/
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,13 +23,13 @@ import androidx.fragment.app.FragmentActivity;
 
 public class PostList extends ArrayAdapter<Post> {
 
-    private DatabaseReference databaseReference;
+    //private DatabaseReference databaseReference;
 
     private FragmentActivity context;
 
     private List<Post> postList;
 
-    private ImageView imageView;
+    //private ImageView imageView;
     private TextView textViewTitle, textViewDescription;
 
     public PostList(FragmentActivity context, List<Post> postList){
@@ -43,7 +44,7 @@ public class PostList extends ArrayAdapter<Post> {
 
         View view = inflater.inflate(R.layout.layout_post_list, null, true);
 
-        imageView = (ImageView) view.findViewById(R.id.imageView);
+        //imageView = (ImageView) view.findViewById(R.id.imageView);
         textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);
         textViewDescription = (TextView)view.findViewById(R.id.textViewDescription);
 
@@ -53,6 +54,7 @@ public class PostList extends ArrayAdapter<Post> {
 
         String userId = post.getUserId();
 
+        /*
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/IMAGE");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -65,6 +67,7 @@ public class PostList extends ArrayAdapter<Post> {
 
             }
         });
+        */
 
         textViewTitle.setText(post.getTitle());
         textViewDescription.setText(post.getDescription());

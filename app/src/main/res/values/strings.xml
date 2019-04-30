@@ -2,6 +2,7 @@
     <string name="app_name">Lost&amp;Found</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
     <string name="button_login">Login</string>
     <string name="button_register">Register</string>
     <string name="hint_enter_name">Enter Full Name</string>
@@ -10,7 +11,6 @@
     <string name="hint_enter_phone_num">Enter Phone Number</string>
     <string name="hint_description">Add Description</string>
     <string name="hint_title">Add Title</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Open">NavBar</string>
+    <string name="Close">NavBar</string>
 </resources>

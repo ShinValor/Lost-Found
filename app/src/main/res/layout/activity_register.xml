@@ -20,17 +20,24 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
             app:srcCompat="@drawable/lost_found_logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="50dp"
             android:text="@string/app_name"
             android:textAppearance="@style/TextAppearance.LostFound.Title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_register"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.LostFound.TextInputLayout"
@@ -50,11 +57,24 @@
             style="@style/Widget.LostFound.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_password"
-            app:errorEnabled="true">
+            android:hint="@string/hint_password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.LostFound.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_confirm_password"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextConfirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -89,3 +109,7 @@
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>
+
+<!--
+app:errorEnabled="true"
+-->

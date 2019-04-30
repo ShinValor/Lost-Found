@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
-        android:text="User"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:id="@+id/textViewUser"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="User" />
 
     <TextView
-        android:text="Message"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:id="@+id/textViewMessage"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="70dp"
+        android:text="Message"
+        android:maxLines="3"/>
 
 </LinearLayout>
+

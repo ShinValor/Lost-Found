@@ -26,7 +26,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
     private TextInputEditText textViewTitle, textViewDescription;
     private TextView textViewUser;
-    private Button buttonBack, buttonCall, buttonMessage;
+    private Button buttonBack, buttonCall, buttonMessage, buttonTrack;
 
     private FirebaseAuth firebaseAuth;
 
@@ -65,6 +65,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonCall = (Button) findViewById(R.id.buttonCall);
         buttonMessage = (Button) findViewById(R.id.buttonMessage);
+        buttonTrack = (Button) findViewById(R.id.buttonTrack);
 
         textViewUser.setText(intent.getStringExtra(LostFragment.POST_USER));
         textViewTitle.setText(intent.getStringExtra(LostFragment.POST_TITLE));
@@ -77,8 +78,6 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         textViewTitle.setEnabled(false);
         textViewDescription.setEnabled(false);
 
-        buttonBack.setOnClickListener(this);
-
         final String userPostId = intent.getStringExtra(LostFragment.POST_USER_ID);
         textViewUser.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -88,6 +87,8 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
             }
         });
+
+        buttonBack.setOnClickListener(this);
 
         final String phoneNum = "+" + intent.getStringExtra(LostFragment.POST_PHONE_NUMBER);
         buttonCall.setOnClickListener(new View.OnClickListener(){
@@ -106,6 +107,8 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
             }
         });
+
+        buttonTrack.setOnClickListener(this);
     }
 
     @Override
@@ -143,6 +146,10 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         if (view == buttonBack){
             finish();
             startActivity(new Intent(this, MainActivity.class));
+        }
+        else if (view == buttonTrack){
+            finish();
+            //
         }
     }
 }

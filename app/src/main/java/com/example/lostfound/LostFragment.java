@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.AdapterView;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,15 +33,22 @@ public class LostFragment extends Fragment{
     private List<Post> listOfPosts;
 
     public static final String POST_USER = "com.example.lostfound.postuser",
-            POST_TITLE = "com.example.lostfound.posttitle",
-            POST_DESCRIPTION = "com.example.lostfound.postdescription",
-            POST_PHONE_NUMBER = "com.example.lostfound.postphonenumber",
-            POST_ID = "com.example.lostfound.postid",
-            POST_USER_ID = "com.example.lostfound.postuserid",
-            POST_ROUTE = "com.example.lostfound.postpage";
+                               POST_TITLE = "com.example.lostfound.posttitle",
+                               POST_DESCRIPTION = "com.example.lostfound.postdescription",
+                               POST_PHONE_NUMBER = "com.example.lostfound.postphonenumber",
+                               POST_ID = "com.example.lostfound.postid",
+                               POST_USER_ID = "com.example.lostfound.postuserid",
+                               POST_ROUTE = "com.example.lostfound.postpage";
 
     public LostFragment(){
 
+    }
+
+    public void refreshList(String search){
+        FragmentActivity parentActivity = (FragmentActivity) view.getContext();
+        PostList postList = new PostList(parentActivity,listOfPosts);
+        postList.getFilter().filter(search);
+        listView.setAdapter(postList);
     }
 
     @Nullable
@@ -59,8 +67,8 @@ public class LostFragment extends Fragment{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listOfPosts.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Post Post = postSnapshot.child("INFO").getValue(Post.class);
-                    listOfPosts.add(Post);
+                    Post post = postSnapshot.child("INFO").getValue(Post.class);
+                    listOfPosts.add(post);
                 }
                 Collections.reverse(listOfPosts);
                 FragmentActivity parentActivity = (FragmentActivity) view.getContext();
@@ -91,5 +99,4 @@ public class LostFragment extends Fragment{
 
         return view;
     }
-
 }

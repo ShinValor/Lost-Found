@@ -7,22 +7,21 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp">
+        android:layout_margin="5dp">
 
+        <!--
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="100dp"/>
+        -->
 
         <TextView
             android:id="@+id/textViewTitle"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginStart="100dp"
+            android:gravity="center"
             android:text="Title"
             android:ellipsize="end"
             android:maxLines="1"/>
@@ -32,8 +31,8 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="30dp"
+            android:gravity="center"
             android:text="Description"
             android:ellipsize="end"
             android:maxLines="3"/>

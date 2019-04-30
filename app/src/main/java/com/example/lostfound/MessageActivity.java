@@ -110,12 +110,6 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-    @Override
     public void onClick(View view) {
         if (view == button_chatbox_send){
             databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/INFO/");
@@ -123,17 +117,20 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String content = edittext_chatbox.getText().toString();
-                    edittext_chatbox.setText("");
-                    User user = dataSnapshot.getValue(User.class);
-                    Message message = new Message(content,user.getName());
-                    databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/");
-                    String postUID = databaseReference.push().getKey();
-                    databaseReference.child(messageId).child(postUID).setValue(message);
+                    if (!content.isEmpty()){
+                        edittext_chatbox.setText("");
+                        User user = dataSnapshot.getValue(User.class);
+                        Message message = new Message(content,user.getName());
+                        databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/");
+                        String postUID = databaseReference.push().getKey();
+                        databaseReference.child(messageId).child(postUID).setValue(message);
+                    }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
-                }});
+                }
+            });
         }
     }
 }
