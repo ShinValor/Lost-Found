@@ -1,41 +1,24 @@
 package com.example.lostfound;
 
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.util.Log;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
-import androidx.annotation.NonNull;
-
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -102,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(new Intent(context, ProfileActivity.class));
                         return true;
                     case R.id.navigation_item_2:
+                        finish();
+                        startActivity(new Intent(context, MessageViewActivity.class));
+                        return true;
+                    case R.id.navigation_item_3:
                         firebaseAuth.signOut();
                         finish();
                         startActivity(new Intent(context, LoginActivity.class));

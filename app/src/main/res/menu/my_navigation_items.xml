@@ -4,5 +4,8 @@
             android:title="View Profile" />
         <item
             android:id="@+id/navigation_item_2"
+            android:title="View Messages" />
+        <item
+            android:id="@+id/navigation_item_3"
             android:title="Logout" />
 </menu>

@@ -99,29 +99,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         buttonBack.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
-
-        buttonCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-                {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                }
-                else
-                {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                }
-            }
-        });
-
-        buttonChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
+        buttonCamera.setOnClickListener(this);
+        buttonChooseImage.setOnClickListener(this);
 
         storageRef = FirebaseStorage.getInstance().getReference("/Profile");
 
@@ -129,7 +108,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Do whatever you need with your data (retrieved only once)
                 User User = dataSnapshot.child("INFO").getValue(User.class);
                 if (User != null){
                     editTextName.setText(User.getName());
@@ -297,6 +275,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         else if (view == buttonSave){
             saveProfilePic();
             saveUser();
+        }
+        else if (view == buttonCamera){
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+            }
+            else
+            {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        }
+        else if (view == buttonChooseImage){
+            openFileChooser();
         }
     }
 

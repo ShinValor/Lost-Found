@@ -2,15 +2,11 @@ package com.example.lostfound;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.Fragment;
-import androidx.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.LayoutInflater;
-import android.widget.ListView;
 import android.widget.AdapterView;
-import android.util.Log;
+import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,15 +18,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 public class LostFragment extends Fragment{
-
-    private ListView listView;
-
-    private DatabaseReference databaseReference;
 
     View view;
 
-    private List<Post> listOfPosts;
+    private DatabaseReference databaseReference;
+
+    private ListView listView;
+
+    private List<Post> postList;
 
     public static final String POST_USER = "com.example.lostfound.postuser",
                                POST_TITLE = "com.example.lostfound.posttitle",
@@ -46,9 +46,9 @@ public class LostFragment extends Fragment{
 
     public void refreshList(String search){
         FragmentActivity parentActivity = (FragmentActivity) view.getContext();
-        PostList postList = new PostList(parentActivity,listOfPosts);
-        postList.getFilter().filter(search);
-        listView.setAdapter(postList);
+        PostAdapter postAdapter = new PostAdapter(parentActivity,postList);
+        postAdapter.getFilter().filter(search);
+        listView.setAdapter(postAdapter);
     }
 
     @Nullable
@@ -59,21 +59,21 @@ public class LostFragment extends Fragment{
 
         listView = (ListView) view.findViewById(R.id.listView);
 
-        listOfPosts = new ArrayList<>();
+        postList = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("/LOST");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listOfPosts.clear();
+                postList.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Post post = postSnapshot.child("INFO").getValue(Post.class);
-                    listOfPosts.add(post);
+                    postList.add(post);
                 }
-                Collections.reverse(listOfPosts);
+                Collections.reverse(postList);
                 FragmentActivity parentActivity = (FragmentActivity) view.getContext();
-                PostList postList = new PostList(parentActivity,listOfPosts);
-                listView.setAdapter(postList);
+                PostAdapter postAdapter = new PostAdapter(parentActivity,postList);
+                listView.setAdapter(postAdapter);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -84,7 +84,7 @@ public class LostFragment extends Fragment{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Post Post = listOfPosts.get(i);
+                Post Post = postList.get(i);
                 Intent intent = new Intent(getActivity().getApplicationContext(), PostViewActivity.class);
                 intent.putExtra(POST_USER, Post.getUser());
                 intent.putExtra(POST_TITLE, Post.getTitle());

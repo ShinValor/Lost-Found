@@ -83,11 +83,11 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                         messageList.clear();
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 
-                            Message convo = postSnapshot.getValue(Message.class);
-                            messageList.add(convo);
+                            Message message = postSnapshot.getValue(Message.class);
+                            messageList.add(message);
                         }
 
-                        MessageList messageAdapter = new MessageList(MessageActivity.this, messageList);
+                        MessageAdapter messageAdapter = new MessageAdapter(MessageActivity.this, messageList);
                         listViewMessage.setAdapter(messageAdapter);
                     }
                     @Override

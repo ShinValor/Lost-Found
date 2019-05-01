@@ -96,29 +96,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonPost.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
-
-        buttonCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-                {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                }
-                else
-                {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                }
-            }
-        });
-
-        buttonChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
+        buttonCamera.setOnClickListener(this);
+        buttonChooseImage.setOnClickListener(this);
 
         storageRef = FirebaseStorage.getInstance().getReference("/Post");
     }
@@ -190,14 +169,11 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-
                 Toast.makeText(PostActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
-
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                 Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful());
@@ -280,6 +256,20 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         else if (view == buttonCancel){
             finish();
             startActivity(new Intent(this, MainActivity.class));
+        }
+        else if (view == buttonCamera){
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+            }
+            else
+            {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        }
+        else if (view == buttonChooseImage){
+            openFileChooser();
         }
     }
 }
