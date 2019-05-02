@@ -47,6 +47,21 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     public static final String POST_PROFILE = "com.example.lostfound.lostpostprofile",
                                POST_USER_ID = "com.example.lostfound.POST_USER_ID";
 
+    void addNotification(){
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A24518190d");
+                    //sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
+                    sender.sendMail("Found Item", "You have an item that someone lost.","lostfoundee32f@gmail.com","frodo1642@gmail.com");
+                }
+                catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                }
+            }
+        }).start();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,9 +169,9 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         }
         else if (view == buttonTrack){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
-                //addNotification();
-                finish();
-                startActivity(new Intent(this, MapActivity.class));
+                addNotification();
+                //finish();
+                //startActivity(new Intent(this, MapActivity.class));
             }
             else{
                 Toast.makeText(context,"You can not track yourself.",Toast.LENGTH_LONG).show();
