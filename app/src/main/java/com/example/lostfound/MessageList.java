@@ -17,7 +17,7 @@ public class MessageList extends ArrayAdapter<Message>  {
     private List<Message> messageList;
 
     public MessageList(AppCompatActivity context, List<Message> messageList){
-        super(context, R.layout.layout_message_list,messageList);
+        super(context, R.layout.layout_message_card,messageList);
         this.context = context;
         this.messageList = messageList;
     }
@@ -25,7 +25,7 @@ public class MessageList extends ArrayAdapter<Message>  {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewMessage = inflater.inflate(R.layout.layout_message_list, null, true);
+        View listViewMessage = inflater.inflate(R.layout.layout_message_card, null, true);
 
         TextView textViewUser = (TextView) listViewMessage.findViewById(R.id.textViewUser);
         TextView textViewMessage = (TextView)listViewMessage.findViewById(R.id.textViewMessage);

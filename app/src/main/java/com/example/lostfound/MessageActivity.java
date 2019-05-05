@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,16 +27,28 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
     private DatabaseReference databaseReference;
 
+    private ListView listViewMessage;
     private EditText edittext_chatbox;
     private Button buttonBack, button_chatbox_send;
 
-    private String userId;
-    private String messageUserId;
-    private String messageId;
-
-    private ListView listViewMessage;
+    private String userId, messageUserId, messageId;
 
     private List<Message> messageList;
+
+    void addNotification(){
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A24518190d");
+                    //sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
+                    sender.sendMail("Found Item", "You have an item that someone lost.","lostfoundee32f@gmail.com","frodo1642@gmail.com");
+                }
+                catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                }
+            }
+        }).start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +81,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 if (messageId == null){
+                    addNotification();
                     String key = databaseReference.push().getKey();
                     databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/CHAT/");
                     databaseReference.child(messageUserId).setValue(key);

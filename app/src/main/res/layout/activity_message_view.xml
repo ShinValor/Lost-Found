@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@color/appBar"
-                android:text="Chats"
+                android:text="Messages"
                 android:textSize="35dp"
                 android:textColor="@color/tabTextColor" />
 

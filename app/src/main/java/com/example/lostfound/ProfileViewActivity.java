@@ -108,7 +108,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view == buttonBack){
-            finish();
+            //finish();
             startActivity(new Intent(this, MainActivity.class));
         }
     }

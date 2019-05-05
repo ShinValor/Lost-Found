@@ -250,11 +250,11 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == buttonPost){
             onPost();
-            finish();
+            //finish();
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonCancel){
-            finish();
+            //finish();
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonCamera){

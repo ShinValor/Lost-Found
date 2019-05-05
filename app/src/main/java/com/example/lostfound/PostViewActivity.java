@@ -25,21 +25,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class PostViewActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView imageViewPicture, imageViewProfile;
-
-    private TextInputEditText textViewTitle, textViewDescription;
-    private TextView textViewUser;
-    private Button buttonBack, buttonCall, buttonMessage, buttonTrack;
-
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
 
-    private String userId;
-    private String userPostId;
-    private String postId;
-    private String route;
-    private String imageUrl;
+    private ImageView imageViewPicture, imageViewProfile;
+    private TextInputEditText textViewTitle, textViewDescription;
+    private TextView textViewUser;
+    private Button buttonBack, buttonCall, buttonMessage, buttonTrack;
+
+    private String userId, userPostId, postId, route, imageUrl;
 
     private Context context = this;
     private Intent intent;
@@ -152,13 +147,12 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view == buttonBack){
-            finish();
+            //finish();
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonMessage){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
-                //addNotification();
-                finish();
+                //finish();
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
                 intent.putExtra(POST_USER_ID,userId);
                 startActivity(intent);
@@ -170,7 +164,6 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         else if (view == buttonTrack){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 addNotification();
-                //finish();
                 //startActivity(new Intent(this, MapActivity.class));
             }
             else{

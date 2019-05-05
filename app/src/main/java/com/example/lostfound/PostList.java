@@ -33,7 +33,7 @@ public class PostList extends ArrayAdapter<Post> {
     private TextView textViewTitle, textViewDescription;
 
     public PostList(FragmentActivity context, List<Post> postList){
-        super(context, R.layout.layout_post_list,postList);
+        super(context, R.layout.layout_post_card,postList);
         this.context = context;
         this.postList = postList;
     }
@@ -42,7 +42,7 @@ public class PostList extends ArrayAdapter<Post> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.layout_post_list, null, true);
+        View view = inflater.inflate(R.layout.layout_post_card, null, true);
 
         //imageView = (ImageView) view.findViewById(R.id.imageView);
         textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);

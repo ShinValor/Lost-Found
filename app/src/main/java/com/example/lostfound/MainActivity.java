@@ -81,11 +81,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int id = item.getItemId();
                 switch(id) {
                     case R.id.navigation_item_1:
-                        finish();
                         startActivity(new Intent(context, ProfileActivity.class));
                         return true;
                     case R.id.navigation_item_2:
-                        finish();
                         startActivity(new Intent(context, MessageViewActivity.class));
                         return true;
                     case R.id.navigation_item_3:
@@ -141,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == buttonCreate){
-            finish();
+            //finish();
             Intent intent = new Intent(this, PostActivity.class);
             if (viewPager.getCurrentItem() == 0){
                 intent.putExtra(POST_ROUTE, "LOST");

@@ -269,7 +269,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view == buttonBack){
-            finish();
+            //finish();
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonSave){
