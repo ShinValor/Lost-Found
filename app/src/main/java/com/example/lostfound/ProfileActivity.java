@@ -108,12 +108,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User User = dataSnapshot.child("INFO").getValue(User.class);
-                if (User != null){
-                    editTextName.setText(User.getName());
-                    editTextPhoneNum.setText(User.getPhoneNum());
-                    editTextId.setText(User.getId());
-                    editTextSchool.setText(User.getSchool());
+                User user = dataSnapshot.child("INFO").getValue(User.class);
+                if (user != null){
+                    editTextName.setText(user.getName());
+                    editTextPhoneNum.setText(user.getPhoneNum());
+                    editTextId.setText(user.getId());
+                    editTextSchool.setText(user.getSchool());
                     imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
                     Picasso.get().load(imageUrl).resize(300,300).into(imageView);
                 }
@@ -222,18 +222,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void saveUser(){
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseUser currUser = firebaseAuth.getCurrentUser();
 
         String name = editTextName.getText().toString().trim();
         String school = editTextSchool.getText().toString().trim();
         String id = editTextId.getText().toString().trim();
         String phoneNum = editTextPhoneNum.getText().toString().trim();
 
-        User User = new User(name,school,id,user.getEmail(),phoneNum);
+        User user = new User(name,school,id,currUser.getEmail(),phoneNum);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/");
-        databaseReference.child(user.getUid().toString()).child("INFO").setValue(User);
-        databaseReference.child(user.getUid()).child("CHAT").setValue(false);
+        databaseReference.child(currUser.getUid().toString()).child("INFO").setValue(user);
+        databaseReference.child(currUser.getUid()).child("CHAT").setValue(false);
         Toast.makeText(this, "Information Saved...", Toast.LENGTH_LONG).show();
     }
 

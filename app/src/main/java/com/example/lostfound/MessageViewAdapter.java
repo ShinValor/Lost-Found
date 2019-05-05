@@ -6,11 +6,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MessageViewAdapter extends ArrayAdapter<String> {
+
+    private DatabaseReference databaseReference;
 
     private AppCompatActivity context;
 
@@ -19,10 +27,8 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
     private TextView textViewUser, textViewMessage;
 
     public MessageViewAdapter(AppCompatActivity context, List<String> messageUsers){
-        //super(context, R.layout.layout_message_card,messageIds);
         super(context, R.layout.layout_message_card,messageUsers);
         this.context = context;
-        //this.messageIds = messageIds;
         this.messageUsers = messageUsers;
     }
 
@@ -38,10 +44,20 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
         textViewMessage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         String messageUser = messageUsers.get(position);
-        //String messageId = messageIds.get(position);
 
-        textViewUser.setText(messageUser);
-        //textViewMessage.setText("temp");
+        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUser);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.child("INFO").getValue(User.class);
+                textViewUser.setText(user.getName());
+                textViewMessage.setText("Temp");
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         return messageView;
     }

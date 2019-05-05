@@ -87,11 +87,11 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User User = dataSnapshot.child("INFO").getValue(User.class);
-                if (User != null){
-                    textViewUser.setText(User.getName());
-                    phoneNum = User.getPhoneNum();
-                    textViewSchool.setText(User.getSchool());
+                User user = dataSnapshot.child("INFO").getValue(User.class);
+                if (user != null){
+                    textViewUser.setText(user.getName());
+                    phoneNum = user.getPhoneNum();
+                    textViewSchool.setText(user.getSchool());
                     imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
                     imageName = dataSnapshot.child("IMAGE").child("name").getValue(String.class);
                     Picasso.get().load(imageUrl).resize(300,300).into(imageView);

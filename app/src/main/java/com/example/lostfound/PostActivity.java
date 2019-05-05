@@ -201,8 +201,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     if (postSnapshot.getKey().equals(userId)) {
                         String postUID = databaseReference.push().getKey();
-                        User User = postSnapshot.child("INFO").getValue(User.class);
-                        Post Post = new Post(User.getName(),title,desc,User.getPhoneNum(),userId,postUID);
+                        User user = postSnapshot.child("INFO").getValue(User.class);
+                        Post Post = new Post(user.getName(),title,desc,user.getPhoneNum(),userId,postUID);
                         databaseReference = FirebaseDatabase.getInstance().getReference("/" + route);
                         databaseReference.child(postUID).child("INFO").setValue(Post);
                         uploadFile(postUID);
