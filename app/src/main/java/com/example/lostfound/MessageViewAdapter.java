@@ -14,14 +14,16 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
 
     private AppCompatActivity context;
 
-    private List<String> messageIds;
+    private List<String> messageIds, messageUsers;
 
     private TextView textViewUser, textViewMessage;
 
-    public MessageViewAdapter(AppCompatActivity context, List<String> messageIds){
-        super(context, R.layout.layout_message_card,messageIds);
+    public MessageViewAdapter(AppCompatActivity context, List<String> messageUsers){
+        //super(context, R.layout.layout_message_card,messageIds);
+        super(context, R.layout.layout_message_card,messageUsers);
         this.context = context;
-        this.messageIds = messageIds;
+        //this.messageIds = messageIds;
+        this.messageUsers = messageUsers;
     }
 
     @Override
@@ -35,10 +37,11 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
 
         textViewMessage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        String messageId = messageIds.get(position);
+        String messageUser = messageUsers.get(position);
+        //String messageId = messageIds.get(position);
 
-        textViewUser.setText(messageId);
-        textViewMessage.setText("temp");
+        textViewUser.setText(messageUser);
+        //textViewMessage.setText("temp");
 
         return messageView;
     }

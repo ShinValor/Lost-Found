@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -87,8 +88,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     databaseReference.child(messageUserId).setValue(key);
                     databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUserId + "/CHAT/");
                     databaseReference.child(userId).setValue(key);
-                    databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES");
-                    databaseReference.setValue(key);
+                    databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/");
+                    databaseReference.child(key).setValue(false);
                 }
                 databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/" + messageId);
                 databaseReference.addValueEventListener(new ValueEventListener() {
@@ -96,11 +97,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         messageList.clear();
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-
                             Message message = postSnapshot.getValue(Message.class);
                             messageList.add(message);
                         }
-
                         MessageAdapter messageAdapter = new MessageAdapter(MessageActivity.this, messageList);
                         listViewMessage.setAdapter(messageAdapter);
                     }
@@ -135,9 +134,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                         edittext_chatbox.setText("");
                         User user = dataSnapshot.getValue(User.class);
                         Message message = new Message(content,user.getName());
-                        databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/");
+                        databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/" + messageId);
                         String postUID = databaseReference.push().getKey();
-                        databaseReference.child(messageId).child(postUID).setValue(message);
+                        databaseReference.child(postUID).setValue(message);
                     }
                 }
                 @Override

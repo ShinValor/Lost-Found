@@ -67,7 +67,7 @@ public class MessageViewActivity extends AppCompatActivity {
                     messageUsers.add(postSnapshot.getKey());
                     messageIds.add(postSnapshot.getValue(String.class));
                 }
-                MessageViewAdapter messageViewAdapter = new MessageViewAdapter(MessageViewActivity.this,messageIds);
+                MessageViewAdapter messageViewAdapter = new MessageViewAdapter(MessageViewActivity.this,messageUsers);
                 listView.setAdapter(messageViewAdapter);
             }
             @Override
@@ -79,9 +79,9 @@ public class MessageViewActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String messageId = messageIds.get(i);
+                String messageUser = messageUsers.get(i);
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
-                intent.putExtra(POST_USER_ID, messageId);
+                intent.putExtra(POST_USER_ID, messageUser);
                 startActivity(intent);
             }
         });
