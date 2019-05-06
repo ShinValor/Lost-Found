@@ -34,7 +34,7 @@ public class MessageViewActivity extends AppCompatActivity {
 
     private String userId;
 
-    public static final String POST_USER_ID = "com.example.lostfound.POST_USER_ID";
+    public static final String POST_USER_ID = "com.example.lostfound.postuserid";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

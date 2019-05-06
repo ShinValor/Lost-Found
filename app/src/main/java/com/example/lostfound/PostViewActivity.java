@@ -46,19 +46,34 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     private Intent intent;
 
     public static final String POST_PROFILE = "com.example.lostfound.lostpostprofile",
-                               POST_USER_ID = "com.example.lostfound.POST_USER_ID";
+                               POST_USER_ID = "com.example.lostfound.postuserid";
 
-    public void ShowPopup(View v) {
+    public void ShowPopup(View view) {
         myDialog.setContentView(R.layout.layout_popup);
 
-        TextView txtclose;
+        TextView textViewClose;
+        final TextInputEditText editTextQuestion1, editTextQuestion2, editTextQuestion3;
+        Button buttonSubmit;
 
-        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+        textViewClose =(TextView) myDialog.findViewById(R.id.textViewClose);
+        editTextQuestion1 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion1);
+        editTextQuestion2 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion2);
+        editTextQuestion3 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion3);
+        buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
 
-        txtclose.setOnClickListener(new View.OnClickListener() {
+        textViewClose.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 myDialog.dismiss();
+            }
+        });
+
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String temp1 = editTextQuestion1.getText().toString().trim();
+                String temp2 = editTextQuestion2.getText().toString().trim();
+                String temp3 = editTextQuestion3.getText().toString().trim();
             }
         });
 
