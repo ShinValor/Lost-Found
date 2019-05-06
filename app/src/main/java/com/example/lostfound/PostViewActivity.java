@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.app.Dialog;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +36,9 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageViewPicture, imageViewProfile;
     private TextInputEditText textViewTitle, textViewDescription;
     private TextView textViewUser;
-    private Button buttonBack, buttonCall, buttonMessage, buttonTrack;
+    private Button buttonCall, buttonMessage, buttonTrack;
+
+    Dialog myDialog;
 
     private String userId, userPostId, postId, route, imageUrl;
 
@@ -41,6 +47,24 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
     public static final String POST_PROFILE = "com.example.lostfound.lostpostprofile",
                                POST_USER_ID = "com.example.lostfound.POST_USER_ID";
+
+    public void ShowPopup(View v) {
+        myDialog.setContentView(R.layout.layout_popup);
+
+        TextView txtclose;
+
+        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.dismiss();
+            }
+        });
+
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myDialog.show();
+    }
 
     void addNotification(){
         new Thread(new Runnable() {
@@ -81,10 +105,11 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         textViewDescription = (TextInputEditText) findViewById(R.id.textViewDescription);
         textViewUser = (TextView) findViewById(R.id.textViewUser);
 
-        buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonCall = (Button) findViewById(R.id.buttonCall);
         buttonMessage = (Button) findViewById(R.id.buttonMessage);
         buttonTrack = (Button) findViewById(R.id.buttonTrack);
+
+        myDialog = new Dialog(this);
 
         textViewUser.setText(intent.getStringExtra(LostFragment.POST_USER));
         textViewTitle.setText(intent.getStringExtra(LostFragment.POST_TITLE));
@@ -107,11 +132,9 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        buttonBack.setOnClickListener(this);
         buttonMessage.setOnClickListener(this);
         buttonTrack.setOnClickListener(this);
         buttonCall.setOnClickListener(this);
-
     }
 
     @Override
@@ -146,11 +169,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        if (view == buttonBack){
-            //finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
-        else if (view == buttonMessage){
+        if (view == buttonMessage){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 //finish();
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
@@ -164,6 +183,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         else if (view == buttonTrack){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 addNotification();
+                ShowPopup(view);
                 //startActivity(new Intent(this, MapActivity.class));
             }
             else{

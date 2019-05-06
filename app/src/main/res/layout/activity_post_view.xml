@@ -14,16 +14,6 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonBack"
-            style="@style/Widget.LostFound.Button.TextButton"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_margin="5dp"
-            android:text="Back"
-            app:strokeColor="@color/button"
-            app:strokeWidth="2dp"/>
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

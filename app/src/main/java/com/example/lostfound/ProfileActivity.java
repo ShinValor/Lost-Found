@@ -51,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private ImageView imageView;
     private TextInputEditText editTextName, editTextSchool, editTextId, editTextPhoneNum;
-    private Button buttonSave, buttonBack, buttonChooseImage, buttonCamera;
+    private Button buttonSave, buttonChooseImage, buttonCamera;
 
     private ProgressBar progressBar;
 
@@ -88,7 +88,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         editTextPhoneNum = (TextInputEditText) findViewById(R.id.editTextPhoneNum);
 
         buttonSave = (Button) findViewById(R.id.buttonSave);
-        buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonCamera = (Button) this.findViewById(R.id.buttonCamera);
         buttonChooseImage = (Button) findViewById(R.id.button_choose_image);
 
@@ -97,7 +96,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
 
-        buttonBack.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
         buttonCamera.setOnClickListener(this);
         buttonChooseImage.setOnClickListener(this);
@@ -240,8 +238,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE)
-        {
+        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -268,21 +265,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view == buttonBack){
-            //finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
-        else if (view == buttonSave){
+        if (view == buttonSave){
             saveProfilePic();
             saveUser();
         }
         else if (view == buttonCamera){
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-            {
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
             }
-            else
-            {
+            else {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }

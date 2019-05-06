@@ -30,7 +30,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
     private ListView listViewMessage;
     private EditText edittext_chatbox;
-    private Button buttonBack, button_chatbox_send;
+    private Button button_chatbox_send;
 
     private String userId, messageUserId, messageId;
 
@@ -42,7 +42,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                 try {
                     GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A24518190d");
                     //sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
-                    sender.sendMail("Found Item", "You have an item that someone lost.","lostfoundee32f@gmail.com","frodo1642@gmail.com");
+                    sender.sendMail("New message", "You have received a new message from someone.","lostfoundee32f@gmail.com","frodo1642@gmail.com");
                 }
                 catch (Exception e) {
                     Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();

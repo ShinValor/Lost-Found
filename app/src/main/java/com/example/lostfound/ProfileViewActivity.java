@@ -26,7 +26,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
 
     private ImageView imageView;
     private TextView textViewUser, textViewSchool;
-    private Button buttonBack, buttonCall, buttonMessage;
+    private Button buttonCall, buttonMessage;
 
     private String imageUrl;
     private String imageName;
@@ -53,13 +53,10 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
         imageView = (ImageView) findViewById(R.id.imageView);
         textViewUser = (TextView) findViewById(R.id.textViewUser);
         textViewSchool = (TextView) findViewById(R.id.textViewSchool);
-        buttonBack = (Button) findViewById(R.id.buttonBack);
         buttonCall = (Button) findViewById(R.id.buttonCall);
         buttonMessage = (Button) findViewById(R.id.buttonMessage);
 
         userId = intent.getStringExtra(PostViewActivity.POST_PROFILE);
-
-        buttonBack.setOnClickListener(this);
 
         buttonCall.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -107,9 +104,6 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if (view == buttonBack){
-            //finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
+
     }
 }
