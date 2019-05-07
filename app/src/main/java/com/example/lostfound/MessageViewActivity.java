@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 public class MessageViewActivity extends AppCompatActivity {
 
@@ -29,12 +30,29 @@ public class MessageViewActivity extends AppCompatActivity {
 
     private ListView listView;
 
+    private SearchView searchView;
+
     private List<String> messageUsers;
     private List<String> messageIds;
 
     private String userId;
 
     public static final String POST_USER_ID = "com.example.lostfound.postuserid";
+
+    /*
+    public void refreshList(String search){
+
+        List<String> mFinalList = new ArrayList<>();
+
+        for (String p : messageUsers) {
+            if (p.toLowerCase().contains(search.toLowerCase())) {
+                mFinalList.add(p);
+            }
+        }
+        MessageViewAdapter messageViewAdapter = new MessageViewAdapter(MessageViewActivity.this,mFinalList);
+        listView.setAdapter(messageViewAdapter);
+    }
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +69,34 @@ public class MessageViewActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
 
+        searchView = (SearchView) findViewById(R.id.searchView);
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
 
         messageUsers = new ArrayList<>();
         messageIds = new ArrayList<>();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //refreshList(newText);
+                return false;
+            }
+        });
+
+        /*
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                return false;
+            }
+        });
+        */
 
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/CHAT/");
         databaseReference.addValueEventListener(new ValueEventListener() {

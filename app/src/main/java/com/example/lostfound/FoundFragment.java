@@ -46,8 +46,18 @@ public class FoundFragment extends Fragment{
 
     public void refreshList(String search){
         FragmentActivity parentActivity = (FragmentActivity) view.getContext();
-        PostAdapter postAdapter = new PostAdapter(parentActivity,postList);
-        postAdapter.getFilter().filter(search);
+
+        List<Post> mFinalList = new ArrayList<>();
+
+        for (Post p : postList) {
+            if (p.getTitle().toLowerCase().contains(search.toLowerCase())) {
+                mFinalList.add(p);
+            }
+        }
+
+        PostAdapter postAdapter = new PostAdapter(parentActivity,mFinalList);
+        //PostAdapter postAdapter = new PostAdapter(parentActivity,postList);
+        //postAdapter.getFilter().filter(search);
         listView.setAdapter(postAdapter);
     }
 

@@ -31,10 +31,10 @@ public class MessageList extends ArrayAdapter<Message>  {
         TextView textViewMessage = (TextView)listViewMessage.findViewById(R.id.textViewMessage);
         textViewMessage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        Message convo = messageList.get(position);
+        Message message = messageList.get(position);
 
-        textViewUser.setText(convo.getUser());
-        textViewMessage.setText(convo.getText());
+        textViewUser.setText(message.getUser());
+        textViewMessage.setText(message.getText());
 
         return listViewMessage;
     }

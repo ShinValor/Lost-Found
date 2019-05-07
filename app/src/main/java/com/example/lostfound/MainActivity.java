@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (viewPager.getCurrentItem() == 0){
@@ -117,6 +116,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+
+        /*
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                return false;
+            }
+        });
+        */
 
         buttonCreate.setOnClickListener(this);
 
