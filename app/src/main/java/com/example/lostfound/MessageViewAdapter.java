@@ -51,7 +51,7 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child("INFO").getValue(User.class);
                 textViewUser.setText(user.getName());
-                textViewMessage.setText("Temp");
+                textViewMessage.setText("New Messages");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -55,11 +56,11 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         final TextInputEditText editTextQuestion1, editTextQuestion2, editTextQuestion3;
         Button buttonSubmit;
 
-        textViewClose =(TextView) myDialog.findViewById(R.id.textViewClose);
+        textViewClose = (TextView) myDialog.findViewById(R.id.textViewClose);
         editTextQuestion1 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion1);
         editTextQuestion2 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion2);
         editTextQuestion3 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion3);
-        buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
+        buttonSubmit = (Button) myDialog.findViewById(R.id.buttonSubmit);
 
         textViewClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +72,25 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String temp1 = editTextQuestion1.getText().toString().trim();
-                String temp2 = editTextQuestion2.getText().toString().trim();
-                String temp3 = editTextQuestion3.getText().toString().trim();
+                String name = editTextQuestion1.getText().toString().trim();
+                String school = editTextQuestion2.getText().toString().trim();
+                String id = editTextQuestion3.getText().toString().trim();
+
+                final SecurityQuestions security = new SecurityQuestions(name,school,id);
+
+                databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        addNotification();
+                        myDialog.dismiss();
+                        databaseReference.child("TRACK").push().setValue(security);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
@@ -138,15 +155,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         textViewTitle.setEnabled(false);
         textViewDescription.setEnabled(false);
 
-        textViewUser.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
-                intent.putExtra(POST_PROFILE,userPostId);
-                startActivity(intent);
-            }
-        });
-
+        textViewUser.setOnClickListener(this);
         buttonMessage.setOnClickListener(this);
         buttonTrack.setOnClickListener(this);
         buttonCall.setOnClickListener(this);
@@ -186,7 +195,6 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view == buttonMessage){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
-                //finish();
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
                 intent.putExtra(POST_USER_ID,userId);
                 startActivity(intent);
@@ -197,7 +205,6 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         }
         else if (view == buttonTrack){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
-                addNotification();
                 ShowPopup(view);
                 //startActivity(new Intent(this, MapActivity.class));
             }
@@ -209,12 +216,17 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 String phoneNum = "+" + intent.getStringExtra(LostFragment.POST_PHONE_NUMBER);
                 Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
-                intent.putExtra(POST_PROFILE,userPostId);
+                intent.putExtra(POST_PROFILE,userId);
                 startActivity(intent);
             }
             else{
                 Toast.makeText(context,"You can not call yourself.",Toast.LENGTH_LONG).show();
             }
+        }
+        else if (view == textViewUser){
+            Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
+            intent.putExtra(POST_PROFILE,userId);
+            startActivity(intent);
         }
     }
 }

@@ -2,7 +2,7 @@ package com.example.lostfound;
 
 public class User {
 
-    public String name, school, id, email, phoneNum;
+    private String name, school, id, email, phoneNum;
 
     public User(){
 

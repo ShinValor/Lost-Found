@@ -2,7 +2,7 @@ package com.example.lostfound;
 
 public class Post {
 
-    public String title, user, description, phoneNum, userId, postId;
+    private String title, user, description, phoneNum, userId, postId;
 
     public Post(){
 

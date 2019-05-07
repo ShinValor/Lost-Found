@@ -87,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(new Intent(context, MessageViewActivity.class));
                         return true;
                     case R.id.navigation_item_3:
+                        //startActivity(new Intent(context, LoginActivity.class));
+                        return true;
+                    case R.id.navigation_item_4:
                         firebaseAuth.signOut();
                         finish();
                         startActivity(new Intent(context, LoginActivity.class));
@@ -126,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.setupWithViewPager(viewPager);
     }
 
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -139,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == buttonCreate){
-            //finish();
             Intent intent = new Intent(this, PostActivity.class);
             if (viewPager.getCurrentItem() == 0){
                 intent.putExtra(POST_ROUTE, "LOST");
