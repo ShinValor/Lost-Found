@@ -1,6 +1,8 @@
-package com.example.lostfound;
+package com.example.lostfound.Activities;
 
 import android.os.Bundle;
+
+import com.example.lostfound.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 

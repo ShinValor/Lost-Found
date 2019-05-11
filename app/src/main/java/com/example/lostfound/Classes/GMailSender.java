@@ -1,4 +1,4 @@
-package com.example.lostfound;
+package com.example.lostfound.Classes;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -31,7 +31,7 @@ public class GMailSender extends javax.mail.Authenticator {
     private Multipart _multipart = new MimeMultipart();
 
     static {
-        Security.addProvider(new com.example.lostfound.JSSEProvider());
+        Security.addProvider(new JSSEProvider());
     }
 
     public GMailSender(String user, String password) {

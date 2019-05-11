@@ -1,10 +1,13 @@
-package com.example.lostfound;
+package com.example.lostfound.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.lostfound.Classes.Post;
+import com.example.lostfound.R;
 
 import java.util.List;
 

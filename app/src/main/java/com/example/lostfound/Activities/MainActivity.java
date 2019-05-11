@@ -1,4 +1,4 @@
-package com.example.lostfound;
+package com.example.lostfound.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.lostfound.Fragments.FoundFragment;
+import com.example.lostfound.Fragments.LostFragment;
+import com.example.lostfound.R;
+import com.example.lostfound.Adapters.ViewPagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;

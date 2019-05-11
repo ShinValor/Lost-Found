@@ -1,4 +1,4 @@
-package com.example.lostfound;
+package com.example.lostfound.Adapters;
 
 import java.util.ArrayList;
 import java.util.List;

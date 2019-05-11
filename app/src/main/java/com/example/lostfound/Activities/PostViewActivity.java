@@ -1,8 +1,7 @@
-package com.example.lostfound;
+package com.example.lostfound.Activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Dialog;
 import android.view.View;
@@ -11,11 +10,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 
+import com.example.lostfound.Fragments.LostFragment;
+import com.example.lostfound.Classes.GMailSender;
+import com.example.lostfound.R;
+import com.example.lostfound.Classes.SecurityQuestions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

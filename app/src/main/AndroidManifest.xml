@@ -14,25 +14,25 @@
         android:roundIcon="@mipmap/lost_found_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/LostFoundTheme">
-        <activity android:name=".SplashActivity" android:theme="@style/LostFoundTheme.Launcher">
+        <activity android:name=".Activities.SplashActivity" android:theme="@style/LostFoundTheme.Launcher">
 
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PostActivity" />
-        <activity android:name=".PostViewActivity" />
-        <activity android:name=".MessageActivity" />
+        <activity android:name=".Activities.PostActivity" />
+        <activity android:name=".Activities.PostViewActivity" />
+        <activity android:name=".Activities.MessageActivity" />
         <activity android:name=".Chat" />
-        <activity android:name=".ProfileViewActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MessageViewActivity" />
+        <activity android:name=".Activities.ProfileViewActivity" />
+        <activity android:name=".Activities.ProfileActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.MessageViewActivity" />
     </application>
 
 </manifest>

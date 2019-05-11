@@ -1,4 +1,4 @@
-package com.example.lostfound;
+package com.example.lostfound.Activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.lostfound.R;
+import com.example.lostfound.Classes.Upload;
+import com.example.lostfound.Classes.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

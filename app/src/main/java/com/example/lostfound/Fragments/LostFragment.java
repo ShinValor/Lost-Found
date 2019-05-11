@@ -1,4 +1,4 @@
-package com.example.lostfound;
+package com.example.lostfound.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.lostfound.Classes.Post;
+import com.example.lostfound.Adapters.PostAdapter;
+import com.example.lostfound.Activities.PostViewActivity;
+import com.example.lostfound.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-public class FoundFragment extends Fragment{
+public class LostFragment extends Fragment{
 
     View view;
 
@@ -40,7 +44,7 @@ public class FoundFragment extends Fragment{
                                POST_USER_ID = "com.example.lostfound.postuserid",
                                POST_ROUTE = "com.example.lostfound.postpage";
 
-    public FoundFragment(){
+    public LostFragment(){
 
     }
 
@@ -65,13 +69,13 @@ public class FoundFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
-        view = inflater.inflate(R.layout.fragment_found,container,false);
+        view = inflater.inflate(R.layout.fragment_lost,container,false);
 
         listView = (ListView) view.findViewById(R.id.listView);
 
         postList = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("/FOUND");
+        databaseReference = FirebaseDatabase.getInstance().getReference("/LOST");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,11 +106,10 @@ public class FoundFragment extends Fragment{
                 intent.putExtra(POST_PHONE_NUMBER, Post.getPhoneNum());
                 intent.putExtra(POST_ID, Post.getPostId());
                 intent.putExtra(POST_USER_ID, Post.getUserId());
-                intent.putExtra(POST_ROUTE, "FOUND");
+                intent.putExtra(POST_ROUTE, "LOST");
                 startActivity(intent);
             }
         });
-
         return view;
     }
 }

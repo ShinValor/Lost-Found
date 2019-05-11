@@ -1,4 +1,4 @@
-package com.example.lostfound;
+package com.example.lostfound.Classes;
 
 public class SecurityQuestions {
 
