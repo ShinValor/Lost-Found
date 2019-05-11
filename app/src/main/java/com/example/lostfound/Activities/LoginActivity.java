@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth firebaseAuth;
 
-    private TextView textViewSignup; //textViewResetEmail, textViewResetPassword;
+    private TextView textViewSignup, textViewResetEmail, textViewResetPassword;
     private EditText editTextEmail, editTextPassword;
     private Button buttonSignin;
 
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         textViewSignup = (TextView) findViewById(R.id.textViewSignup);
         //textViewResetEmail = (TextView) findViewById(R.id.textViewResetEmail);
-        //textViewResetPassword = (TextView) findViewById(R.id.textViewResetPassword);
+        textViewResetPassword = (TextView) findViewById(R.id.textViewResetPassword);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         buttonSignin = (Button) findViewById(R.id.buttonSignin);
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         textViewSignup.setOnClickListener(this);
         //textViewResetEmail.setOnClickListener(this);
-        //textViewResetPassword.setOnClickListener(this);
+        textViewResetPassword.setOnClickListener(this);
         buttonSignin.setOnClickListener(this);
     }
 
@@ -109,30 +109,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         /*
         else if (view == textViewResetEmail){
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            user.updateEmail("user@example.com")
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Email Updated.",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
-        else if (view == textViewResetPassword){
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            String emailAddress = user.getEmail();
-            firebaseAuth.sendPasswordResetEmail(emailAddress)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Check your email for password reset.",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+
         }
         */
+        else if (view == textViewResetPassword){
+            firebaseAuth.getInstance().sendPasswordResetEmail("frodo1642@gmail.com.com")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(context, "Email Sent", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        }
     }
 }

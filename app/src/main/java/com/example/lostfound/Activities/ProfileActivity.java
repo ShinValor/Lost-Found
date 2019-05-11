@@ -139,6 +139,36 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    private void cameraUpload(final String path) {
+        // Get the data from an ImageView as bytes
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(ProfileActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(ProfileActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!urlTask.isSuccessful());
+                Uri downloadUrl = urlTask.getResult();
+                Upload upload = new Upload(downloadUrl.toString());
+                databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + path);
+                databaseReference.child("IMAGE").setValue(upload);
+            }
+        });
+    }
+
     private void uploadFile(final String path) {
         if (imageUri != null) {
             StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -184,36 +214,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void cameraUpload(final String path) {
-        // Get the data from an ImageView as bytes
-        imageView.setDrawingCacheEnabled(true);
-        imageView.buildDrawingCache();
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = storageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Toast.makeText(ProfileActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(ProfileActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!urlTask.isSuccessful());
-                Uri downloadUrl = urlTask.getResult();
-                Upload upload = new Upload(downloadUrl.toString());
-                databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + path);
-                databaseReference.child("IMAGE").setValue(upload);
-            }
-        });
-    }
-
     private void saveProfilePic(){
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -222,7 +222,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void saveUser(){
-
         FirebaseUser currUser = firebaseAuth.getCurrentUser();
 
         String name = editTextName.getText().toString().trim();

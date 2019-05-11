@@ -43,13 +43,30 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
     Dialog myDialog;
 
-    private String userId, userPostId, postId, route, imageUrl;
+    private String userId, userPostId, userPostEmail, postId, route, imageUrl;
 
     private Context context = this;
     private Intent intent;
 
     public static final String POST_PROFILE = "com.example.lostfound.lostpostprofile",
-                               POST_USER_ID = "com.example.lostfound.postuserid";
+                               POST_USER_ID = "com.example.lostfound.postuserid",
+                               POST_USER_EMAIL = "com.example.lostfound.postuseremail";
+
+    void addNotification(final String email){
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A24518190d");
+                    //sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
+                    sender.sendMail(
+                            "Found Item", "You have an item that someone lost.","lostfoundee32f@gmail.com",email);
+                }
+                catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                }
+            }
+        }).start();
+    }
 
     public void ShowPopup(View view) {
         myDialog.setContentView(R.layout.layout_popup);
@@ -84,7 +101,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        addNotification();
+                        addNotification(userPostEmail);
                         myDialog.dismiss();
                         databaseReference.child("TRACK").push().setValue(security);
                     }
@@ -98,21 +115,6 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
-    }
-
-    void addNotification(){
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A24518190d");
-                    //sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
-                    sender.sendMail("Found Item", "You have an item that someone lost.","lostfoundee32f@gmail.com","frodo1642@gmail.com");
-                }
-                catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
-                }
-            }
-        }).start();
     }
 
     @Override
@@ -151,6 +153,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
         userId = intent.getStringExtra(LostFragment.POST_USER_ID);
         userPostId = intent.getStringExtra(LostFragment.POST_USER_ID);
+        userPostEmail = intent.getStringExtra(LostFragment.POST_USER_EMAIL);
         postId = intent.getStringExtra(LostFragment.POST_ID);
         route = intent.getStringExtra(LostFragment.POST_ROUTE);
 
@@ -199,6 +202,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
                 intent.putExtra(POST_USER_ID,userId);
+                intent.putExtra(POST_USER_EMAIL, userPostEmail);
                 startActivity(intent);
             }
             else{

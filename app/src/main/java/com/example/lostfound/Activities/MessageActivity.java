@@ -36,17 +36,17 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private EditText edittext_chatbox;
     private Button button_chatbox_send;
 
-    private String userId, messageUserId, messageId;
+    private String userId, postUserEmail, messageUserId, messageId;
 
     private List<Message> messageList;
 
-    void addNotification(){
+    void addNotification(final String email){
         new Thread(new Runnable() {
             public void run() {
                 try {
                     GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A24518190d");
                     //sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
-                    sender.sendMail("New message", "You have received a new message from someone.","lostfoundee32f@gmail.com","frodo1642@gmail.com");
+                    sender.sendMail("New message", "You have received a new message from someone.","lostfoundee32f@gmail.com",email);
                 }
                 catch (Exception e) {
                     Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
@@ -70,9 +70,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         Intent intent = getIntent();
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        userId = user.getUid();
+        userId = firebaseAuth.getCurrentUser().getUid();
         messageUserId = intent.getStringExtra(ProfileViewActivity.POST_USER_ID);
+        postUserEmail = intent.getStringExtra(PostViewActivity.POST_USER_EMAIL);
 
         messageList = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 if (messageId == null){
-                    addNotification();
+                    addNotification(postUserEmail);
                     String key = databaseReference.push().getKey();
                     databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/CHAT/");
                     databaseReference.child(messageUserId).setValue(key);

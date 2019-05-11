@@ -71,8 +71,7 @@ public class MessageViewActivity extends AppCompatActivity {
 
         searchView = (SearchView) findViewById(R.id.searchView);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        userId = user.getUid();
+        userId = firebaseAuth.getCurrentUser().getUid();
 
         messageUsers = new ArrayList<>();
         messageIds = new ArrayList<>();

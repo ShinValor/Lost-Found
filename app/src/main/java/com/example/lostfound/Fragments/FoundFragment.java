@@ -42,6 +42,7 @@ public class FoundFragment extends Fragment{
                                POST_PHONE_NUMBER = "com.example.lostfound.postphonenumber",
                                POST_ID = "com.example.lostfound.postid",
                                POST_USER_ID = "com.example.lostfound.postuserid",
+                               POST_USER_EMAIL = "com.example.lostfound.postuseremail",
                                POST_ROUTE = "com.example.lostfound.postpage";
 
     public FoundFragment(){
@@ -98,14 +99,15 @@ public class FoundFragment extends Fragment{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Post Post = postList.get(i);
+                Post post = postList.get(i);
                 Intent intent = new Intent(getActivity().getApplicationContext(), PostViewActivity.class);
-                intent.putExtra(POST_USER, Post.getUser());
-                intent.putExtra(POST_TITLE, Post.getTitle());
-                intent.putExtra(POST_DESCRIPTION, Post.getDescription());
-                intent.putExtra(POST_PHONE_NUMBER, Post.getPhoneNum());
-                intent.putExtra(POST_ID, Post.getPostId());
-                intent.putExtra(POST_USER_ID, Post.getUserId());
+                intent.putExtra(POST_USER, post.getUser());
+                intent.putExtra(POST_TITLE, post.getTitle());
+                intent.putExtra(POST_DESCRIPTION, post.getDescription());
+                intent.putExtra(POST_PHONE_NUMBER, post.getPhoneNum());
+                intent.putExtra(POST_ID, post.getPostId());
+                intent.putExtra(POST_USER_ID, post.getUserId());
+                intent.putExtra(POST_USER_EMAIL, post.getEmail());
                 intent.putExtra(POST_ROUTE, "FOUND");
                 startActivity(intent);
             }

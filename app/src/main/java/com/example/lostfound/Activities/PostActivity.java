@@ -119,6 +119,36 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    private void cameraUpload(final String path) {
+        // Get the data from an ImageView as bytes
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(PostActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!urlTask.isSuccessful());
+                Uri downloadUrl = urlTask.getResult();
+                Upload upload = new Upload(downloadUrl.toString());
+                databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
+                databaseReference.child("IMAGE").setValue(upload);
+
+            }
+        });
+    }
+
     private void uploadFile(final String path) {
         if (imageUri != null) {
             StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -160,40 +190,10 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void cameraUpload(final String path) {
-        // Get the data from an ImageView as bytes
-        imageView.setDrawingCacheEnabled(true);
-        imageView.buildDrawingCache();
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = storageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(PostActivity.this, "Upload failed", Toast.LENGTH_LONG).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!urlTask.isSuccessful());
-                Uri downloadUrl = urlTask.getResult();
-                Upload upload = new Upload(downloadUrl.toString());
-                databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
-                databaseReference.child("IMAGE").setValue(upload);
-
-            }
-        });
-    }
-
     private void onPost(){
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        final String userId = user.getUid();
+        final String userId = firebaseAuth.getCurrentUser().getUid();
+        final String userEmail = firebaseAuth.getCurrentUser().getEmail();
 
         final String title = editTextTitle.getText().toString().trim();
         final String desc = editTextDescription.getText().toString().trim();
@@ -206,9 +206,9 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                     if (postSnapshot.getKey().equals(userId)) {
                         String postUID = databaseReference.push().getKey();
                         User user = postSnapshot.child("INFO").getValue(User.class);
-                        Post Post = new Post(user.getName(),title,desc,user.getPhoneNum(),userId,postUID);
+                        Post post = new Post(user.getName(),title,desc,user.getPhoneNum(),userId,postUID,userEmail);
                         databaseReference = FirebaseDatabase.getInstance().getReference("/" + route);
-                        databaseReference.child(postUID).child("INFO").setValue(Post);
+                        databaseReference.child(postUID).child("INFO").setValue(post);
                         uploadFile(postUID);
                     }
                 }
@@ -253,11 +253,9 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view == buttonPost){
             onPost();
-            //finish();
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonCancel){
-            //finish();
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonCamera){

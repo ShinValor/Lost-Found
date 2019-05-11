@@ -5,9 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.util.Log;
 
+import com.example.lostfound.Classes.Message;
 import com.example.lostfound.R;
 import com.example.lostfound.Classes.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.ValueEventListener;
@@ -20,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MessageViewAdapter extends ArrayAdapter<String> {
 
+    private FirebaseAuth firebaseAuth;
+
     private DatabaseReference databaseReference;
 
     private AppCompatActivity context;
@@ -27,6 +33,8 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
     private List<String> messageIds, messageUsers;
 
     private TextView textViewUser, textViewMessage;
+
+    private String messageId;
 
     public MessageViewAdapter(AppCompatActivity context, List<String> messageUsers){
         super(context, R.layout.layout_message_card,messageUsers);
@@ -47,13 +55,46 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
 
         String messageUser = messageUsers.get(position);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUser);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child("INFO").getValue(User.class);
                 textViewUser.setText(user.getName());
-                textViewMessage.setText("New Messages");
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUser + "/CHAT/");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userId = firebaseAuth.getCurrentUser().getUid();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String findUser = postSnapshot.getKey();
+                    if (userId.equals(findUser)){
+                        messageId = postSnapshot.getValue(String.class);
+                    }
+                    databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/" + messageId);
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Message message = postSnapshot.getValue(Message.class);
+                                textViewMessage.setText(message.getText());
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

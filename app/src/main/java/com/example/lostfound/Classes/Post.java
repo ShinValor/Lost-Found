@@ -2,19 +2,20 @@ package com.example.lostfound.Classes;
 
 public class Post {
 
-    private String title, user, description, phoneNum, userId, postId;
+    private String title, user, description, phoneNum, userId, postId, email;
 
     public Post(){
 
     }
 
-    public Post(String user, String title, String description, String phoneNum, String userId, String postId) {
+    public Post(String user, String title, String description, String phoneNum, String userId, String postId, String email) {
         this.user = user;
         this.title = title;
         this.description = description;
         this.phoneNum = phoneNum;
         this.userId = userId;
         this.postId = postId;
+        this.email = email;
     }
 
     public String getUser(){
@@ -41,5 +42,8 @@ public class Post {
         return this.postId;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
 }
 
