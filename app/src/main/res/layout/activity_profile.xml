@@ -14,6 +14,13 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/back" />
+
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageView"
             android:layout_width="300dp"
@@ -21,7 +28,7 @@
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            app:srcCompat="@drawable/lost_found_avatar" />
+            app:srcCompat="@drawable/avatar" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -48,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take a picture"
+            android:text="Open Camera"
             app:strokeColor="@color/button"
             app:strokeWidth="2dp"/>
 

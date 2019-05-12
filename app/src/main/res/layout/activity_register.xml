@@ -22,7 +22,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="12dp"
-            app:srcCompat="@drawable/lost_found_logo" />
+            app:srcCompat="@drawable/logo" />
 
         <TextView
             android:layout_width="wrap_content"

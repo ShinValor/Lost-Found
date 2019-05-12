@@ -16,5 +16,8 @@
             android:title="Your Requests" />
         <item
             android:id="@+id/navigation_item_6"
+            android:title="History" />
+        <item
+            android:id="@+id/navigation_item_7"
             android:title="Logout" />
 </menu>

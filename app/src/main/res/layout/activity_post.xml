@@ -12,17 +12,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/back" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center|bottom"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center|top"
                 android:hint="@string/hint_title"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -34,7 +41,7 @@
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/lost_found_picture" />
+            app:srcCompat="@drawable/post_picture" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -61,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Take a picture"
+            android:text="Open Camera"
             app:strokeColor="@color/button"
             app:strokeWidth="2dp"/>
 

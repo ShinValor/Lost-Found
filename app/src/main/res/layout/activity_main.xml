@@ -11,8 +11,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:openDrawer="start">
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,6 +19,10 @@
             android:orientation="vertical">
 
             <!--
+
+
+        tools:openDrawer="start"
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -30,7 +33,7 @@
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/lost_found_logo"/>
+                    app:srcCompat="@drawable/logo"/>
 
             </RelativeLayout>
             -->
@@ -89,12 +92,13 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/buttonCreate"
-                app:srcCompat="@drawable/lost_found_plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_anchor="@+id/bottomAppBar"
                 app:maxImageSize="56dp"
                 app:fabSize="normal"
-                app:layout_anchor="@+id/bottomAppBar" />
+                app:srcCompat="@drawable/plus"
+                android:backgroundTint="@color/tabTextColor"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -103,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:headerLayout="@layout/layout_navigation_header"
+            app:headerLayout="@layout/navigation_header"
             app:menu="@menu/navigation_items" />
 
     </androidx.drawerlayout.widget.DrawerLayout>

@@ -22,7 +22,7 @@ public class MessageAdapter extends ArrayAdapter<Message>  {
     private TextView textViewUser, textViewMessage;
 
     public MessageAdapter(AppCompatActivity context, List<Message> messageList){
-        super(context, R.layout.layout_message_card,messageList);
+        super(context, R.layout.card_message,messageList);
         this.context = context;
         this.messageList = messageList;
     }
@@ -31,7 +31,7 @@ public class MessageAdapter extends ArrayAdapter<Message>  {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = context.getLayoutInflater();
-        View messageView = inflater.inflate(R.layout.layout_message_card, null, true);
+        View messageView = inflater.inflate(R.layout.card_message, null, true);
 
         textViewUser = (TextView) messageView.findViewById(R.id.textViewUser);
         textViewMessage = (TextView) messageView.findViewById(R.id.textViewMessage);

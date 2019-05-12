@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="90dp"
+    android:paddingTop="80dp"
     android:background="@color/appBar">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Navigation View"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="16dp"
+        android:text="Setting"
         android:textSize="30dp"
         android:textColor="@color/tabTextColor" />
 

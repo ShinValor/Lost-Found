@@ -100,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //startActivity(new Intent(context, RequestActivity.class));
                         return true;
                     case R.id.navigation_item_6:
+                        //startActivity(new Intent(context, RequestActivity.class));
+                        return true;
+                    case R.id.navigation_item_7:
                         firebaseAuth.signOut();
                         finish();
                         startActivity(new Intent(context, LoginActivity.class));

@@ -69,19 +69,19 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void ShowPopup(View view) {
-        myDialog.setContentView(R.layout.layout_popup);
+        myDialog.setContentView(R.layout.pop_up);
 
-        TextView textViewClose;
+        ImageView imageViewClose;
         final TextInputEditText editTextQuestion1, editTextQuestion2, editTextQuestion3;
         Button buttonSubmit;
 
-        textViewClose = (TextView) myDialog.findViewById(R.id.textViewClose);
+        imageViewClose = (ImageView) myDialog.findViewById(R.id.imageViewClose);
         editTextQuestion1 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion1);
         editTextQuestion2 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion2);
         editTextQuestion3 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion3);
         buttonSubmit = (Button) myDialog.findViewById(R.id.buttonSubmit);
 
-        textViewClose.setOnClickListener(new View.OnClickListener() {
+        imageViewClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 myDialog.dismiss();
@@ -170,7 +170,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     protected void onStart() {
         super.onStart();
         databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + postId + "/IMAGE");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
@@ -183,7 +183,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/IMAGE");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);

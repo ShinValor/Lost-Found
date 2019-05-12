@@ -83,7 +83,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
         super.onStart();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child("INFO").getValue(User.class);
