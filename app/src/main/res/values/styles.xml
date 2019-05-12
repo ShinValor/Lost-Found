@@ -11,13 +11,6 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
     </style>
 
-    <!-- The launcher theme. It sets the main window background to the lost_found_splash drawable -->
-    <style name="LostFoundTheme.Launcher">
-        <item name="android:windowBackground"> @drawable/lost_found_splash</item>
-        <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
-        <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
-    </style>
-
     <style name="Widget.LostFound.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="hintTextAppearance">@style/TextAppearance.LostFound.TextInputLayout.HintText</item>
         <item name="android:paddingBottom">8dp</item>

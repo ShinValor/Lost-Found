@@ -93,8 +93,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUserId + "/CHAT/");
                     databaseReference.child(userId).setValue(key);
                     databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/");
-                    databaseReference.child(key).setValue(false);
+                    messageId = key;
                 }
+
                 databaseReference = FirebaseDatabase.getInstance().getReference("/MESSAGES/" + messageId);
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override

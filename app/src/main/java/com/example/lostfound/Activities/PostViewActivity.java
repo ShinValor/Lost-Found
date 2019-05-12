@@ -95,7 +95,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
                 String school = editTextQuestion2.getText().toString().trim();
                 String id = editTextQuestion3.getText().toString().trim();
 
-                final SecurityQuestions security = new SecurityQuestions(name,school,id);
+                final SecurityQuestions security = new SecurityQuestions(name,school,id, postId);
 
                 databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -103,7 +103,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         addNotification(userPostEmail);
                         myDialog.dismiss();
-                        databaseReference.child("TRACK").push().setValue(security);
+                        databaseReference.child("TRACK").child(postId).setValue(security);
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -212,7 +212,6 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         else if (view == buttonTrack){
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 ShowPopup(view);
-                //startActivity(new Intent(this, MapActivity.class));
             }
             else{
                 Toast.makeText(context,"You can not track yourself.",Toast.LENGTH_LONG).show();

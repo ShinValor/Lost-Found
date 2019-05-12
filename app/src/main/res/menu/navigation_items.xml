@@ -10,5 +10,11 @@
             android:title="Requests" />
         <item
             android:id="@+id/navigation_item_4"
+            android:title="Your Posts" />
+        <item
+            android:id="@+id/navigation_item_5"
+            android:title="Your Requests" />
+        <item
+            android:id="@+id/navigation_item_6"
             android:title="Logout" />
 </menu>

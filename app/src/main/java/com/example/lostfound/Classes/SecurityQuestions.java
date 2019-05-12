@@ -2,16 +2,17 @@ package com.example.lostfound.Classes;
 
 public class SecurityQuestions {
 
-    private String name, school, id;
+    private String name, school, id, postId;
 
     public SecurityQuestions(){
 
     }
 
-    public SecurityQuestions(String name, String school, String id){
+    public SecurityQuestions(String name, String school, String id, String postId){
         this.name = name;
         this.school = school;
         this.id = id;
+        this.postId = postId;
     }
 
     public String getName(){
@@ -24,5 +25,9 @@ public class SecurityQuestions {
 
     public String getId(){
         return this.id;
+    }
+
+    public String getPostId(){
+        return this.postId;
     }
 }
