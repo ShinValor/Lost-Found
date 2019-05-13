@@ -16,18 +16,19 @@
 
         <ImageView
             android:id="@+id/imageViewBack"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="5dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
             android:src="@drawable/back" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageView"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_above="@id/progress_bar"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
+            android:layout_margin="5dp"
             app:srcCompat="@drawable/avatar" />
 
         <ProgressBar
@@ -35,34 +36,37 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_above="@+id/button_upload"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="5dp" />
 
         <Button
             android:id="@+id/button_choose_image"
             style="@style/Widget.LostFound.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:text="Choose file"
             app:strokeColor="@color/button"
-            app:strokeWidth="2dp"/>
+            app:strokeWidth="1dp"/>
 
         <Button
             android:id="@+id/buttonCamera"
             style="@style/Widget.LostFound.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:text="Open Camera"
             app:strokeColor="@color/button"
-            app:strokeWidth="2dp"/>
+            app:strokeWidth="1dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextName"
@@ -76,7 +80,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextSchool"
@@ -89,7 +94,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextId"
@@ -102,7 +108,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextPhoneNum"
@@ -117,10 +124,10 @@
             style="@style/Widget.LostFound.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:text="Save Information"
             app:strokeColor="@color/button"
-            app:strokeWidth="2dp"/>
+            app:strokeWidth="1dp"/>
 
     </LinearLayout>
 
