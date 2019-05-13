@@ -68,64 +68,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
-        setContentView(R.layout.activity_profile);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        if (firebaseAuth.getCurrentUser() == null){
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        imageView = (ImageView) findViewById(R.id.imageView);
-
-        editTextName = (TextInputEditText) findViewById(R.id.editTextName);
-        editTextSchool = (TextInputEditText) findViewById(R.id.editTextSchool);
-        editTextId = (TextInputEditText) findViewById(R.id.editTextId);
-        editTextPhoneNum = (TextInputEditText) findViewById(R.id.editTextPhoneNum);
-
-        buttonSave = (Button) findViewById(R.id.buttonSave);
-        buttonCamera = (Button) this.findViewById(R.id.buttonCamera);
-        buttonChooseImage = (Button) findViewById(R.id.button_choose_image);
-
-        progressBar = findViewById(R.id.progress_bar);
-
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        userId = user.getUid();
-
-        buttonSave.setOnClickListener(this);
-        buttonCamera.setOnClickListener(this);
-        buttonChooseImage.setOnClickListener(this);
-
-        storageRef = FirebaseStorage.getInstance().getReference("/Profile");
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child("INFO").getValue(User.class);
-                if (user != null){
-                    editTextName.setText(user.getName());
-                    editTextPhoneNum.setText(user.getPhoneNum());
-                    editTextId.setText(user.getId());
-                    editTextSchool.setText(user.getSchool());
-                    imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
-                    Picasso.get().load(imageUrl).resize(300,300).into(imageView);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -234,6 +176,64 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/");
         databaseReference.child(currUser.getUid().toString()).child("INFO").setValue(user);
         Toast.makeText(this, "Information Saved...", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
+        setContentView(R.layout.activity_profile);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if (firebaseAuth.getCurrentUser() == null){
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        imageView = (ImageView) findViewById(R.id.imageView);
+
+        editTextName = (TextInputEditText) findViewById(R.id.editTextName);
+        editTextSchool = (TextInputEditText) findViewById(R.id.editTextSchool);
+        editTextId = (TextInputEditText) findViewById(R.id.editTextId);
+        editTextPhoneNum = (TextInputEditText) findViewById(R.id.editTextPhoneNum);
+
+        buttonSave = (Button) findViewById(R.id.buttonSave);
+        buttonCamera = (Button) this.findViewById(R.id.buttonCamera);
+        buttonChooseImage = (Button) findViewById(R.id.button_choose_image);
+
+        progressBar = findViewById(R.id.progress_bar);
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        userId = user.getUid();
+
+        buttonSave.setOnClickListener(this);
+        buttonCamera.setOnClickListener(this);
+        buttonChooseImage.setOnClickListener(this);
+
+        storageRef = FirebaseStorage.getInstance().getReference("/Profile");
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.child("INFO").getValue(User.class);
+                if (user != null){
+                    editTextName.setText(user.getName());
+                    editTextPhoneNum.setText(user.getPhoneNum());
+                    editTextId.setText(user.getId());
+                    editTextSchool.setText(user.getSchool());
+                    imageUrl = dataSnapshot.child("IMAGE").child("imageUrl").getValue(String.class);
+                    Picasso.get().load(imageUrl).resize(300,300).into(imageView);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

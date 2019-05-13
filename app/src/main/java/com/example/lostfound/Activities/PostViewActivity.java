@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.Bitmap;
 
 import com.example.lostfound.Fragments.LostFragment;
 import com.example.lostfound.Classes.GMailSender;
@@ -27,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.squareup.picasso.Picasso;
+import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,7 +43,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     private TextView textViewUser;
     private Button buttonCall, buttonMessage, buttonTrack;
 
-    Dialog myDialog;
+    private Dialog myDialog;
 
     private String userId, userPostId, userPostEmail, postId, route, imageUrl;
 
@@ -73,12 +75,15 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
         ImageView imageViewClose;
         final TextInputEditText editTextQuestion1, editTextQuestion2, editTextQuestion3;
-        Button buttonSubmit;
+        Button buttonCamera, buttonSubmit;
 
         imageViewClose = (ImageView) myDialog.findViewById(R.id.imageViewClose);
+
         editTextQuestion1 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion1);
         editTextQuestion2 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion2);
         editTextQuestion3 = (TextInputEditText) myDialog.findViewById(R.id.editTextQuestion3);
+
+        buttonCamera = (Button) myDialog.findViewById(R.id.buttonCamera);
         buttonSubmit = (Button) myDialog.findViewById(R.id.buttonSubmit);
 
         imageViewClose.setOnClickListener(new View.OnClickListener() {
@@ -91,11 +96,35 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // Camera
+
                 String name = editTextQuestion1.getText().toString().trim();
                 String school = editTextQuestion2.getText().toString().trim();
                 String id = editTextQuestion3.getText().toString().trim();
 
+                final SignaturePad signaturePad = (SignaturePad) myDialog.findViewById(R.id.signature_pad);
+
                 final SecurityQuestions security = new SecurityQuestions(name,school,id, postId);
+
+                signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+
+                    @Override
+                    public void onStartSigning() {
+                        //Event triggered when the pad is touched
+                    }
+
+                    @Override
+                    public void onSigned() {
+                        //Event triggered when the pad is signed
+                        Bitmap bitmap = signaturePad.getSignatureBitmap();
+                    }
+
+                    @Override
+                    public void onClear() {
+                        //Event triggered when the pad is cleared
+                    }
+                });
 
                 databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
