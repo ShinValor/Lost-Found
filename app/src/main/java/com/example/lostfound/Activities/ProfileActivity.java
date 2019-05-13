@@ -7,23 +7,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import com.example.lostfound.R;
 import com.example.lostfound.Classes.Upload;
 import com.example.lostfound.Classes.User;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -179,6 +179,34 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+            else {
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            Picasso.get().load(imageUri).resize(300,300).into(imageView);
+        }
+        else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.abc_fade_in,R.anim.abc_fade_out);
@@ -234,34 +262,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-            else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            Picasso.get().load(imageUri).resize(300,300).into(imageView);
-        }
-        else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK){
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-        }
     }
 
     @Override

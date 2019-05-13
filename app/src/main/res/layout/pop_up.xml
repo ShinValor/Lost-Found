@@ -27,7 +27,7 @@
         android:gravity="center"/>
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/imageViewCard"
         android:layout_width="300dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
@@ -95,16 +95,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
+        android:id="@+id/signature_pad_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/signature_pad_container">
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginBottom="4dp"
-            android:layout_above="@+id/signature_pad_description" />
+            android:layout_above="@+id/signature_pad_description"
+            android:background="@android:color/darker_gray"/>
 
         <com.github.gcacace.signaturepad.views.SignaturePad
             android:id="@+id/signature_pad"
