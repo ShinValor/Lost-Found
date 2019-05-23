@@ -9,13 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
 
-        <!--
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
-        -->
-
         <TextView
             android:id="@+id/textViewTitle"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"

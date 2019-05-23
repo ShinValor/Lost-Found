@@ -20,14 +20,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.lostfound.Classes.Post;
-import com.example.lostfound.R;
 import com.example.lostfound.Classes.Upload;
 import com.example.lostfound.Classes.User;
+import com.example.lostfound.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +45,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PostActivity extends AppCompatActivity implements View.OnClickListener {
+
+    // Declare variables
 
     private FirebaseAuth firebaseAuth;
 
@@ -75,6 +76,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // If user not login in, return to login activity
         if (firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
@@ -98,14 +100,17 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
         progressBar = findViewById(R.id.progress_bar);
 
+        // Set listeners
         buttonPost.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
         buttonCamera.setOnClickListener(this);
         buttonChooseImage.setOnClickListener(this);
 
+        // Set storage
         storageRef = FirebaseStorage.getInstance().getReference("/Post");
     }
 
+    // Open file to choose image
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -113,12 +118,14 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    // Getting the extenions of the file
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    // Uploading image to firebase and store it in firestore through camera
     private void cameraUpload(final String path) {
         // Get the data from an ImageView as bytes
         imageView.setDrawingCacheEnabled(true);
@@ -140,6 +147,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                 while (!urlTask.isSuccessful());
+                // Setting image url to firebase
                 Uri downloadUrl = urlTask.getResult();
                 Upload upload = new Upload(downloadUrl.toString());
                 databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
@@ -149,6 +157,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    // Uploading image to firebase and store it in firestore through image gallery
     private void uploadFile(final String path) {
         if (imageUri != null) {
             StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -165,6 +174,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(PostActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
                     Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                     while (!urlTask.isSuccessful());
+                    // Setting image url to firebase
                     Uri downloadUrl = urlTask.getResult();
                     Upload upload = new Upload(downloadUrl.toString());
                     databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + path);
@@ -190,6 +200,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Post
     private void onPost(){
         firebaseAuth = FirebaseAuth.getInstance();
         final String userId = firebaseAuth.getCurrentUser().getUid();
@@ -198,12 +209,14 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         final String title = editTextTitle.getText().toString().trim();
         final String desc = editTextDescription.getText().toString().trim();
 
+        // Settiing post information into firebase
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     if (postSnapshot.getKey().equals(userId)) {
+                        // Upload to firebase
                         String postUID = databaseReference.push().getKey();
                         User user = postSnapshot.child("INFO").getValue(User.class);
                         Post post = new Post(user.getName(),title,desc,user.getPhoneNum(),userId,postUID,userEmail);
@@ -220,6 +233,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    // Request permission for camera
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -235,6 +249,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Request permission for camera
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -252,14 +267,17 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == buttonPost){
+            // Post
             onPost();
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonCancel){
+            // Cancel the post
             startActivity(new Intent(this, MainActivity.class));
         }
         else if (view == buttonCamera){
+            // Open phone camera
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
             }
@@ -269,6 +287,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else if (view == buttonChooseImage){
+            // Open image gallery on your phone
             openFileChooser();
         }
     }

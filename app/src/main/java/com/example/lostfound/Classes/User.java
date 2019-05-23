@@ -1,5 +1,7 @@
 package com.example.lostfound.Classes;
 
+// User class to hold user's information e.g. name, school, id, email. phone number
+
 public class User {
 
     private String name, school, id, email, phoneNum;

@@ -1,5 +1,7 @@
 package com.example.lostfound.Classes;
 
+// Security class to hold security questions e.g. name, school, id ...
+
 public class SecurityQuestions {
 
     private String name, school, id, postId;

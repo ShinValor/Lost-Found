@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.lostfound.R;
 import com.example.lostfound.Classes.User;
+import com.example.lostfound.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +21,8 @@ import com.squareup.picasso.Picasso;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileViewActivity extends AppCompatActivity implements View.OnClickListener {
+
+    // Declare variables
 
     private FirebaseAuth firebaseAuth;
 
@@ -45,6 +47,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // If user not login in, return to login activity
         if (firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
@@ -52,6 +55,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
 
         Intent intent = getIntent();
 
+        // Initialize
         imageView = (ImageView) findViewById(R.id.imageView);
         textViewUser = (TextView) findViewById(R.id.textViewUser);
         textViewSchool = (TextView) findViewById(R.id.textViewSchool);
@@ -60,6 +64,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
 
         userId = intent.getStringExtra(PostViewActivity.POST_PROFILE);
 
+        // Set listeners
         buttonCall.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -82,6 +87,7 @@ public class ProfileViewActivity extends AppCompatActivity implements View.OnCli
     protected void onStart() {
         super.onStart();
 
+        // Populate user information including image
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

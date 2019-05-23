@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/launcher_round"
         android:supportsRtl="true"
         android:theme="@style/LostFoundTheme">
-        <activity android:name=".Activities.RequestActivity"></activity>
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.RegisterActivity">
             <intent-filter>

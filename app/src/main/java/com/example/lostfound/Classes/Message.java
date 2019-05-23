@@ -2,6 +2,8 @@ package com.example.lostfound.Classes;
 
 import java.util.Date;
 
+// Message class; holds data of one message
+
 public class Message {
 
     public Message() {

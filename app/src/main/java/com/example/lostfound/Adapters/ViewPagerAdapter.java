@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter{
 
+    // Declare Variables
+
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentListTitles = new ArrayList<>();
 
@@ -33,6 +35,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter{
     }
 
     public void addFragment(Fragment fragment, String title){
+        // add fragment to the list
         fragmentList.add(fragment);
         fragmentListTitles.add(title);
     }

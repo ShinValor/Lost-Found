@@ -3,6 +3,8 @@ package com.example.lostfound.Classes;
 import java.security.AccessController;
 import java.security.Provider;
 
+// Imported code; used for sending email to user gmail
+
 public final class JSSEProvider extends Provider {
 
     public JSSEProvider() {

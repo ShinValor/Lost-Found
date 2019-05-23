@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.lostfound.Adapters.ViewPagerAdapter;
 import com.example.lostfound.Fragments.FoundFragment;
 import com.example.lostfound.Fragments.LostFragment;
 import com.example.lostfound.R;
-import com.example.lostfound.Adapters.ViewPagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -25,6 +25,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    // Declare variables
 
     private FirebaseAuth firebaseAuth;
 
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, LoginActivity.class));
         }
 
+        // Initialize
         searchView = (SearchView) findViewById(R.id.searchView);
         buttonCreate = (FloatingActionButton) findViewById(R.id.buttonCreate);
 
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         navigationView = (NavigationView)findViewById(R.id.navigation);
 
+        // Set drawer
         setSupportActionBar(toolbar);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.Open,R.string.Close);
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         actionBarDrawerToggle.syncState();
 
+        // Listen to the navigation view, and switch activity based which one clicked
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -91,18 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(new Intent(context, MessageViewActivity.class));
                         return true;
                     case R.id.navigation_item_3:
-                        startActivity(new Intent(context, RequestActivity.class));
-                        return true;
-                    case R.id.navigation_item_4:
-                        //startActivity(new Intent(context, RequestActivity.class));
-                        return true;
-                    case R.id.navigation_item_5:
-                        //startActivity(new Intent(context, RequestActivity.class));
-                        return true;
-                    case R.id.navigation_item_6:
-                        //startActivity(new Intent(context, RequestActivity.class));
-                        return true;
-                    case R.id.navigation_item_7:
+                        // Log out
                         firebaseAuth.signOut();
                         finish();
                         startActivity(new Intent(context, LoginActivity.class));
@@ -113,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // Listen to search and populate the searched item
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -130,19 +125,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        /*
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                return false;
-            }
-        });
-        */
-
         buttonCreate.setOnClickListener(this);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+        // Add fragments
         adapter.addFragment(lostFrag,"Lost");
         adapter.addFragment(foundFrag,"Found");
 
@@ -162,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == buttonCreate){
+            // Create post
             Intent intent = new Intent(this, PostActivity.class);
             if (viewPager.getCurrentItem() == 0){
                 intent.putExtra(POST_ROUTE, "LOST");

@@ -1,22 +1,24 @@
 package com.example.lostfound.Classes;
 
+// Upload class to hold image url
+
 public class Upload {
 
-    private String mImageUrl;
+    private String imageUrl;
 
     public Upload() {
 
     }
 
     public Upload(String imageUrl) {
-        mImageUrl = imageUrl;
+        this.imageUrl = imageUrl;
     }
 
     public String getImageUrl() {
-        return mImageUrl;
+        return this.imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
-        mImageUrl = imageUrl;
+        this.imageUrl = imageUrl;
     }
 }

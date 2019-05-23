@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.lostfound.Classes.Post;
-import com.example.lostfound.Adapters.PostAdapter;
 import com.example.lostfound.Activities.PostViewActivity;
+import com.example.lostfound.Adapters.PostAdapter;
+import com.example.lostfound.Classes.Post;
 import com.example.lostfound.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

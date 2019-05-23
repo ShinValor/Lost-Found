@@ -109,7 +109,3 @@
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>
-
-<!--
-app:errorEnabled="true"
--->

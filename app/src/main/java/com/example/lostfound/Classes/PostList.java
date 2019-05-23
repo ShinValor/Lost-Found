@@ -5,6 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.lostfound.R;
+
+import java.util.List;
+
+import androidx.fragment.app.FragmentActivity;
+
 /*
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,24 +19,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 */
-import com.example.lostfound.R;
-
-import java.util.List;
-
-import androidx.fragment.app.FragmentActivity;
 
 
 public class PostList extends ArrayAdapter<Post> {
 
-    //private DatabaseReference databaseReference;
+    // Declare variable
 
     private FragmentActivity context;
 
     private List<Post> postList;
 
-    //private ImageView imageView;
     private TextView textViewTitle, textViewDescription;
 
+    // Pass post list
     public PostList(FragmentActivity context, List<Post> postList){
         super(context, R.layout.card_post,postList);
         this.context = context;
@@ -42,7 +44,7 @@ public class PostList extends ArrayAdapter<Post> {
 
         View view = inflater.inflate(R.layout.card_post, null, true);
 
-        //imageView = (ImageView) view.findViewById(R.id.imageView);
+        // Initialize
         textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);
         textViewDescription = (TextView)view.findViewById(R.id.textViewDescription);
 
@@ -52,21 +54,7 @@ public class PostList extends ArrayAdapter<Post> {
 
         String userId = post.getUserId();
 
-        /*
-        databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/IMAGE");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                Picasso.get().load(imageUrl).resize(100,100).into(imageView);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        */
-
+        // Set title and description to textView
         textViewTitle.setText(post.getTitle());
         textViewDescription.setText(post.getDescription());
 

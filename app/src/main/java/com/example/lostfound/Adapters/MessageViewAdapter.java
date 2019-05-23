@@ -7,20 +7,22 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.lostfound.Classes.Message;
-import com.example.lostfound.R;
 import com.example.lostfound.Classes.User;
+import com.example.lostfound.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MessageViewAdapter extends ArrayAdapter<String> {
+
+    // Declare variable
 
     private FirebaseAuth firebaseAuth;
 
@@ -34,6 +36,7 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
 
     private String messageId;
 
+    // Pass in message list
     public MessageViewAdapter(AppCompatActivity context, List<String> messageUsers){
         super(context, R.layout.card_message,messageUsers);
         this.context = context;
@@ -42,10 +45,10 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         LayoutInflater inflater = context.getLayoutInflater();
         View messageView = inflater.inflate(R.layout.card_message, null, true);
 
+        // Initialize
         textViewUser = (TextView) messageView.findViewById(R.id.textViewUser);
         textViewMessage = (TextView) messageView.findViewById(R.id.textViewMessage);
 
@@ -55,6 +58,7 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // Get the user name who sent the message
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUser);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -68,6 +72,7 @@ public class MessageViewAdapter extends ArrayAdapter<String> {
             }
         });
 
+        // Get the message
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + messageUser + "/CHAT/");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -7,23 +7,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.net.Uri;
-import android.webkit.MimeTypeMap;
 
-import com.example.lostfound.R;
 import com.example.lostfound.Classes.Upload;
 import com.example.lostfound.Classes.User;
-import com.google.android.gms.tasks.Task;
+import com.example.lostfound.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,6 +45,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+
+    // Declare my variables
 
     private FirebaseAuth firebaseAuth;
 
@@ -68,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
+
+    // Open photo gallery
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -75,12 +79,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    // Get file extension
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    // Uploading image to firebase and store it in firestore through camera
     private void cameraUpload(final String path) {
         // Get the data from an ImageView as bytes
         imageView.setDrawingCacheEnabled(true);
@@ -111,6 +117,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    // Uploading image to firebase and store it in firestore through image gallery
     private void uploadFile(final String path) {
         if (imageUri != null) {
             StorageReference fileReference = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
@@ -133,8 +140,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                             Upload upload = new Upload(downloadUrl.toString());
                             databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + path);
                             databaseReference.child("IMAGE").setValue(upload);
-
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -156,6 +161,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // Save user profile picture to firebase
     private void saveProfilePic(){
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -163,6 +169,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         uploadFile(userId);
     }
 
+    // Save user information to firebase
     private void saveUser(){
         FirebaseUser currUser = firebaseAuth.getCurrentUser();
 
@@ -178,6 +185,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Toast.makeText(this, "Information Saved...", Toast.LENGTH_LONG).show();
     }
 
+    // Request user permission for camera
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -193,6 +201,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // Request user permission for camera
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -206,6 +215,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,6 +224,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // If user not login in, return to login activity
         if (firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
@@ -221,6 +232,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        // Initialize
         imageView = (ImageView) findViewById(R.id.imageView);
 
         editTextName = (TextInputEditText) findViewById(R.id.editTextName);
@@ -237,12 +249,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
 
+        // Set listeners
         buttonSave.setOnClickListener(this);
         buttonCamera.setOnClickListener(this);
         buttonChooseImage.setOnClickListener(this);
 
+        // Initialize firestore
         storageRef = FirebaseStorage.getInstance().getReference("/Profile");
 
+        // Populate user information if it is there
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -267,10 +282,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view == buttonSave){
+            // Save user information
             saveProfilePic();
             saveUser();
         }
         else if (view == buttonCamera){
+            // Open camera to take picture
             if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
             }
@@ -280,6 +297,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
         else if (view == buttonChooseImage){
+            // Open photo gallery to choose image
             openFileChooser();
         }
     }

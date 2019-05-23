@@ -7,17 +7,5 @@
             android:title="Messages" />
         <item
             android:id="@+id/navigation_item_3"
-            android:title="Requests" />
-        <item
-            android:id="@+id/navigation_item_4"
-            android:title="Your Posts" />
-        <item
-            android:id="@+id/navigation_item_5"
-            android:title="Your Requests" />
-        <item
-            android:id="@+id/navigation_item_6"
-            android:title="History" />
-        <item
-            android:id="@+id/navigation_item_7"
             android:title="Logout" />
 </menu>

@@ -100,16 +100,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
 
-            <!--
-            <TextView
-                android:id="@+id/textViewResetEmail"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Reset Email" />
-            -->
-
             <TextView
                 android:id="@+id/textViewResetPassword"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
@@ -124,7 +114,3 @@
     </LinearLayout>
 
 </ScrollView>
-
-<!--
-app:errorEnabled="true"
--->

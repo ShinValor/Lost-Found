@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentActivity;
 
 public class PostAdapter extends ArrayAdapter<Post> {
 
+    // Declare variables
+
     private FragmentActivity context;
 
     private List<Post> postList;
@@ -34,6 +36,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         View view = inflater.inflate(R.layout.card_post, null, true);
 
+        // Initialize
         textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);
         textViewDescription = (TextView)view.findViewById(R.id.textViewDescription);
 
@@ -41,6 +44,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         Post post = postList.get(position);
 
+        // Set the title and description to textView
         textViewTitle.setText(post.getTitle());
         textViewDescription.setText(post.getDescription());
 

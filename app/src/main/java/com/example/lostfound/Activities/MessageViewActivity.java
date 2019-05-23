@@ -3,13 +3,12 @@ package com.example.lostfound.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.lostfound.Adapters.MessageViewAdapter;
 import com.example.lostfound.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 public class MessageViewActivity extends AppCompatActivity {
+
+    // Declare variables
 
     private FirebaseAuth firebaseAuth;
 
@@ -39,21 +40,6 @@ public class MessageViewActivity extends AppCompatActivity {
 
     public static final String POST_USER_ID = "com.example.lostfound.postuserid";
 
-    /*
-    public void refreshList(String search){
-
-        List<String> mFinalList = new ArrayList<>();
-
-        for (String p : messageUsers) {
-            if (p.toLowerCase().contains(search.toLowerCase())) {
-                mFinalList.add(p);
-            }
-        }
-        MessageViewAdapter messageViewAdapter = new MessageViewAdapter(MessageViewActivity.this,mFinalList);
-        listView.setAdapter(messageViewAdapter);
-    }
-    */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +48,7 @@ public class MessageViewActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // If user not login in, return to login activity
         if (firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
@@ -88,15 +75,7 @@ public class MessageViewActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                return false;
-            }
-        });
-        */
-
+        // Populate all message history
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/CHAT/");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -116,6 +95,7 @@ public class MessageViewActivity extends AppCompatActivity {
             }
         });
 
+        // Go to a particular message history to message with that user
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

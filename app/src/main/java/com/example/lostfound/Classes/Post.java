@@ -1,5 +1,7 @@
 package com.example.lostfound.Classes;
 
+// Post class to hold a post information e.g. user, title, description ...
+
 public class Post {
 
     private String title, user, description, phoneNum, userId, postId, email;

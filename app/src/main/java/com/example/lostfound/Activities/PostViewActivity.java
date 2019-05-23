@@ -1,71 +1,65 @@
 package com.example.lostfound.Activities;
 
 import android.Manifest;
-import android.content.Intent;
-import android.content.Context;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.view.WindowManager;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.Activity;
-import android.app.Dialog;
-import android.net.Uri;
-import android.webkit.MimeTypeMap;
 
-import com.example.lostfound.Fragments.LostFragment;
 import com.example.lostfound.Classes.GMailSender;
-import com.example.lostfound.R;
 import com.example.lostfound.Classes.SecurityQuestions;
+import com.example.lostfound.Fragments.LostFragment;
+import com.example.lostfound.R;
+import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
-
 import com.squareup.picasso.Picasso;
-import com.github.gcacace.signaturepad.views.SignaturePad;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PostViewActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Declare my variables
+
     private FirebaseAuth firebaseAuth;
 
     private DatabaseReference databaseReference;
+
+    private StorageTask uploadTask;
+    private StorageReference storageRef;
 
     private ImageView imageViewPicture, imageViewProfile, imageViewCard, imageViewClose;
     private TextView textViewUser;
     private TextInputEditText textViewTitle, textViewDescription, editTextQuestion1, editTextQuestion2, editTextQuestion3;
     private Button buttonCall, buttonMessage, buttonTrack, buttonSubmit, buttonCamera;
-    private SignaturePad signaturePad;
 
+    private SignaturePad signaturePad;
     private Dialog myDialog;
 
     private Context context = this;
-
     private Intent intent;
-
     private Uri imageUri;
 
     private String userId, userPostId, userPostEmail, postId, route, imageUrl;
@@ -78,7 +72,9 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
+    // Send email to notify the user that he/she has the item
     void addNotification(final String email){
+        // Create a new thread and send email
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -94,9 +90,11 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         }).start();
     }
 
+    // Pop up for security question
     public void ShowPopup(View view) {
         myDialog.setContentView(R.layout.pop_up);
 
+        // Initialize
         imageViewClose = (ImageView) myDialog.findViewById(R.id.imageViewClose);
         imageViewCard = (ImageView) myDialog.findViewById(R.id.imageViewCard);
 
@@ -107,6 +105,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         buttonSubmit = (Button) myDialog.findViewById(R.id.buttonSubmit);
         buttonCamera = (Button) myDialog.findViewById(R.id.buttonCamera);
 
+        // Close popup
         imageViewClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,6 +113,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        // Open up camera
         buttonCamera.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -127,6 +127,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        // Submit to the popup question
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,8 +140,10 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
                 signaturePad = (SignaturePad) myDialog.findViewById(R.id.signature_pad);
 
+                // Security questions
                 final SecurityQuestions security = new SecurityQuestions(name,school,id, postId);
 
+                // Listen to the user signature
                 signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
                     @Override
                     public void onStartSigning() {
@@ -159,10 +162,12 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
 
+                // When submitted keep track of the transaction
                 databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId);
                 databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Send user email to notify
                         addNotification(userPostEmail);
                         myDialog.dismiss();
                         databaseReference.child("TRACK").child(postId).setValue(security);
@@ -179,6 +184,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         myDialog.show();
     }
 
+    // Open up photo gallery
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -186,20 +192,14 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    // Get file extension
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void cameraUpload(final String path) {
-
-    }
-
-    private void uploadFile(final String path) {
-
-    }
-
+    // Get permission for camera
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -215,6 +215,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    // Get permission for camera
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -236,6 +237,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // If user not login in, return to login activity
         if (firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, LoginActivity.class));
@@ -245,6 +247,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        // Initialize
         imageViewPicture = (ImageView) findViewById(R.id.imageViewPicture);
         imageViewProfile = (ImageView) findViewById(R.id.imageViewProfile);
 
@@ -258,6 +261,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
 
         myDialog = new Dialog(this);
 
+        // Get intent passed value
         textViewUser.setText(intent.getStringExtra(LostFragment.POST_USER));
         textViewTitle.setText(intent.getStringExtra(LostFragment.POST_TITLE));
         textViewDescription.setText(intent.getStringExtra(LostFragment.POST_DESCRIPTION));
@@ -268,9 +272,11 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
         postId = intent.getStringExtra(LostFragment.POST_ID);
         route = intent.getStringExtra(LostFragment.POST_ROUTE);
 
+        // Disable writing textView
         textViewTitle.setEnabled(false);
         textViewDescription.setEnabled(false);
 
+        // Set listeners
         textViewUser.setOnClickListener(this);
         buttonMessage.setOnClickListener(this);
         buttonTrack.setOnClickListener(this);
@@ -280,6 +286,8 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onStart() {
         super.onStart();
+
+        // Set item image into imageViewPicture
         databaseReference = FirebaseDatabase.getInstance().getReference("/" + route + "/" + postId + "/IMAGE");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -293,6 +301,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        // Set user profile image into imageViewProfile
         databaseReference = FirebaseDatabase.getInstance().getReference("/USERS/" + userId + "/IMAGE");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -310,6 +319,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view == buttonMessage){
+            // Message the user
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 Intent intent = new Intent(getApplicationContext(), MessageActivity.class);
                 intent.putExtra(POST_USER_ID,userId);
@@ -321,6 +331,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             }
         }
         else if (view == buttonTrack){
+            // Track user, popup will show up for verification
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 ShowPopup(view);
             }
@@ -329,6 +340,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             }
         }
         else if (view == buttonCall){
+            // Open phone call activity
             if (!firebaseAuth.getCurrentUser().getUid().equals(userId)){
                 String phoneNum = "+" + intent.getStringExtra(LostFragment.POST_PHONE_NUMBER);
                 Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
@@ -340,6 +352,7 @@ public class PostViewActivity extends AppCompatActivity implements View.OnClickL
             }
         }
         else if (view == textViewUser){
+            // Start profileview activity
             Intent intent = new Intent(getApplicationContext(), ProfileViewActivity.class);
             intent.putExtra(POST_PROFILE,userId);
             startActivity(intent);
