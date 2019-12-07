@@ -8,7 +8,7 @@
 3. [Usage](#Usage)
 4. [Wireframe](#Wireframe)
 5. [Technologies](#Technologies)
-6. [UML](#Unified Modeling Language)
+6. [UML](#Unified-Modeling-Language)
 7. [Testing](#Testing)
 8. [Pitfalls](#Pitfalls)
 9. [Contributor](#Contributor)
