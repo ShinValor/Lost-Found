@@ -105,7 +105,6 @@ PostAdapter ​- Extends ArrayAdapter to populates a list of posts into a Lost o
 ViewPagerAdapter​ - Extends FragmentPagerAdapter to add fragments,lost & found, to switch between lost & found tab.
 
 ## Testing
-Account created for testing:
 Email: lostfoundee32f@gmail.com
 
 ## Pitfalls
