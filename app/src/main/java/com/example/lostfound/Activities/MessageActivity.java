@@ -47,7 +47,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A24518190d");
+                    GMailSender sender = new GMailSender("lostfoundee32f@gmail.com","A123456789d@");
                     //sender.addAttachment(Environment.getExternalStorageDirectory().getPath()+"/image.jpg");
                     sender.sendMail("New message", "You have received a new message from someone.","lostfoundee32f@gmail.com",email);
                 }
