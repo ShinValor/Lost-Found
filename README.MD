@@ -8,7 +8,7 @@
 3. [Usage](#Usage)
 4. [Wireframe](#Wireframe)
 5. [Technologies](#Technologies)
-6. [UML](#UML)
+6. [UML](#Unified Modeling LanguageL)
 7. [Testing](#Testing)
 8. [Pitfalls](#Pitfalls)
 9. [Contributor](#Contributor)
@@ -44,7 +44,7 @@ To use this app, first create an account through the app. Then, verify the accou
 
 ![Wireframe](./imgs/wireframe.png)
 
-## UML
+## Unified Modeling Language
 
 ![UML](./imgs/uml.png)
 
