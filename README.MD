@@ -1,5 +1,5 @@
 
-# Android Final Project
+# Lost-Found
 
 ## Table of Contents
 
@@ -68,14 +68,12 @@ ProfileActivity​ - Activity to view the user's profile and edit user's informa
 ProfileViewActivity​ - Activity to view other user's profile
 
 **Fragments**
-
 LostFragment - Fragment of the Lost tab.
 
 FoundFragment​ - Fragment of the Found tab.
 
 
 **Classes**
-
 Message ​- Class to hold a message data e.g. user and message.  
 
 MessageList ​- Class to hold all message data of that user.  
@@ -95,7 +93,6 @@ GMailSender ​- Class to send email to a user gmail account when a user is usin
 JSSEProvider​ - Class to send email to a user gmail account when a user is using track feature.
 
 **Adapters**
-
 MessageAdapter​ - Extends ArrayAdapter to populates a list of messages into a messageview.
 
 MessageViewAdapter​ - Extends ArrayAdapter to populates a list of chats into a chatting view.
@@ -105,10 +102,10 @@ PostAdapter ​- Extends ArrayAdapter to populates a list of posts into a Lost o
 ViewPagerAdapter​ - Extends FragmentPagerAdapter to add fragments,lost & found, to switch between lost & found tab.
 
 ## Testing
-Email: lostfoundee32f@gmail.com
+What's that?
 
-## Pitfalls
-Due to lack of time I was not able to implement input checking. If the user create a post without image, title, or description it will crash the app.If a newly created user did not go to Profile and set up their credential it will crash the app. Any unexpected input from user will most likely crash the app.
+## Bugs
+Due to lack of time I was not able to implement input checking. If the user create a post without image, title, or description it will crash the app. If a newly created user did not go to Profile and set up their credential it will crash the app. Any unexpected input from user will most likely crash the app.
 
 ## Contributor  
 Ho Ming Poon
