@@ -5,12 +5,10 @@
 
 1. [Introduction](#Introduction)
 2. [Usage](#Usage)
-3. [Wireframe](#Wireframe)
-4. [Technologies](#Technologies)
+3. [Technologies](#Technologies)
+4. [Wireframe](#Wireframe)
 5. [Unified Modeling Language](#Unified-Modeling-Language)
-6. [Testing](#Testing)
-7. [Pitfalls](#Pitfalls)
-8. [Contributor](#Contributor)
+6. [Contributor](#Contributor)
 
 ## Introduction
 
