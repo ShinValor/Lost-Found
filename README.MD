@@ -35,57 +35,36 @@ Lost & Found is an android application that allows CUNY students to post what th
 ![UML](./imgs/uml.png)
 
 **Activities**  
-LoginActivity - Activity for user to enter their email and password.   
-
-RegisterActivity - Activity for user to register for an account using their email and password.   
-
-MainActivity - Home activity for user to view between the Lost & Found tab to see other users' post. 
-
-MessageActivity - Activity to allow user to message another user.
-
-MessageViewActivity - Activity to view chats the user has created.
-
-PostActivity - Activity to allow user to post for a lost or found item.
-
-PostViewActivity - Activity to view other user’s post, either lost or found.
-
-ProfileActivity - Activity to view the user's profile and edit user's information.
-
-ProfileViewActivity - Activity to view other user's profile
+- LoginActivity - Activity for user to enter their email and password.   
+- RegisterActivity - Activity for user to register for an account using their email and password.   
+- MainActivity - Home activity for user to view between the Lost & Found tab to see other users' post. 
+- MessageActivity - Activity to allow user to message another user.
+- MessageViewActivity - Activity to view chats the user has created.
+- PostActivity - Activity to allow user to post for a lost or found item.
+- PostViewActivity - Activity to view other user’s post, either lost or found.
+- ProfileActivity - Activity to view the user's profile and edit user's information.
+- ProfileViewActivity - Activity to view other user's profile
 
 **Fragments**  
-LostFragment - Fragment of the Lost tab.
-
-FoundFragment​ - Fragment of the Found tab.
-
+- LostFragment - Fragment of the Lost tab.  
+- FoundFragment - Fragment of the Found tab.  
 
 **Classes**  
-Message - Class to hold a message data e.g. user and message.  
-
-MessageList - Class to hold all message data of that user.  
-
-Post - Class to hold a post information (e.g. title and description).  
-
-PostList - Class to hold all post data of either Lost or Found tab.  
-
-SecurityQuestions - Class to hold the security questions when a user want to track and contact other user.  
-
-Upload - Class to hold the post image url.   
-
-User - Class to hold a user information e.g. name, phonenumber, id,and school  
-
-GMailSender - Class to send email to a user gmail account when a user is using track feature.  
-
-JSSEProvider - Class to send email to a user gmail account when a user is using track feature.
+- Message - Class to hold a message data e.g. user and message.  
+- MessageList - Class to hold all message data of that user.  
+- Post - Class to hold a post information (e.g. title and description).  
+- PostList - Class to hold all post data of either Lost or Found tab.  
+- SecurityQuestions - Class to hold the security questions when a user want to track and contact other user.  
+- Upload - Class to hold the post image url.   
+- User - Class to hold a user information e.g. name, phonenumber, id,and school  
+- GMailSender - Class to send email to a user gmail account when a user is using track feature.  
+- JSSEProvider - Class to send email to a user gmail account when a user is using track feature.
 
 **Adapters**  
-MessageAdapter - Extends ArrayAdapter to populates a list of messages into a messageview.
-
-MessageViewAdapter - Extends ArrayAdapter to populates a list of chats into a chatting view.
-
-PostAdapter - Extends ArrayAdapter to populates a list of posts into a Lost or Found fragment view.  
-
-ViewPagerAdapter - Extends FragmentPagerAdapter to add fragments,lost & found, to switch between lost & found tab.
+- MessageAdapter - Extends ArrayAdapter to populates a list of messages into a messageview.
+- MessageViewAdapter - Extends ArrayAdapter to populates a list of chats into a chatting view.
+- PostAdapter - Extends ArrayAdapter to populates a list of posts into a Lost or Found fragment view.  
+- ViewPagerAdapter - Extends FragmentPagerAdapter to add fragments,lost & found, to switch between lost & found tab.
 
 ## Contributor  
 Ho Ming Poon
